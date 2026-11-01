@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
 import {
+  AlertCircle,
   ArrowRight,
   Camera,
   CameraOff,
@@ -25,6 +26,7 @@ import type {
   EvaluationResult,
   FacialMetrics,
   SpeechMetrics,
+  Language,
 } from "../types"
 import { analyzeTranscript, detectFillers } from "../services/speechAnalysis"
 import { evaluateAnswerLocally } from "../services/evaluation"
@@ -63,6 +65,8 @@ export const RoomView: React.FC<RoomViewProps> = ({
   const [liveTranscript, setLiveTranscript] = useState("")
   const [recordedAudioUrl, setRecordedAudioUrl] = useState<string | null>(null)
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null)
+  const [selectedLanguage, setSelectedLanguage] = useState<Language>(config.language || "en-US")
+  const [speechError, setSpeechError] = useState<string | null>(null)
 
   // Webcam & HUD state
   const [cameraActive, setCameraActive] = useState(true)
@@ -99,6 +103,8 @@ export const RoomView: React.FC<RoomViewProps> = ({
   const speechRecognitionRef = useRef<any>(null)
   const timerIntervalRef = useRef<any>(null)
   const isSpeakingQuestionRef = useRef(false)
+  const isRecordingRef = useRef(false)
+  const isPausedRef = useRef(false)
 
   // 1. Session Timer
   useEffect(() => {
@@ -123,16 +129,26 @@ export const RoomView: React.FC<RoomViewProps> = ({
       }
 
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-          audio: true,
-        })
+        let stream: MediaStream
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: true,
+          })
+        } catch (vidErr) {
+          console.warn("Video stream unavailable, attempting audio-only:", vidErr)
+          setCameraActive(false)
+          stream = await navigator.mediaDevices.getUserMedia({
+            audio: true,
+          })
+        }
+
         if (!active) {
           stream.getTracks().forEach((t) => t.stop())
           return
         }
         mediaStreamRef.current = stream
-        if (videoRef.current) {
+        if (videoRef.current && stream.getVideoTracks().length > 0) {
           videoRef.current.srcObject = stream
         }
 
@@ -198,13 +214,18 @@ export const RoomView: React.FC<RoomViewProps> = ({
       (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
     if (!SpeechRecognition) {
       console.warn("Web Speech API not supported in this browser.")
+      setSpeechError("Browser ini tidak menyokong Web Speech API. Sila gunakan Google Chrome atau Microsoft Edge.")
       return
     }
 
     const recognition = new SpeechRecognition()
     recognition.continuous = true
     recognition.interimResults = true
-    recognition.lang = config.language
+    recognition.lang = selectedLanguage
+
+    recognition.onstart = () => {
+      setSpeechError(null)
+    }
 
     recognition.onresult = (event: any) => {
       let interim = ""
@@ -230,6 +251,20 @@ export const RoomView: React.FC<RoomViewProps> = ({
       if (e.error !== "no-speech") {
         console.warn("Speech recognition error:", e.error)
       }
+      if (e.error === "not-allowed") {
+        setSpeechError("Akses mikrofon disekat oleh browser. Sila benarkan kebenaran mikrofon pada ikon kunci URL browser.")
+      } else if (e.error === "network") {
+        setSpeechError("Ralat rangkaian pengecaman suara. Sila pastikan sambungan internet aktif.")
+      }
+    }
+
+    recognition.onend = () => {
+      // Auto-restart speech recognition if still actively recording (prevents Chrome silence timeout)
+      if (isRecordingRef.current && !isPausedRef.current) {
+        try {
+          recognition.start()
+        } catch {}
+      }
     }
 
     speechRecognitionRef.current = recognition
@@ -239,7 +274,7 @@ export const RoomView: React.FC<RoomViewProps> = ({
         recognition.stop()
       } catch {}
     }
-  }, [config.language])
+  }, [selectedLanguage])
 
   // 4. Recording Handler
   const startRecording = () => {
@@ -250,6 +285,10 @@ export const RoomView: React.FC<RoomViewProps> = ({
     setLiveTranscript("")
     audioChunksRef.current = []
     setRecordingSeconds(0)
+    setSpeechError(null)
+
+    isRecordingRef.current = true
+    isPausedRef.current = false
 
     // Start speech recognition
     try {
@@ -293,6 +332,8 @@ export const RoomView: React.FC<RoomViewProps> = ({
   const stopRecording = () => {
     if (!isRecording) return
 
+    isRecordingRef.current = false
+    isPausedRef.current = false
     setIsRecording(false)
     setIsPaused(false)
 
@@ -316,6 +357,7 @@ export const RoomView: React.FC<RoomViewProps> = ({
     if (!isRecording) return
     if (isPaused) {
       setIsPaused(false)
+      isPausedRef.current = false
       try {
         speechRecognitionRef.current?.start()
       } catch {}
@@ -324,6 +366,7 @@ export const RoomView: React.FC<RoomViewProps> = ({
       }, 1000)
     } else {
       setIsPaused(true)
+      isPausedRef.current = true
       try {
         speechRecognitionRef.current?.stop()
       } catch {}
@@ -925,13 +968,35 @@ export const RoomView: React.FC<RoomViewProps> = ({
                   fontWeight: 700,
                   color: "#64748b",
                   marginBottom: 6,
+                  flexWrap: "wrap",
+                  gap: 6,
                 }}
               >
                 <span style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                  <Sparkles size={12} style={{ color: "#3366e8" }} /> LIVE SPEECH TRANSCRIPTION (Web
-                  Speech API)
+                  <Sparkles size={12} style={{ color: "#3366e8" }} /> LIVE SPEECH TRANSCRIPTION (Web Speech API)
                 </span>
-                <span style={{ fontSize: 9, fontWeight: 500 }}>Lang: {config.language}</span>
+                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <span style={{ fontSize: 10, fontWeight: 600, color: "#475569" }}>Bahasa / Lang:</span>
+                  <select
+                    value={selectedLanguage}
+                    onChange={(e) => setSelectedLanguage(e.target.value as Language)}
+                    disabled={isRecording}
+                    title="Pilih bahasa pertuturan anda"
+                    style={{
+                      fontSize: 11,
+                      padding: "2px 6px",
+                      borderRadius: 4,
+                      border: "1px solid #cbd5e1",
+                      background: "#fff",
+                      color: "#1e293b",
+                      cursor: isRecording ? "not-allowed" : "pointer",
+                    }}
+                  >
+                    <option value="en-US">English (US)</option>
+                    <option value="en-MY">English (MY)</option>
+                    <option value="ms-MY">Bahasa Melayu (Malaysia)</option>
+                  </select>
+                </div>
               </div>
               <div
                 style={{
@@ -944,9 +1009,28 @@ export const RoomView: React.FC<RoomViewProps> = ({
               >
                 {liveTranscript ||
                   (isRecording
-                    ? "Listening... speak clearly into your microphone."
+                    ? `Listening in ${selectedLanguage}... speak clearly into your microphone.`
                     : "Click 'Start Recording' and speak your response.")}
               </div>
+              {speechError && (
+                <div
+                  style={{
+                    marginTop: 8,
+                    fontSize: 11,
+                    color: "#b91c1c",
+                    background: "#fef2f2",
+                    border: "1px solid #fecaca",
+                    padding: "6px 10px",
+                    borderRadius: 6,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                  }}
+                >
+                  <AlertCircle size={14} style={{ flexShrink: 0 }} />
+                  <span>{speechError}</span>
+                </div>
+              )}
             </div>
 
             {/* Answer Text Field (Synced with speech or editable) */}
