@@ -59,7 +59,7 @@ const modules: { id: Page; label: string; short: string; icon: Icon }[] = [
   { id: "interview", label: "AI Mock Interview Engine", short: "Mock Interview", icon: MessageSquareText },
   { id: "assessment", label: "Interview & Career Readiness Assessment", short: "Assessment", icon: Gauge },
   { id: "learning", label: "Learning Recommendation", short: "Learning", icon: BookOpen },
-  { id: "progress", label: "Recommendation & Progress Tracking", short: "Progress", icon: TrendingUp },
+  // { id: "progress", label: "Recommendation & Progress Tracking", short: "Progress", icon: TrendingUp },
 ]
 
 const pageTitles: Record<Page, string> = {
@@ -69,7 +69,7 @@ const pageTitles: Record<Page, string> = {
   interview: "AI Mock Interview Engine",
   assessment: "Career Readiness Assessment",
   learning: "Learning Recommendation",
-  progress: "Recommendation & Progress Tracking",
+  // progress: "Recommendation & Progress Tracking",
 }
 
 const questions = [
