@@ -18,6 +18,9 @@ import {
   Upload,
   Volume2,
   VolumeX,
+  X,
+  Lock,
+  RefreshCw,
 } from "lucide-react"
 import type {
   QuestionItem,
@@ -67,6 +70,8 @@ export const RoomView: React.FC<RoomViewProps> = ({
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null)
   const [selectedLanguage, setSelectedLanguage] = useState<Language>(config.language || "en-US")
   const [speechError, setSpeechError] = useState<string | null>(null)
+  const [showMicPermissionModal, setShowMicPermissionModal] = useState(false)
+  const [isRetryingMic, setIsRetryingMic] = useState(false)
 
   // Webcam & HUD state
   const [cameraActive, setCameraActive] = useState(true)
@@ -188,9 +193,13 @@ export const RoomView: React.FC<RoomViewProps> = ({
         } catch (audioErr) {
           console.warn("Audio analyser initialization notice:", audioErr)
         }
-      } catch (err) {
+      } catch (err: any) {
         console.warn("Camera or microphone permission was not granted:", err)
         setCameraActive(false)
+        if (err?.name === "NotAllowedError" || err?.name === "PermissionDeniedError") {
+          setSpeechError("Akses mikrofon disekat oleh browser. Sila benarkan kebenaran mikrofon pada ikon kunci URL browser.")
+          setShowMicPermissionModal(true)
+        }
       }
     }
 
@@ -253,6 +262,7 @@ export const RoomView: React.FC<RoomViewProps> = ({
       }
       if (e.error === "not-allowed") {
         setSpeechError("Akses mikrofon disekat oleh browser. Sila benarkan kebenaran mikrofon pada ikon kunci URL browser.")
+        setShowMicPermissionModal(true)
       } else if (e.error === "network") {
         setSpeechError("Ralat rangkaian pengecaman suara. Sila pastikan sambungan internet aktif.")
       }
@@ -276,6 +286,61 @@ export const RoomView: React.FC<RoomViewProps> = ({
     }
   }, [selectedLanguage])
 
+  // Handler to request / retry microphone permission
+  const requestMicPermission = async () => {
+    setIsRetryingMic(true)
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      mediaStreamRef.current = stream
+      setSpeechError(null)
+      setShowMicPermissionModal(false)
+
+      // Re-init audio analyser for volume meter HUD
+      try {
+        const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext
+        if (AudioContextClass) {
+          const ctx = new AudioContextClass()
+          audioContextRef.current = ctx
+          const source = ctx.createMediaStreamSource(stream)
+          const analyser = ctx.createAnalyser()
+          analyser.fftSize = 256
+          source.connect(analyser)
+          analyserRef.current = analyser
+
+          const pcmData = new Uint8Array(analyser.frequencyBinCount)
+          const updateVolume = () => {
+            if (!analyserRef.current) return
+            analyserRef.current.getByteFrequencyData(pcmData)
+            let sum = 0
+            for (let i = 0; i < pcmData.length; i++) {
+              sum += pcmData[i]
+            }
+            const average = sum / pcmData.length
+            const normalized = Math.min(100, Math.round((average / 128) * 100))
+            setMicVolume(normalized)
+            animationFrameRef.current = requestAnimationFrame(updateVolume)
+          }
+          updateVolume()
+        }
+      } catch (audioErr) {
+        console.warn("Audio analyser retry notice:", audioErr)
+      }
+
+      // If user was in recording state, resume recognition
+      if (isRecordingRef.current && speechRecognitionRef.current) {
+        try {
+          speechRecognitionRef.current.start()
+        } catch {}
+      }
+    } catch (err: any) {
+      console.warn("Permission still blocked:", err)
+      setSpeechError("Akses mikrofon disekat oleh browser. Sila benarkan kebenaran mikrofon pada ikon kunci URL browser.")
+      setShowMicPermissionModal(true)
+    } finally {
+      setIsRetryingMic(false)
+    }
+  }
+
   // 4. Recording Handler
   const startRecording = () => {
     if (isRecording) return
@@ -295,7 +360,12 @@ export const RoomView: React.FC<RoomViewProps> = ({
       if (speechRecognitionRef.current) {
         speechRecognitionRef.current.start()
       }
-    } catch {}
+    } catch (e: any) {
+      if (e?.name === "NotAllowedError") {
+        setSpeechError("Akses mikrofon disekat oleh browser. Sila benarkan kebenaran mikrofon pada ikon kunci URL browser.")
+        setShowMicPermissionModal(true)
+      }
+    }
 
     // Start MediaRecorder if audio stream available
     if (mediaStreamRef.current) {
@@ -1020,15 +1090,41 @@ export const RoomView: React.FC<RoomViewProps> = ({
                     color: "#b91c1c",
                     background: "#fef2f2",
                     border: "1px solid #fecaca",
-                    padding: "6px 10px",
-                    borderRadius: 6,
+                    padding: "7px 10px",
+                    borderRadius: 8,
                     display: "flex",
                     alignItems: "center",
-                    gap: 6,
+                    justifyContent: "space-between",
+                    gap: 8,
+                    flexWrap: "wrap",
                   }}
                 >
-                  <AlertCircle size={14} style={{ flexShrink: 0 }} />
-                  <span>{speechError}</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6, flex: 1, minWidth: 200 }}>
+                    <AlertCircle size={14} style={{ flexShrink: 0 }} />
+                    <span>{speechError}</span>
+                  </div>
+                  {speechError.includes("disekat") && (
+                    <button
+                      type="button"
+                      onClick={() => setShowMicPermissionModal(true)}
+                      style={{
+                        background: "#dc2626",
+                        color: "#ffffff",
+                        border: "none",
+                        borderRadius: 6,
+                        padding: "4px 10px",
+                        fontSize: 11,
+                        fontWeight: 600,
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 4,
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      <Mic size={12} /> Buka Mic
+                    </button>
+                  )}
                 </div>
               )}
             </div>
@@ -1207,6 +1303,289 @@ export const RoomView: React.FC<RoomViewProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Modal Popup: Sila Buka / Benarkan Akses Mikrofon */}
+      {showMicPermissionModal && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 9999,
+            backgroundColor: "rgba(15, 23, 42, 0.7)",
+            backdropFilter: "blur(6px)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 16,
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setShowMicPermissionModal(false)
+            }
+          }}
+        >
+          <div
+            style={{
+              background: "#ffffff",
+              borderRadius: 20,
+              maxWidth: 500,
+              width: "100%",
+              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+              border: "1px solid #e2e8f0",
+              overflow: "hidden",
+            }}
+          >
+            {/* Modal Header */}
+            <div
+              style={{
+                padding: "20px 24px 16px",
+                borderBottom: "1px solid #f1f5f9",
+                display: "flex",
+                alignItems: "flex-start",
+                justifyContent: "space-between",
+                gap: 12,
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <div
+                  style={{
+                    width: 44,
+                    height: 44,
+                    borderRadius: "50%",
+                    backgroundColor: "#fee2e2",
+                    color: "#dc2626",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                  }}
+                >
+                  <MicOff size={22} />
+                </div>
+                <div>
+                  <h3
+                    style={{
+                      margin: 0,
+                      fontSize: 18,
+                      fontWeight: 700,
+                      color: "#0f172a",
+                      lineHeight: 1.3,
+                    }}
+                  >
+                    Sila Buka Akses Mikrofon
+                  </h3>
+                  <span style={{ fontSize: 12, color: "#64748b" }}>
+                    Kebenaran mikrofon diperlukan untuk merekod jawapan temuduga
+                  </span>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setShowMicPermissionModal(false)}
+                aria-label="Tutup"
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  color: "#94a3b8",
+                  cursor: "pointer",
+                  padding: 4,
+                  borderRadius: 6,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: 16 }}>
+              <div
+                style={{
+                  background: "#fef2f2",
+                  border: "1px solid #fecaca",
+                  borderRadius: 10,
+                  padding: "10px 14px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10,
+                  fontSize: 13,
+                  color: "#991b1b",
+                }}
+              >
+                <AlertCircle size={18} style={{ flexShrink: 0, color: "#dc2626" }} />
+                <span>
+                  <strong>Akses mikrofon disekat oleh pelayar (browser).</strong> Sila aktifkan mikrofon untuk menggunakan ciri ucapan ke teks secara automatik.
+                </span>
+              </div>
+
+              <div>
+                <p
+                  style={{
+                    margin: "0 0 10px",
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: "#334155",
+                  }}
+                >
+                  Langkah untuk benarkan mikrofon:
+                </p>
+
+                <div
+                  style={{
+                    background: "#f8fafc",
+                    border: "1px solid #e2e8f0",
+                    borderRadius: 12,
+                    padding: "14px 16px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 12,
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                    <div
+                      style={{
+                        width: 22,
+                        height: 22,
+                        borderRadius: "50%",
+                        background: "#3b82f6",
+                        color: "#ffffff",
+                        fontSize: 11,
+                        fontWeight: 700,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                      }}
+                    >
+                      1
+                    </div>
+                    <div style={{ fontSize: 13, color: "#1e293b", lineHeight: 1.4 }}>
+                      Klik ikon <strong>Kunci (🔒)</strong> atau <strong>Tetapan Laman (Site Settings)</strong> di sebelah kiri bar URL browser.
+                    </div>
+                  </div>
+
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                    <div
+                      style={{
+                        width: 22,
+                        height: 22,
+                        borderRadius: "50%",
+                        background: "#3b82f6",
+                        color: "#ffffff",
+                        fontSize: 11,
+                        fontWeight: 700,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                      }}
+                    >
+                      2
+                    </div>
+                    <div style={{ fontSize: 13, color: "#1e293b", lineHeight: 1.4 }}>
+                      Cari tetapan <strong>Mikrofon (Microphone)</strong> dan tukar kepada <strong>Benarkan (Allow)</strong>.
+                    </div>
+                  </div>
+
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+                    <div
+                      style={{
+                        width: 22,
+                        height: 22,
+                        borderRadius: "50%",
+                        background: "#3b82f6",
+                        color: "#ffffff",
+                        fontSize: 11,
+                        fontWeight: 700,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                      }}
+                    >
+                      3
+                    </div>
+                    <div style={{ fontSize: 13, color: "#1e293b", lineHeight: 1.4 }}>
+                      Klik butang <strong>"Cuba Semula Mic"</strong> di bawah atau muat semula (refresh) pelayar anda.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ fontSize: 12, color: "#64748b", fontStyle: "italic" }}>
+                Tip: Anda masih boleh terus menaip jawapan anda secara manual pada kotak teks jawapan jika tidak mahu menggunakan mikrofon.
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div
+              style={{
+                padding: "14px 24px 20px",
+                backgroundColor: "#f8fafc",
+                borderTop: "1px solid #f1f5f9",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-end",
+                gap: 10,
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => setShowMicPermissionModal(false)}
+                style={{
+                  padding: "9px 16px",
+                  borderRadius: 10,
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: "#475569",
+                  background: "#ffffff",
+                  border: "1px solid #cbd5e1",
+                  cursor: "pointer",
+                }}
+              >
+                Tutup & Taip Manual
+              </button>
+
+              <button
+                type="button"
+                onClick={requestMicPermission}
+                disabled={isRetryingMic}
+                style={{
+                  padding: "9px 18px",
+                  borderRadius: 10,
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: "#ffffff",
+                  background: isRetryingMic ? "#93c5fd" : "#2563eb",
+                  border: "none",
+                  cursor: isRetryingMic ? "not-allowed" : "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                  boxShadow: "0 2px 4px rgba(37, 99, 235, 0.2)",
+                }}
+              >
+                {isRetryingMic ? (
+                  <>
+                    <Loader2 size={15} className="animate-spin" />
+                    <span>Sedang Menyemak...</span>
+                  </>
+                ) : (
+                  <>
+                    <RefreshCw size={15} />
+                    <span>Cuba Semula Mic</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
