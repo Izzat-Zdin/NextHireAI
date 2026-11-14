@@ -1,487 +1,93 @@
-# NextHire AI (Laravel + Inertia + React)
+# NextHire AI — Team Starter
 
-> **This is the team starter.** Every page of the app is already built and looks final, Izzat's modules work end to end, and login/register work. The logic and database code for the other members' modules has been removed and replaced with `// TODO (Name): ...` instructions. Your job is to fill in those TODOs so your module works **exactly like the finished system**.
->
-> Live reference (finished system): https://www.nexthire.web.id · This starter on Vercel: https://nexthirereact.vercel.app
+Laravel 12 + Inertia + React 19, database on Supabase (PostgreSQL).
 
-## Run the project (start here)
-
-Follow these steps in order on a fresh computer. They are written for **Windows**; use **PowerShell** or the **VS Code terminal** (menu **View → Terminal**).
-
-### Step 1. Download and install the tools (once)
-
-| Tool | Why | Download | Or install from a terminal |
-|---|---|---|---|
-| **Git** | Download the code, save your work | https://git-scm.com/downloads | `winget install Git.Git` |
-| **VS Code** | Code editor | https://code.visualstudio.com | `winget install Microsoft.VisualStudioCode` |
-| **PHP 8.3** | Runs Laravel (backend) | https://windows.php.net/download (VS16 x64 **Non Thread Safe** zip) | `winget install PHP.PHP.NTS.8.3` |
-| **Composer** | Installs PHP packages | https://getcomposer.org/download (Composer-Setup.exe) | `winget install Composer.Composer` |
-| **Node.js 20+ (LTS)** | Runs the React build tools | https://nodejs.org | `winget install OpenJS.NodeJS.LTS` |
-| **pnpm** | Installs JavaScript packages | — | `npm install -g pnpm` (after Node.js) |
-
-**Close and reopen the terminal** after installing, so the new commands are found. Then check every tool:
-
-```bash
-git --version
-php -v
-composer -V
-node -v
-pnpm -v
-```
-
-Each command should print a version number (PHP must start with **8.3**, Node with **20** or higher).
-
-**Turn on the PHP extensions Laravel needs** (once):
-
-1. Find the PHP config file:
-   ```bash
-   php --ini
-   ```
-   Look at the line **"Loaded Configuration File"**. If it says `(none)`, open the PHP folder shown above it, copy `php.ini-development` and rename the copy to `php.ini`.
-2. Open `php.ini` in VS Code and remove the `;` at the start of these lines (search for each one):
-   ```ini
-   extension_dir = "ext"
-   extension=curl
-   extension=fileinfo
-   extension=mbstring
-   extension=openssl
-   extension=pdo_pgsql
-   extension=pgsql
-   extension=zip
-   ```
-3. In the same file set these, so 5 MB resumes can be uploaded:
-   ```ini
-   upload_max_filesize = 8M
-   post_max_size = 10M
-   ```
-4. Save, reopen the terminal and check that the database driver is on (it must print `pdo_pgsql`):
-   ```bash
-   php -m
-   ```
-
-### Step 2. Download the project and open your branch
-
-```bash
-git clone https://github.com/Izzat-Zdin/NextHireAI.git
-cd NextHireAI
-git checkout <your-branch>
-```
-
-| Member | Branch |
-|---|---|
-| Nada | `nada/user-management` |
-| Shafinaz (Resume) | `shafinaz/resume-analyzer` |
-| Shafinaz & Wani (Learning) | `shafinaz-wani/learning` |
-| Wani (Admin Resources) | `wani/admin-resources` |
-
-Open the folder in VS Code:
-
-```bash
-code .
-```
-
-### Step 3. Add the `.env` file
-
-The `.env` file is **not** on GitHub because it holds the database password. **Izzat sends it to you privately.**
-
-1. Put it in the `NextHireAI` folder, next to `README.md`.
-2. Make sure the name is exactly `.env` (not `.env.txt` or `env-untuk-tim.env` — rename it if needed).
-
-It connects to the **shared Supabase database** (the same one the live site uses) and contains the **Test user** and **Test admin** accounts.
-
-### Step 4. Install the packages (first time, and whenever `composer.json` or `package.json` changes)
-
-```bash
-composer install
-```
-
-```bash
-pnpm install
-```
-
-```bash
-php artisan key:generate
-```
-
-### Step 5. Run the app
-
-Open **two terminals** in VS Code (the **+** button in the terminal panel) and keep both running.
-
-Terminal 1, the Laravel server:
-
-```bash
-php artisan serve
-```
-
-Terminal 2, the React dev server (live reload):
-
-```bash
-pnpm dev
-```
-
-Open **http://localhost:8000** in your browser and click **Test user**, or **Test admin** for the admin pages. Press `Ctrl + C` in each terminal to stop.
-
-Next time you only need Step 5 (and `git pull origin main` to get the latest changes).
-
-### If something goes wrong
-
-| Message | Fix |
-|---|---|
-| `'php' is not recognized` (or composer/node/pnpm) | Close and reopen the terminal. If it still fails, reinstall the tool and tick "Add to PATH". |
-| `could not find driver` | `pdo_pgsql` is off: redo the PHP extensions part of Step 1. |
-| `No application encryption key has been specified` | Run `php artisan key:generate`. |
-| `Vite manifest not found` / blank page | Terminal 2 (`pnpm dev`) is not running. Start it. |
-| `SQLSTATE[08006]` / connection refused or password failed | The `.env` file is missing, misnamed, or out of date. Ask Izzat for the current one. |
-| No **Test user** button on the login page | `TEST_ACCOUNT_EMAIL` / `TEST_ACCOUNT_PASSWORD` are empty in `.env`. Use the `.env` from Izzat. |
-| `Failed to listen on 127.0.0.1:8000` | Another app uses port 8000: `php artisan serve --port=8001`, then open http://localhost:8001. |
-
-## Team quick start
-
-### Who does what
-
-| Member | Module(s) to rebuild | Your branch | Your task file |
-|---|---|---|---|
-| **Nada** | M1 Profile + Forgot/Reset password, A1 Admin · User Management | `nada/user-management` | [docs/tugasan/TUGASAN-NADA.md](docs/tugasan/TUGASAN-NADA.md) |
-| **Shafinaz** | M2 AI Resume Analyzer | `shafinaz/resume-analyzer` | [docs/tugasan/TUGASAN-SHAFINAZ.md](docs/tugasan/TUGASAN-SHAFINAZ.md) |
-| **Shafinaz & Wani** | M5 Learning Recommendation | `shafinaz-wani/learning` | [docs/tugasan/TUGASAN-SHAFINAZ-WANI.md](docs/tugasan/TUGASAN-SHAFINAZ-WANI.md) |
-| **Wani** | A2 Admin · Learning Resources (+ `learning_resources` table) | `wani/admin-resources` | [docs/tugasan/TUGASAN-WANI.md](docs/tugasan/TUGASAN-WANI.md) |
-| **Izzat** | M3 Mock Interview, M4 Readiness, M6 Progress, Dashboard | `main` | Finished — use as the **reference example** |
-
-Each task file lists: the files you must fill in (as a checklist), the exact database tables and columns, every API endpoint with its validation and JSON response, the fields other modules read from you, how to test, and a ready-made **🤖 AI prompt** at the end. The general guide (in Malay) is [docs/tugasan/PANDUAN-TIM.md](docs/tugasan/PANDUAN-TIM.md).
-
-### Folder structure by module
-
-Module folders are numbered in the same order as the modules (`m1-` … `m6-`, admin `a1-`, `a2-`). ✅ = finished, ⏳ = has TODOs for you.
-
-**Frontend (React)** — `resources/js/modules/`
-
-```
-resources/js/modules/
-├── m1-user-management/            M1 · Nada
-│   ├── pages/                     LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage,
-│   │                              VerifyEmailPage, ProfilePage            (UI finished)
-│   ├── components/                AuthLayout, RouteGuards                 (UI finished)
-│   ├── context/AuthContext.tsx    ✅ signed-in user
-│   └── services/
-│       ├── authService.ts         ✅ login/register   ⏳ forgot/reset/change password
-│       └── profileService.ts      ⏳
-├── m2-ai-resume-analyzer/         M2 · Shafinaz
-│   ├── pages/  components/        (UI finished)
-│   ├── services/
-│   │   ├── resumeParser.ts        ⏳ read PDF/DOCX text
-│   │   ├── resumeAnalysis.ts      ⏳ scoring engine
-│   │   └── resumeService.ts       ⏳ API calls
-│   └── types.ts                   don't change
-├── m3-mock-interview/             M3 · Nada & Izzat  ✅ (reference example)
-├── m4-interview-readiness/        M4 · Izzat  ✅
-├── m5-learning-recommendation/    M5 · Shafinaz & Wani
-│   ├── pages/  components/        (UI finished)
-│   ├── hooks/useLearningProgress.ts   ✅ (uses your service)
-│   └── services/learningService.ts    ⏳
-├── m6-recommendation-tracking/    M6 · Izzat  ✅ (hidden from the sidebar)
-├── dashboard/                     Dashboard · Izzat  ✅
-└── admin/
-    ├── a1-user-management/        A1 · Nada
-    │   ├── pages/  components/    (UI finished)
-    │   └── services/adminUserService.ts       ⏳
-    └── a2-learning-resources/     A2 · Wani
-        ├── pages/  components/    (UI finished)
-        └── services/adminResourceService.ts   ⏳
-```
-
-**Backend (Laravel)** — `app/`
-
-```
-app/
-├── Http/Controllers/
-│   ├── PageController.php                     ✅ opens every page (Inertia)
-│   ├── Auth/                                  M1 · Nada
-│   │   ├── AuthenticatedSessionController.php ✅ login/logout
-│   │   ├── RegisteredUserController.php       ✅ register
-│   │   ├── PasswordResetLinkController.php    ⏳ forgot password
-│   │   └── NewPasswordController.php          ⏳ reset password
-│   └── Api/
-│       ├── ProfileController.php              ⏳ M1 · Nada
-│       ├── ResumeController.php               ⏳ M2 · Shafinaz
-│       ├── InterviewSessionController.php     ✅ M3 · Izzat (reference example)
-│       ├── LearningController.php             ⏳ M5 · Shafinaz & Wani
-│       └── Admin/
-│           ├── UserController.php             ⏳ A1 · Nada
-│           └── ResourceController.php         ⏳ A2 · Wani
-├── Models/
-│   ├── User.php, Resume.php, Interview*.php … ✅
-│   ├── LearningProgress.php                   ⏳ M5 · Shafinaz & Wani
-│   └── LearningResource.php                   ⏳ A2 · Wani
-├── Policies/
-│   ├── InterviewSessionPolicy.php             ✅ M3
-│   └── ResumePolicy.php                       ⏳ M2 · Shafinaz
-└── Services/Interview/                        ✅ M3 (server-side scoring)
-```
-
-**Shared — don't change:** `routes/web.php`, `routes/auth.php`, `resources/js/lib/` (api, types, insights), `resources/js/components/` (sidebar, buttons, cards). **You create:** `database/migrations/` for your own tables.
-
-Every module follows the same flow: `pages/` (UI) → `services/*.ts` (calls the API) → `routes/web.php` → `Controllers/Api/*Controller.php` → `Models/*.php` → database.
-
-### 1. Find your TODOs
-
-In VS Code press **Ctrl + Shift + F** and search for `TODO (YourName)` — for example `TODO (Shafinaz)` or `TODO (Wani)`. Every TODO says exactly what the original code did: which validation rules, which query, what JSON to return and which status code. Replace the TODO and the placeholder `return` with real code.
-
-Each stub currently returns an empty result (`[]`, `null`, or `501 "Belum dibina (TODO)"`), so pages still open and simply show "nothing yet" until you finish.
-
-### 2. Follow the finished example
-
-Izzat's Mock Interview module uses the same pattern you need:
-
-| Layer | Finished example | What it shows |
-|---|---|---|
-| Route | `routes/web.php` → `/api/interview/sessions` | All routes already exist — don't add or rename them |
-| Controller | `app/Http/Controllers/Api/InterviewSessionController.php` | `$request->validate()`, `where('user_id', ...)`, `response()->json(...)`, status codes |
-| Policy | `app/Policies/InterviewSessionPolicy.php` | "only the owner can see/change this" |
-| Model | `app/Models/InterviewSession.php` | table, UUID primary key, casts, relations |
-| React service | `resources/js/modules/m3-mock-interview/services/interviewService.ts` | `api.get/post/put/delete` from `@/lib/api` |
-
-### 3. Rules (important)
-
-- ✅ Only edit the files listed in **your** task file.
-- ❌ Don't rename files, functions, parameters, routes, or anything in `types.ts` / `resources/js/lib/*`. Izzat's Dashboard, Readiness and Mock Interview read your data using these exact names; renaming breaks them.
-- ❌ Don't change the UI (pages and components are final).
-- ⚠️ **Never run `php artisan migrate`, `migrate:fresh` or `db:wipe` with the shared `.env`.** It is the live database — those commands can delete every table. Write your migration files in `database/migrations/` for review only.
-- ❌ Never commit `.env` or put passwords in code.
-
-### 4. Test your work
-
-```bash
-pnpm typecheck
-```
-
-Then follow the **"Cara uji"** (how to test) steps in your task file in the browser. Your module is done when every item in its **"Siap bila"** (done when) checklist is ticked and no `TODO (YourName)` is left.
-
-### 5. Save to GitHub (often)
-
-```bash
-git add .
-git commit -m "M2: ResumeController index and store"
-git push
-```
-
-Get the latest shared changes from `main` now and then:
-
-```bash
-git pull origin main
-```
-
-**Preview link.** Every push builds your branch on Vercel automatically:
-`https://nexthirereact-git-<branch-name-with-dashes>-izzat-zdins-projects.vercel.app`
-(e.g. `nexthirereact-git-wani-admin-resources-izzat-zdins-projects.vercel.app`). Vercel does **not** run the frontend build, so if you changed React files, run `pnpm build` and commit the `public/build` folder before pushing, or the preview shows the old UI.
-
-### 6. Hand in: Pull Request
-
-1. On GitHub, open **Pull requests → New** (or **Compare & pull request**) from your branch into `main`.
-2. Describe what you built and paste your ticked checklist.
-3. Izzat reviews the **Files changed** tab. Changes outside your module will be sent back.
-4. After approval, Izzat merges it into `main`.
-
-### Stuck?
-
-1. Re-read the TODO comment and your task file.
-2. Copy the **🤖 PROMPT** block from the end of your task file into ChatGPT/Claude, attach your TODO files and Izzat's example files. **Read and understand** the code it gives you — you will need to explain it.
-3. Ask Izzat.
+Every page is already built. Izzat's modules and login/register work. **Your module's logic has been replaced with `// TODO (YourName)` notes** — fill them in so it works like the finished system: https://www.nexthire.web.id
 
 ---
 
-## About the project
+## 1. Install the tools (once)
 
-The same NextHire AI application as the React + Supabase project (`../SIAP`), rebuilt as **Laravel 12 + Inertia 2 + React 19**:
-
-- **Laravel** owns routing, authentication (email/password, email verification, forgot/reset password, Google via Socialite), authorization (Policies, admin middleware), file storage and the JSON API.
-- **Inertia** renders the React pages from Laravel routes, so there is one project and one deploy.
-- **React + TypeScript + Tailwind v4 + shadcn/ui**: the UI is copied unchanged from `SIAP/src` (same pages, components, theme, dark mode, mobile bar).
-- **Scoring engines stay in the browser** (resume analysis, answer evaluation, speech analysis, readiness, recommendation ranking). Laravel stores the results.
-- **Database: the same Supabase Postgres project** and the same 12 ERD tables as the React app. Both apps can run against it at the same time.
-
-```
-Browser (React, same UI) ──Inertia / JSON──► Laravel (routes → controllers → Eloquent + Policies) ──pdo_pgsql──► Supabase Postgres (12 tables)
-```
-
-## Modules and owners
-
-| # | Module | Owner | Folder (`resources/js/modules/`) | Routes |
-|---|---|---|---|---|
-| 1 | User Management & Authentication | Nada | `m1-user-management/` | `/login`, `/register`, `/forgot-password`, `/reset-password/{token}`, `/profile` |
-| 2 | AI Resume Analyzer | Shafinaz | `m2-ai-resume-analyzer/` | `/resume`, `/resume/history`, `/resume/{id}` |
-| 3 | AI Mock Interview Engine | Nada & Izzat | `m3-mock-interview/` | `/interview`, `/interview/history`, `/interview/{id}` |
-| 4 | Interview & Career Readiness Assessment | Izzat | `m4-interview-readiness/` | `/assessment` |
-| 5 | Learning Recommendation | Shafinaz & Wani | `m5-learning-recommendation/` | `/learning`, `/learning/{id}` |
-| 6 | Recommendation & Progress Tracking | Izzat | `m6-recommendation-tracking/` | `/progress` |
-| — | Dashboard | Izzat | `dashboard/` | `/` |
-| A1 | Admin · User Management | Nada | `admin/a1-user-management/` | `/admin/users`, `/admin/users/{id}` |
-| A2 | Admin · Learning Resources | Wani | `admin/a2-learning-resources/` | `/admin/resources` |
-
-## What is where
-
-| | Path |
+| Tool | Download |
 |---|---|
-| Pages, components, engines (copied from SIAP) | `resources/js/modules/**`, `resources/js/components/**`, `resources/js/lib/**` |
-| Inertia bootstrap (providers + AppShell layout) | `resources/js/app.tsx` |
-| React Router shim over Inertia (`Link`, `useNavigate`, `useParams`, …) | `resources/js/lib/router.tsx` |
-| JSON client used by the module services | `resources/js/lib/api.ts` |
-| Auth state from Inertia shared props (`useAuth()`) | `resources/js/modules/m1-user-management/context/AuthContext.tsx` |
-| Page routes + JSON API routes | `routes/web.php`, `routes/auth.php` |
-| Controllers | `app/Http/Controllers/PageController.php` (pages), `app/Http/Controllers/Api/**` (data), `app/Http/Controllers/Auth/**` |
-| Models (one per ERD table + the summary view) | `app/Models/**` |
-| Policies (replace Supabase RLS) | `app/Policies/**` |
-| Middleware: deactivated accounts, admin area | `app/Http/Middleware/EnsureUserIsActive.php`, `EnsureUserIsAdmin.php` |
-| Shared Inertia props (user, route params, paused count, test accounts) | `app/Http/Middleware/HandleInertiaRequests.php` |
-| App settings (email verification switch, test accounts, resume disk) | `config/nexthire.php` |
-| One-time SQL for the Supabase project | `database/sql/20261110000001_laravel_auth.sql` |
+| Git | https://git-scm.com/downloads |
+| VS Code | https://code.visualstudio.com |
+| PHP 8.3 | https://windows.php.net/download (VS16 x64 Non Thread Safe zip) |
+| Composer | https://getcomposer.org/download |
+| Node.js 20+ (LTS) | https://nodejs.org |
+| pnpm | after Node.js, run `npm install -g pnpm` |
 
-## Setup
+Then turn on the PHP database driver: run `php --ini`, open the `php.ini` it shows (if it says *none*, copy `php.ini-development` in the PHP folder and rename it `php.ini`), remove the `;` in front of these lines and save:
 
-> **Team members:** follow [Team quick start](#team-quick-start) above instead. The shared database is already set up, so skip step 2 (the SQL) and never run migrations against it.
-
-### 1. Prerequisites
-
-- PHP 8.3 with `pdo_pgsql`, `mbstring`, `openssl`, `fileinfo`, `curl`, `zip`. In `php.ini` set `upload_max_filesize = 8M` and `post_max_size = 10M` so 5 MB resumes can be stored (PHP's default is 2 MB; a larger file is then saved without its download).
-- Composer 2
-- Node.js 20+ and pnpm
-- The Supabase project used by the React app, with its four migrations already run (`SIAP/supabase/migrations`)
-
-### 2. Database (once)
-
-Open the Supabase SQL Editor for the project and run `database/sql/20261110000001_laravel_auth.sql`. It adds the Laravel auth columns to `public.users` (`password`, `remember_token`, `email_verified_at`, `google_id`, `avatar_url`), drops the FK to `auth.users`, and creates `password_reset_tokens` (with RLS enabled: only Laravel, connecting as the `postgres` role, reads it). If the editor asks "Run and enable RLS" vs "Run without RLS", either works because the file enables it itself. Existing rows and the React app keep working.
-
-### 3. Configure `.env`
-
-```bash
-copy .env.example .env
+```ini
+extension_dir = "ext"
+extension=curl
+extension=fileinfo
+extension=mbstring
+extension=openssl
+extension=pdo_pgsql
+extension=pgsql
+extension=zip
 ```
 
-```bash
-php artisan key:generate
+Reopen the terminal and check: `php -v` shows 8.3, and `php -m` lists `pdo_pgsql`.
+
+## 2. Get the code and run it (first time)
+
+1. Save the **`.env` file Izzat sends you** in your **Downloads** folder as `env-untuk-tim.env` (it has the database password, never share or commit it).
+2. Open PowerShell (or the VS Code terminal), replace `your-branch` and run:
+
+```powershell
+git clone https://github.com/Izzat-Zdin/NextHireAI.git; cd NextHireAI; git checkout your-branch; copy "$HOME\Downloads\env-untuk-tim.env" .env; composer install; pnpm install; php artisan key:generate; npx -y concurrently "php artisan serve" "pnpm dev"
 ```
 
-Then fill in:
+3. Open **http://localhost:8000** and click **Test user** (or **Test admin** for admin pages). Stop with `Ctrl + C`.
 
-```
-# Supabase → Project Settings → Database → Connect → "Session pooler"
-DB_HOST=aws-0-ap-northeast-2.pooler.supabase.com   (this project is in ap-northeast-2; copy the host shown in the dashboard)
-DB_PORT=5432
-DB_DATABASE=postgres
-DB_USERNAME=postgres.<project-ref>
-DB_PASSWORD=<database password>
-DB_SSLMODE=require
-```
+| Member | `your-branch` | Your task file |
+|---|---|---|
+| Nada | `nada/user-management` | [docs/tugasan/TUGASAN-NADA.md](docs/tugasan/TUGASAN-NADA.md) |
+| Shafinaz | `shafinaz/resume-analyzer` | [docs/tugasan/TUGASAN-SHAFINAZ.md](docs/tugasan/TUGASAN-SHAFINAZ.md) |
+| Shafinaz & Wani | `shafinaz-wani/learning` | [docs/tugasan/TUGASAN-SHAFINAZ-WANI.md](docs/tugasan/TUGASAN-SHAFINAZ-WANI.md) |
+| Wani | `wani/admin-resources` | [docs/tugasan/TUGASAN-WANI.md](docs/tugasan/TUGASAN-WANI.md) |
 
-> The direct host `db.<ref>.supabase.co` only has an IPv6 address; use the pooler host.
+## 3. Run it again (every next time)
 
-Optional:
-
-```
-AUTH_REQUIRE_EMAIL_VERIFICATION=false   # true = users must click the emailed link (like Supabase "Confirm email")
-TEST_ACCOUNT_EMAIL= / TEST_ACCOUNT_PASSWORD=   # one-click "Continue as Ali Test" button (local only); the first click creates the account
-TEST_ADMIN_EMAIL= / TEST_ADMIN_PASSWORD=       # same, with role admin
-GOOGLE_CLIENT_ID= / GOOGLE_CLIENT_SECRET=     # Google login; add http://localhost:8000/auth/google/callback in Google Cloud Console
+```powershell
+cd NextHireAI; git pull; npx -y concurrently "php artisan serve" "pnpm dev"
 ```
 
-### 4. Install and run
+## Problems?
 
-```bash
-composer install
-```
-
-```bash
-pnpm install
-```
-
-Two processes during development (or `composer run dev`, which starts both plus the log tail):
-
-```bash
-php artisan serve
-```
-
-```bash
-pnpm dev
-```
-
-Open http://localhost:8000.
-
-### 5. Make yourself an admin
-
-```sql
-update public.users set role = 'admin' where email = 'you@example.com';
-```
-
-## Accounts and data from the React app
-
-- **Passwords** live in Supabase Auth and cannot be copied. A user created in the React app signs in here once with **Forgot password** (or with Google, matched by email) and then has the same data. The test accounts are created or re-keyed automatically by the "Continue as …" buttons.
-- **Resume files** uploaded through the React app sit in Supabase Storage; this app stores new uploads on its own private disk (`storage/app/private/resumes/<user_id>/`). "Download original" on an old report says so instead of downloading. Everything else (analyses, interviews, learning progress) is shared row for row.
-
-## Verified end to end (10 Nov 2026, same Supabase project as the React app)
-
-Login (email, test accounts), register, logout, wrong password, forgot/reset password (mail log), deactivated-account notice, dashboard, profile (edit name, change password, activity counts), resume upload with file → report → signed download → delete, mock interview (3 typed answers → report; questions, answers, attempts, evaluations, audio analyses and report rows written; pause/cancel/finish/delete rules), readiness, learning plan (save, update, remove, resource detail), progress, admin users (list, search, filters, stats, detail, activity, status, role, self-change refused) and admin resources CRUD. Google login needs your own client id/secret and was not exercised.
-
-## Mock interview scoring (Module 3)
-
-- The browser scores each answer instantly (`resources/js/modules/m3-mock-interview/services/evaluation.ts`). The server **recomputes** the score from the saved answer text (`app/Services/Interview/AnswerEvaluator.php`) and stores only its own result, so a score sent from DevTools is ignored. The two files must stay identical in their rules: `php artisan test --filter=AnswerEvaluatorTest` fails when they drift.
-- Very short answers, gibberish, keyword lists and one word repeated are capped (6/100 for "asdf qwer", 20 for a keyword list). Technical vocabulary follows the role (IT, data, marketing, finance, healthcare, teaching, engineering, design, HR/admin, customer service), in English and Malay.
-- Each answer is saved as soon as it is submitted (`POST /api/interview/sessions/{id}/answers`). "End interview → Save and continue later" pauses the session; **Interview history → Continue** reopens it at the first unanswered question. A tab closed mid-interview leaves the session Active with its answers, and it can be continued the same way.
-- A finished or discarded session cannot be changed (409). Answers are limited to 5,000 characters, and a user can start at most 20 sessions per hour.
-- Filler words: Chrome's speech recognition drops "um" and "uh". Set `DEEPGRAM_API_KEY` (free credit at deepgram.com) to also send each spoken answer's audio to Deepgram with `filler_words=true`; the room then adds the hesitation sounds it hears to the filler count. The audio is not stored. Without the key nothing is recorded or sent. Malay "macam mana", "macam-macam", and "actually"/"basically" in the middle of a sentence are not counted as fillers.
-
-## Speed notes
-
-The database is in another AWS region, so every query is a ~0.4 s round trip. The app keeps one persistent TLS connection per PHP process, sends no `set` statements on connect, and PHP opcache should be on (`opcache.enable_cli=1` for `php artisan serve`). `php artisan serve` handles one request at a time on Windows; for parallel requests run the app under Laravel Octane or a real web server.
-
-## Deploy to Vercel
-
-Vercel has no built-in PHP, so the app runs on the community runtime [`vercel-php`](https://github.com/vercel-community/php) (PHP 8.4, `pdo_pgsql` included). What is already set up in the repo:
-
-| File | What it does |
+| You see | Fix |
 |---|---|
-| `vercel.json` | PHP function `api/index.php` (runtime `vercel-php@0.9.0`, PHP 8.5) in region `icn1` (Seoul, next to the Supabase database). `public/` is the static output, and every other path is rewritten to the function. No install or build step runs on Vercel. |
-| `api/index.php` | Boots Laravel. Sets the serverless defaults (cookie sessions, array cache, logs to stderr, caches and compiled views in `/tmp`), presents itself as `/index.php` so `/api/...` routes keep their prefix, restores a missing `base64:` on `APP_KEY`, and hides PHP deprecation notices. |
-| `.vercelignore` | Keeps `vendor/`, `node_modules/`, `resources/js/`, local storage and `public/index.php` out of the upload (otherwise Vercel would serve that file's source at `/`). Vercel runs `composer install` itself. |
-| `public/build/` | **Committed** Vite build. Vercel serves it as static files and Laravel reads its manifest. |
-| `bootstrap/app.php` | Trusts the proxy headers, so links and redirects use `https`. |
+| `'php' is not recognized` (or composer / node / pnpm) | Close and reopen the terminal; reinstall the tool with "Add to PATH" if it still fails |
+| `could not find driver` | `pdo_pgsql` is off — redo the `php.ini` step in section 1 |
+| Blank page or `Vite manifest not found` | The React dev server is not running — use the full `npx -y concurrently ...` command |
+| No **Test user** button / database errors | The `.env` file is missing or wrong — get the latest one from Izzat |
+| Port 8000 already in use | Stop the other app, or run `php artisan serve --port=8001` |
 
-### Every time the frontend changes
+---
 
-Vercel does not run `pnpm build`. Rebuild and commit the assets before pushing, or the live site keeps the old UI:
+## Doing your module
 
-```bash
-pnpm build
+1. In VS Code press **Ctrl + Shift + F** and search `TODO (YourName)`.
+2. Read your **task file** (table above): it lists the files to fill in, the database tables, the API and a ready **🤖 AI prompt**.
+3. Copy the pattern from Izzat's finished module: `app/Http/Controllers/Api/InterviewSessionController.php` and `resources/js/modules/m3-mock-interview/services/interviewService.ts`.
+4. Check before you push: `pnpm typecheck`.
+
+**Rules**
+- Only edit the files in your task file. Don't rename files, functions, routes or `types.ts`, and don't change the UI.
+- ⚠️ **Never run `php artisan migrate`, `migrate:fresh` or `db:wipe`** — the shared database is the live one.
+- Never commit `.env`.
+
+**Save and hand in**
+
+```powershell
+git add .; git commit -m "M2: ResumeController index"; git push
 ```
 
-```bash
-git add public/build
-```
+If you changed React files, run `pnpm build` first and commit `public/build` (the Vercel preview uses it). When your module is done, open a **Pull Request** into `main` on GitHub; Izzat reviews and merges it.
 
-### First deploy
+---
 
-1. Vercel → **Add New → Project** → import `Izzat-Zdin/FullNextHireAI-Laravel`. Leave Framework Preset as **Other** and the build settings empty: `vercel.json` decides.
-2. Before clicking **Deploy**, open **Environment Variables** and paste the app's values. A ready-made file is `.env.vercel` (local only, never committed). Without it, set at least: `APP_KEY` (`php artisan key:generate --show`), `APP_URL`, the `DB_*` values from `.env`, and optionally `TEST_ACCOUNTS_IN_PRODUCTION=true` with `TEST_ACCOUNT_*`.
-3. Deploy. If the URL Vercel gives differs from `APP_URL`, update `APP_URL` (and `GOOGLE_REDIRECT_URI`) and redeploy.
-4. Environment variable changes only apply after **Deployments → ⋯ → Redeploy**.
-
-Live: https://www.nexthire.web.id (custom domain from SumoPod; `nexthire.web.id` redirects to `www`). Vercel URL: https://full-next-hire-ai-laravel.vercel.app
-
-Custom domain DNS (at the registrar): `A` record `@` → `216.198.79.1`, and `CNAME` `www` → the value Vercel shows under Settings → Domains. TTL 1 hour is fine.
-
-### What behaves differently on Vercel
-
-- **Resume files.** The function's disk is read-only and temporary. Without extra setup, an analysis is saved with the warning "the original file could not be stored", and "Download original" is unavailable. To keep files, create Supabase S3 access keys and set `RESUME_DISK=supabase`, `RESUME_FOLDER=` (empty) and the `SUPABASE_S3_*` values. Files then go to the existing `resumes` bucket as `<user_id>/<file>`, the same layout as the React app, so its older uploads download here too. This path is not yet tested against Supabase.
-- **Emails.** `MAIL_MAILER` defaults to `log`, so password-reset links are not delivered. Set SMTP values (Gmail app password, Resend, Brevo…).
-- **Login rate limiting** uses the in-memory cache, so it resets between requests.
-- **Microphone and camera** need HTTPS, which Vercel provides. Speech-to-text works in Chrome and Edge.
-- **Google login.** Add `<APP_URL>/auth/google/callback` to the OAuth client in Google Cloud Console.
-
-## Scripts
-
-| Command | What it does |
-|---|---|
-| `php artisan serve` | Laravel dev server on port 8000 |
-| `pnpm dev` | Vite dev server (hot reload) |
-| `pnpm typecheck` | TypeScript check |
-| `pnpm build` | Typecheck + production build into `public/build` |
-| `php artisan route:list --except-vendor` | Every page and API route |
-| `php artisan test` | Backend tests |
+More: [docs/tugasan/PANDUAN-TIM.md](docs/tugasan/PANDUAN-TIM.md) (team guide, Malay) · [docs/PROJECT.md](docs/PROJECT.md) (folder map by module and full technical details)
