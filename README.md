@@ -32,9 +32,30 @@ extension=zip
 
 Reopen the terminal and check: `php -v` shows 8.3, and `php -m` lists `pdo_pgsql`.
 
+## The `.env` file (read this first)
+
+**What it is:** a small settings file that tells the app *where the database is and how to log in to it* (database address and password), plus the **Test user / Test admin** accounts and the app key. Without it the app cannot reach the Supabase database, so pages show errors and the Test buttons are missing.
+
+**Why it is not on GitHub:** it contains the database password. This repository is public, so the file is listed in `.gitignore` and never uploaded. GitHub only has `.env.example` (the same settings without the secrets).
+
+**How to get it:** Izzat sends it to you **privately** (WhatsApp). Save it in your **Downloads** folder and name it **`env-untuk-tim.env`**. The command in section 2 copies it into the project for you.
+
+**If you add it by hand instead:** put it in the `NextHireAI` folder (next to `README.md`) and rename it to exactly **`.env`**, then run `php artisan key:generate`. In Windows File Explorer turn on **View → Show → File name extensions**, so the file is not secretly named `.env.txt`.
+
+```
+NextHireAI/
+├── app/
+├── resources/
+├── .env            ← here (from Izzat)
+├── .env.example    ← already in the repo, don't edit
+└── README.md
+```
+
+**Rules:** never commit it, never post it in a group chat or screenshot, and don't change the database values. If the database password changes, Izzat sends you a new file.
+
 ## 2. Get the code and run it (first time)
 
-1. Save the **`.env` file Izzat sends you** in your **Downloads** folder as `env-untuk-tim.env` (it has the database password, never share or commit it).
+1. Save the **`.env` file from Izzat** in your **Downloads** folder as `env-untuk-tim.env` (see the section above).
 2. Open PowerShell (or the VS Code terminal), replace `your-branch` and run:
 
 ```powershell
