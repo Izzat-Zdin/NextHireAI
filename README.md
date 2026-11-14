@@ -1,7 +1,137 @@
 # NextHire AI (Laravel + Inertia + React)
 
-> **Starter untuk tim.** Repo ini ialah versi starter: UI semua page kekal, tetapi logic dan database modul ahli kumpulan sudah dikosongkan (`// TODO`). Mula dengan [docs/tugasan/PANDUAN-TIM.md](docs/tugasan/PANDUAN-TIM.md), kemudian buka fail tugasan anda dalam `docs/tugasan/`.
+> **This is the team starter.** Every page of the app is already built and looks final, Izzat's modules work end to end, and login/register work. The logic and database code for the other members' modules has been removed and replaced with `// TODO (Name): ...` instructions. Your job is to fill in those TODOs so your module works **exactly like the finished system**.
+>
+> Live reference (finished system): https://www.nexthire.web.id · This starter on Vercel: https://nexthirereact.vercel.app
 
+## Team quick start
+
+### Who does what
+
+| Member | Module(s) to rebuild | Your branch | Your task file |
+|---|---|---|---|
+| **Nada** | M1 Profile + Forgot/Reset password, A1 Admin · User Management | `nada/user-management` | [docs/tugasan/TUGASAN-NADA.md](docs/tugasan/TUGASAN-NADA.md) |
+| **Shafinaz** | M2 AI Resume Analyzer | `shafinaz/resume-analyzer` | [docs/tugasan/TUGASAN-SHAFINAZ.md](docs/tugasan/TUGASAN-SHAFINAZ.md) |
+| **Shafinaz & Wani** | M5 Learning Recommendation | `shafinaz-wani/learning` | [docs/tugasan/TUGASAN-SHAFINAZ-WANI.md](docs/tugasan/TUGASAN-SHAFINAZ-WANI.md) |
+| **Wani** | A2 Admin · Learning Resources (+ `learning_resources` table) | `wani/admin-resources` | [docs/tugasan/TUGASAN-WANI.md](docs/tugasan/TUGASAN-WANI.md) |
+| **Izzat** | M3 Mock Interview, M4 Readiness, M6 Progress, Dashboard | `main` | Finished — use as the **reference example** |
+
+Each task file lists: the files you must fill in (as a checklist), the exact database tables and columns, every API endpoint with its validation and JSON response, the fields other modules read from you, how to test, and a ready-made **🤖 AI prompt** at the end. The general guide (in Malay) is [docs/tugasan/PANDUAN-TIM.md](docs/tugasan/PANDUAN-TIM.md).
+
+### 1. Install (once)
+
+- PHP 8.3 with `pdo_pgsql`, `mbstring`, `openssl`, `fileinfo`, `curl`, `zip`
+- Composer 2
+- Node.js 20+ and pnpm (`npm install -g pnpm`)
+- Git and VS Code
+
+### 2. Get the code and switch to your branch
+
+```bash
+git clone https://github.com/Izzat-Zdin/NextHireAI.git
+cd NextHireAI
+git checkout <your-branch>        # e.g. git checkout shafinaz/resume-analyzer
+```
+
+Shafinaz and Wani each have two branches. Commit your work before switching (`git checkout <other-branch>`).
+
+### 3. Add the `.env` file
+
+The `.env` file is **not** in GitHub (it holds the database password). Izzat sends it to you privately. Put it in the root of the `NextHireAI` folder (next to `README.md`), make sure it is named exactly `.env`, then generate your own app key:
+
+```bash
+php artisan key:generate
+```
+
+It connects to the **shared Supabase database** — the same one the live site uses — and includes the **Test user** and **Test admin** accounts.
+
+### 4. Install packages and run
+
+```bash
+composer install
+pnpm install
+```
+
+Run these in **two terminals** and keep both open:
+
+```bash
+php artisan serve
+```
+
+```bash
+pnpm dev
+```
+
+Open **http://localhost:8000** and click **Test user** (or **Test admin** for the admin pages).
+
+### 5. Find your TODOs
+
+In VS Code press **Ctrl + Shift + F** and search for `TODO (YourName)` — for example `TODO (Shafinaz)` or `TODO (Wani)`. Every TODO says exactly what the original code did: which validation rules, which query, what JSON to return and which status code. Replace the TODO and the placeholder `return` with real code.
+
+Each stub currently returns an empty result (`[]`, `null`, or `501 "Belum dibina (TODO)"`), so pages still open and simply show "nothing yet" until you finish.
+
+### 6. Follow the finished example
+
+Izzat's Mock Interview module uses the same pattern you need:
+
+| Layer | Finished example | What it shows |
+|---|---|---|
+| Route | `routes/web.php` → `/api/interview/sessions` | All routes already exist — don't add or rename them |
+| Controller | `app/Http/Controllers/Api/InterviewSessionController.php` | `$request->validate()`, `where('user_id', ...)`, `response()->json(...)`, status codes |
+| Policy | `app/Policies/InterviewSessionPolicy.php` | "only the owner can see/change this" |
+| Model | `app/Models/InterviewSession.php` | table, UUID primary key, casts, relations |
+| React service | `resources/js/modules/mock-interview/services/interviewService.ts` | `api.get/post/put/delete` from `@/lib/api` |
+
+### 7. Rules (important)
+
+- ✅ Only edit the files listed in **your** task file.
+- ❌ Don't rename files, functions, parameters, routes, or anything in `types.ts` / `resources/js/lib/*`. Izzat's Dashboard, Readiness and Mock Interview read your data using these exact names; renaming breaks them.
+- ❌ Don't change the UI (pages and components are final).
+- ⚠️ **Never run `php artisan migrate`, `migrate:fresh` or `db:wipe` with the shared `.env`.** It is the live database — those commands can delete every table. Write your migration files in `database/migrations/` for review only.
+- ❌ Never commit `.env` or put passwords in code.
+
+### 8. Test your work
+
+```bash
+pnpm typecheck
+```
+
+Then follow the **"Cara uji"** (how to test) steps in your task file in the browser. Your module is done when every item in its **"Siap bila"** (done when) checklist is ticked and no `TODO (YourName)` is left.
+
+### 9. Save to GitHub (often)
+
+```bash
+git add .
+git commit -m "M2: ResumeController index and store"
+git push
+```
+
+Get the latest shared changes from `main` now and then:
+
+```bash
+git pull origin main
+```
+
+**Preview link.** Every push builds your branch on Vercel automatically:
+`https://nexthirereact-git-<branch-name-with-dashes>-izzat-zdins-projects.vercel.app`
+(e.g. `nexthirereact-git-wani-admin-resources-izzat-zdins-projects.vercel.app`). Vercel does **not** run the frontend build, so if you changed React files, run `pnpm build` and commit the `public/build` folder before pushing, or the preview shows the old UI.
+
+### 10. Hand in: Pull Request
+
+1. On GitHub, open **Pull requests → New** (or **Compare & pull request**) from your branch into `main`.
+2. Describe what you built and paste your ticked checklist.
+3. Izzat reviews the **Files changed** tab. Changes outside your module will be sent back.
+4. After approval, Izzat merges it into `main`.
+
+### Stuck?
+
+1. Re-read the TODO comment and your task file.
+2. Copy the **🤖 PROMPT** block from the end of your task file into ChatGPT/Claude, attach your TODO files and Izzat's example files. **Read and understand** the code it gives you — you will need to explain it.
+3. Ask Izzat.
+
+---
+
+## About the project
 
 The same NextHire AI application as the React + Supabase project (`../SIAP`), rebuilt as **Laravel 12 + Inertia 2 + React 19**:
 
@@ -48,6 +178,8 @@ Browser (React, same UI) ──Inertia / JSON──► Laravel (routes → contr
 | One-time SQL for the Supabase project | `database/sql/20261110000001_laravel_auth.sql` |
 
 ## Setup
+
+> **Team members:** follow [Team quick start](#team-quick-start) above instead. The shared database is already set up, so skip step 2 (the SQL) and never run migrations against it.
 
 ### 1. Prerequisites
 
