@@ -63,7 +63,7 @@ React page  →  service (.ts)  →  route (routes/web.php)  →  middleware  �
 **Contoh siap untuk ditiru (modul Izzat):**
 - Controller: `app/Http/Controllers/Api/InterviewSessionController.php`
 - Policy: `app/Policies/InterviewSessionPolicy.php`
-- Service React: `resources/js/modules/mock-interview/services/interviewService.ts`
+- Service React: `resources/js/modules/m3-mock-interview/services/interviewService.ts`
 
 ## 5. Cara kerja harian
 

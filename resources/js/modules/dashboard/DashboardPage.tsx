@@ -22,8 +22,8 @@ import {
   type SkillGap,
 } from "@/lib/insights"
 import type { InterviewSessionSummary, LearningProgressRow, LearningResource, ResumeRow } from "@/lib/types"
-import { useAuth } from "@/modules/user-management/context/AuthContext"
-import { typeLabel } from "@/modules/learning-recommendation/resourceMeta"
+import { useAuth } from "@/modules/m1-user-management/context/AuthContext"
+import { typeLabel } from "@/modules/m5-learning-recommendation/resourceMeta"
 
 interface Data {
   resumes: ResumeRow[]

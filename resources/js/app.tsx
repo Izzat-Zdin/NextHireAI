@@ -5,8 +5,8 @@ import { createRoot } from "react-dom/client"
 import AppShell from "@/components/AppShell"
 import { ThemeProvider } from "@/components/theme-provider"
 import { TooltipProvider } from "@/components/shadcn/tooltip"
-import { AuthProvider } from "@/modules/user-management/context/AuthContext"
-import { setTestAccounts } from "@/modules/user-management/services/authService"
+import { AuthProvider } from "@/modules/m1-user-management/context/AuthContext"
+import { setTestAccounts } from "@/modules/m1-user-management/services/authService"
 
 // Pages live in resources/js/modules/** with the same folder layout as the original app.
 // A controller renders e.g. Inertia::render('dashboard/DashboardPage').
@@ -14,11 +14,11 @@ const pages = import.meta.glob("./modules/**/*.tsx")
 
 /** Pages outside the signed-in shell (auth screens). Everything else gets the sidebar layout. */
 const BARE_PAGES = new Set([
-  "user-management/pages/LoginPage",
-  "user-management/pages/RegisterPage",
-  "user-management/pages/ForgotPasswordPage",
-  "user-management/pages/ResetPasswordPage",
-  "user-management/pages/VerifyEmailPage",
+  "m1-user-management/pages/LoginPage",
+  "m1-user-management/pages/RegisterPage",
+  "m1-user-management/pages/ForgotPasswordPage",
+  "m1-user-management/pages/ResetPasswordPage",
+  "m1-user-management/pages/VerifyEmailPage",
 ])
 
 type PageModule = { default: React.ComponentType & { layout?: (page: ReactNode) => ReactNode } }

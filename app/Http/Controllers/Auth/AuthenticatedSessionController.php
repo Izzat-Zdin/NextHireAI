@@ -18,7 +18,7 @@ class AuthenticatedSessionController extends Controller
 {
     public function create(Request $request): Response
     {
-        return Inertia::render('user-management/pages/LoginPage', [
+        return Inertia::render('m1-user-management/pages/LoginPage', [
             'status' => $request->session()->get('status'),
         ]);
     }

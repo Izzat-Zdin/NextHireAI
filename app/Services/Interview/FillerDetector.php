@@ -3,7 +3,7 @@
 namespace App\Services\Interview;
 
 /**
- * Server copy of resources/js/modules/mock-interview/services/speechAnalysis.ts (filler matching).
+ * Server copy of resources/js/modules/m3-mock-interview/services/speechAnalysis.ts (filler matching).
  * Keep the word list and the exceptions identical to the browser version.
  */
 class FillerDetector

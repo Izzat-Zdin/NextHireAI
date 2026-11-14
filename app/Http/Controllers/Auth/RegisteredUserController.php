@@ -17,7 +17,7 @@ class RegisteredUserController extends Controller
 {
     public function create(): Response
     {
-        return Inertia::render('user-management/pages/RegisterPage');
+        return Inertia::render('m1-user-management/pages/RegisterPage');
     }
 
     /**

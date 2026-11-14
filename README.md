@@ -18,6 +18,79 @@
 
 Each task file lists: the files you must fill in (as a checklist), the exact database tables and columns, every API endpoint with its validation and JSON response, the fields other modules read from you, how to test, and a ready-made **🤖 AI prompt** at the end. The general guide (in Malay) is [docs/tugasan/PANDUAN-TIM.md](docs/tugasan/PANDUAN-TIM.md).
 
+### Folder structure by module
+
+Module folders are numbered in the same order as the modules (`m1-` … `m6-`, admin `a1-`, `a2-`). ✅ = finished, ⏳ = has TODOs for you.
+
+**Frontend (React)** — `resources/js/modules/`
+
+```
+resources/js/modules/
+├── m1-user-management/            M1 · Nada
+│   ├── pages/                     LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage,
+│   │                              VerifyEmailPage, ProfilePage            (UI finished)
+│   ├── components/                AuthLayout, RouteGuards                 (UI finished)
+│   ├── context/AuthContext.tsx    ✅ signed-in user
+│   └── services/
+│       ├── authService.ts         ✅ login/register   ⏳ forgot/reset/change password
+│       └── profileService.ts      ⏳
+├── m2-ai-resume-analyzer/         M2 · Shafinaz
+│   ├── pages/  components/        (UI finished)
+│   ├── services/
+│   │   ├── resumeParser.ts        ⏳ read PDF/DOCX text
+│   │   ├── resumeAnalysis.ts      ⏳ scoring engine
+│   │   └── resumeService.ts       ⏳ API calls
+│   └── types.ts                   don't change
+├── m3-mock-interview/             M3 · Nada & Izzat  ✅ (reference example)
+├── m4-interview-readiness/        M4 · Izzat  ✅
+├── m5-learning-recommendation/    M5 · Shafinaz & Wani
+│   ├── pages/  components/        (UI finished)
+│   ├── hooks/useLearningProgress.ts   ✅ (uses your service)
+│   └── services/learningService.ts    ⏳
+├── m6-recommendation-tracking/    M6 · Izzat  ✅ (hidden from the sidebar)
+├── dashboard/                     Dashboard · Izzat  ✅
+└── admin/
+    ├── a1-user-management/        A1 · Nada
+    │   ├── pages/  components/    (UI finished)
+    │   └── services/adminUserService.ts       ⏳
+    └── a2-learning-resources/     A2 · Wani
+        ├── pages/  components/    (UI finished)
+        └── services/adminResourceService.ts   ⏳
+```
+
+**Backend (Laravel)** — `app/`
+
+```
+app/
+├── Http/Controllers/
+│   ├── PageController.php                     ✅ opens every page (Inertia)
+│   ├── Auth/                                  M1 · Nada
+│   │   ├── AuthenticatedSessionController.php ✅ login/logout
+│   │   ├── RegisteredUserController.php       ✅ register
+│   │   ├── PasswordResetLinkController.php    ⏳ forgot password
+│   │   └── NewPasswordController.php          ⏳ reset password
+│   └── Api/
+│       ├── ProfileController.php              ⏳ M1 · Nada
+│       ├── ResumeController.php               ⏳ M2 · Shafinaz
+│       ├── InterviewSessionController.php     ✅ M3 · Izzat (reference example)
+│       ├── LearningController.php             ⏳ M5 · Shafinaz & Wani
+│       └── Admin/
+│           ├── UserController.php             ⏳ A1 · Nada
+│           └── ResourceController.php         ⏳ A2 · Wani
+├── Models/
+│   ├── User.php, Resume.php, Interview*.php … ✅
+│   ├── LearningProgress.php                   ⏳ M5 · Shafinaz & Wani
+│   └── LearningResource.php                   ⏳ A2 · Wani
+├── Policies/
+│   ├── InterviewSessionPolicy.php             ✅ M3
+│   └── ResumePolicy.php                       ⏳ M2 · Shafinaz
+└── Services/Interview/                        ✅ M3 (server-side scoring)
+```
+
+**Shared — don't change:** `routes/web.php`, `routes/auth.php`, `resources/js/lib/` (api, types, insights), `resources/js/components/` (sidebar, buttons, cards). **You create:** `database/migrations/` for your own tables.
+
+Every module follows the same flow: `pages/` (UI) → `services/*.ts` (calls the API) → `routes/web.php` → `Controllers/Api/*Controller.php` → `Models/*.php` → database.
+
 ### 1. Install (once)
 
 - PHP 8.3 with `pdo_pgsql`, `mbstring`, `openssl`, `fileinfo`, `curl`, `zip`
@@ -80,7 +153,7 @@ Izzat's Mock Interview module uses the same pattern you need:
 | Controller | `app/Http/Controllers/Api/InterviewSessionController.php` | `$request->validate()`, `where('user_id', ...)`, `response()->json(...)`, status codes |
 | Policy | `app/Policies/InterviewSessionPolicy.php` | "only the owner can see/change this" |
 | Model | `app/Models/InterviewSession.php` | table, UUID primary key, casts, relations |
-| React service | `resources/js/modules/mock-interview/services/interviewService.ts` | `api.get/post/put/delete` from `@/lib/api` |
+| React service | `resources/js/modules/m3-mock-interview/services/interviewService.ts` | `api.get/post/put/delete` from `@/lib/api` |
 
 ### 7. Rules (important)
 
@@ -149,15 +222,15 @@ Browser (React, same UI) ──Inertia / JSON──► Laravel (routes → contr
 
 | # | Module | Owner | Folder (`resources/js/modules/`) | Routes |
 |---|---|---|---|---|
-| 1 | User Management & Authentication | Nada | `user-management/` | `/login`, `/register`, `/forgot-password`, `/reset-password/{token}`, `/profile` |
-| 2 | AI Resume Analyzer | Shafinaz | `ai-resume-analyzer/` | `/resume`, `/resume/history`, `/resume/{id}` |
-| 3 | AI Mock Interview Engine | Nada & Izzat | `mock-interview/` | `/interview`, `/interview/history`, `/interview/{id}` |
-| 4 | Interview & Career Readiness Assessment | Izzat | `interview-readiness/` | `/assessment` |
-| 5 | Learning Recommendation | Shafinaz & Wani | `learning-recommendation/` | `/learning`, `/learning/{id}` |
-| 6 | Recommendation & Progress Tracking | Izzat | `recommendation-tracking/` | `/progress` |
+| 1 | User Management & Authentication | Nada | `m1-user-management/` | `/login`, `/register`, `/forgot-password`, `/reset-password/{token}`, `/profile` |
+| 2 | AI Resume Analyzer | Shafinaz | `m2-ai-resume-analyzer/` | `/resume`, `/resume/history`, `/resume/{id}` |
+| 3 | AI Mock Interview Engine | Nada & Izzat | `m3-mock-interview/` | `/interview`, `/interview/history`, `/interview/{id}` |
+| 4 | Interview & Career Readiness Assessment | Izzat | `m4-interview-readiness/` | `/assessment` |
+| 5 | Learning Recommendation | Shafinaz & Wani | `m5-learning-recommendation/` | `/learning`, `/learning/{id}` |
+| 6 | Recommendation & Progress Tracking | Izzat | `m6-recommendation-tracking/` | `/progress` |
 | — | Dashboard | Izzat | `dashboard/` | `/` |
-| A1 | Admin · User Management | Nada | `admin/user-management/` | `/admin/users`, `/admin/users/{id}` |
-| A2 | Admin · Learning Resources | Wani | `admin/learning-resources/` | `/admin/resources` |
+| A1 | Admin · User Management | Nada | `admin/a1-user-management/` | `/admin/users`, `/admin/users/{id}` |
+| A2 | Admin · Learning Resources | Wani | `admin/a2-learning-resources/` | `/admin/resources` |
 
 ## What is where
 
@@ -167,7 +240,7 @@ Browser (React, same UI) ──Inertia / JSON──► Laravel (routes → contr
 | Inertia bootstrap (providers + AppShell layout) | `resources/js/app.tsx` |
 | React Router shim over Inertia (`Link`, `useNavigate`, `useParams`, …) | `resources/js/lib/router.tsx` |
 | JSON client used by the module services | `resources/js/lib/api.ts` |
-| Auth state from Inertia shared props (`useAuth()`) | `resources/js/modules/user-management/context/AuthContext.tsx` |
+| Auth state from Inertia shared props (`useAuth()`) | `resources/js/modules/m1-user-management/context/AuthContext.tsx` |
 | Page routes + JSON API routes | `routes/web.php`, `routes/auth.php` |
 | Controllers | `app/Http/Controllers/PageController.php` (pages), `app/Http/Controllers/Api/**` (data), `app/Http/Controllers/Auth/**` |
 | Models (one per ERD table + the summary view) | `app/Models/**` |
@@ -264,7 +337,7 @@ Login (email, test accounts), register, logout, wrong password, forgot/reset pas
 
 ## Mock interview scoring (Module 3)
 
-- The browser scores each answer instantly (`resources/js/modules/mock-interview/services/evaluation.ts`). The server **recomputes** the score from the saved answer text (`app/Services/Interview/AnswerEvaluator.php`) and stores only its own result, so a score sent from DevTools is ignored. The two files must stay identical in their rules: `php artisan test --filter=AnswerEvaluatorTest` fails when they drift.
+- The browser scores each answer instantly (`resources/js/modules/m3-mock-interview/services/evaluation.ts`). The server **recomputes** the score from the saved answer text (`app/Services/Interview/AnswerEvaluator.php`) and stores only its own result, so a score sent from DevTools is ignored. The two files must stay identical in their rules: `php artisan test --filter=AnswerEvaluatorTest` fails when they drift.
 - Very short answers, gibberish, keyword lists and one word repeated are capped (6/100 for "asdf qwer", 20 for a keyword list). Technical vocabulary follows the role (IT, data, marketing, finance, healthcare, teaching, engineering, design, HR/admin, customer service), in English and Malay.
 - Each answer is saved as soon as it is submitted (`POST /api/interview/sessions/{id}/answers`). "End interview → Save and continue later" pauses the session; **Interview history → Continue** reopens it at the first unanswered question. A tab closed mid-interview leaves the session Active with its answers, and it can be continued the same way.
 - A finished or discarded session cannot be changed (409). Answers are limited to 5,000 characters, and a user can start at most 20 sessions per hour.

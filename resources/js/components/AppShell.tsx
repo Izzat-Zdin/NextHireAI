@@ -31,7 +31,7 @@ import { ADMIN_NAV, HOME_NAV, MODULE_NAV, isActivePath, pageTitle, type NavItem 
 import { initials } from "@/lib/format"
 import { usePausedSessionCount } from "@/lib/usePausedSessions"
 import { cn } from "@/lib/utils"
-import { useAuth } from "@/modules/user-management/context/AuthContext"
+import { useAuth } from "@/modules/m1-user-management/context/AuthContext"
 
 // Kept for pages that import it (admin user detail, dashboard cards).
 export { MODULE_NAV } from "@/components/navigation"

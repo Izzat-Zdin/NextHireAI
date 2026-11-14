@@ -15,10 +15,10 @@ Baca [PANDUAN-TIM.md](PANDUAN-TIM.md) dahulu untuk setup.
 
 | Jenis | Fail |
 |---|---|
-| Pages | `resources/js/modules/user-management/pages/ProfilePage.tsx`, `ForgotPasswordPage.tsx`, `ResetPasswordPage.tsx` |
-| Pages admin | `resources/js/modules/admin/user-management/pages/AdminUsersPage.tsx`, `AdminUserDetailPage.tsx` |
-| Components | `resources/js/modules/admin/user-management/components/UserStatusBadge.tsx`, `resources/js/modules/user-management/components/AuthLayout.tsx` |
-| Context | `resources/js/modules/user-management/context/AuthContext.tsx` |
+| Pages | `resources/js/modules/m1-user-management/pages/ProfilePage.tsx`, `ForgotPasswordPage.tsx`, `ResetPasswordPage.tsx` |
+| Pages admin | `resources/js/modules/admin/a1-user-management/pages/AdminUsersPage.tsx`, `AdminUserDetailPage.tsx` |
+| Components | `resources/js/modules/admin/a1-user-management/components/UserStatusBadge.tsx`, `resources/js/modules/m1-user-management/components/AuthLayout.tsx` |
+| Context | `resources/js/modules/m1-user-management/context/AuthContext.tsx` |
 | Types | `resources/js/lib/types.ts` (`UserProfile`, `UserRole`, `UserStatus`, `InterviewSessionSummary`) |
 | Helper API | `resources/js/lib/api.ts` (`api.get/put/patch/getOrNull`, `qs`, `ApiError`) |
 | Routes | `routes/web.php` (blok `// Module 1` dan `// Admin`), `routes/auth.php` (`forgot-password`, `reset-password`) |
@@ -49,17 +49,17 @@ Setiap fungsi ada komen `// TODO (Nada): ...` yang menerangkan langkah tepat kod
 - ☐ `UserController@updateRole` — tukar role; admin tidak boleh tukar role sendiri.
 - ☐ tambah semula `private const RECENT_SESSIONS = 8;` dan `private function guardSelf(...)`.
 
-**Frontend — `resources/js/modules/user-management/services/profileService.ts`**
+**Frontend — `resources/js/modules/m1-user-management/services/profileService.ts`**
 - ☐ `getProfile` — `GET /api/profile`.
 - ☐ `ensureProfile` — `GET /api/profile` (baris users dicipta semasa register).
 - ☐ `updateProfile` — `PUT /api/profile` dengan `{ full_name }`.
 
-**Frontend — `resources/js/modules/user-management/services/authService.ts`** (hanya 3 fungsi ini)
+**Frontend — `resources/js/modules/m1-user-management/services/authService.ts`** (hanya 3 fungsi ini)
 - ☐ `sendPasswordReset` — Inertia `post("/forgot-password", { email })`.
 - ☐ `updatePassword` — `PUT /api/profile/password` dengan `{ password, password_confirmation }`, ralat melalui `friendlyAuthError`.
 - ☐ `resetPassword` — Inertia `post("/reset-password", { token, email, password, password_confirmation })`.
 
-**Frontend — `resources/js/modules/admin/user-management/services/adminUserService.ts`**
+**Frontend — `resources/js/modules/admin/a1-user-management/services/adminUserService.ts`**
 - ☐ `escapeSearch` — `raw.replace(/\s+/g, " ").trim()`.
 - ☐ `listUsers` — `GET /api/admin/users?search&role&status&page&pageSize` (`"all"` → `""`).
 - ☐ `getUserStats` — `GET /api/admin/users/stats`.
@@ -210,7 +210,7 @@ Output 200:
 |---|---|---|
 | `app/Http/Controllers/Api/InterviewSessionController.php` | `index()` baca query (`limit`), `where('user_id', $request->user()->user_id)`, `orderByDesc`, `response()->json($rows)`; `store()` guna `$request->validate([...])`; route-model binding `InterviewSession $session` | `ProfileController` (guna `$request->user()`), `UserController@index/stats/show/activity` (query + json), `updateStatus/updateRole` (validate + save) |
 | `app/Policies/InterviewSessionPolicy.php` | Peraturan akses dalam satu tempat (`view`, `update`), dipanggil dengan `$this->authorize('view', $session)` | Peraturan `guardSelf()` (admin tak boleh ubah diri sendiri). Anda boleh kekal dengan `guardSelf()` seperti dalam TODO; yang penting mesej ralat dan status 422 sama |
-| `resources/js/modules/mock-interview/services/interviewService.ts` | `api.get/post<T>(url, body)` dari `@/lib/api`, petakan hasil kepada jenis frontend | `profileService.ts`, `adminUserService.ts`, `authService.updatePassword` |
+| `resources/js/modules/m3-mock-interview/services/interviewService.ts` | `api.get/post<T>(url, body)` dari `@/lib/api`, petakan hasil kepada jenis frontend | `profileService.ts`, `adminUserService.ts`, `authService.updatePassword` |
 
 Forgot/reset password ialah kod standard Laravel Breeze — langkah tepat ada dalam TODO.
 
@@ -252,7 +252,7 @@ PERATURAN WAJIB:
 - Hanya isi badan fungsi yang ada komen "// TODO (Nada): ...", ikut langkah dalam komen itu dengan tepat.
 - Ikut corak fail contoh yang sudah siap: app/Http/Controllers/Api/InterviewSessionController.php
   ($request->validate, $request->user(), Eloquent query, response()->json), app/Policies/InterviewSessionPolicy.php,
-  resources/js/modules/mock-interview/services/interviewService.ts (api.get/put/patch dari "@/lib/api").
+  resources/js/modules/m3-mock-interview/services/interviewService.ts (api.get/put/patch dari "@/lib/api").
 - Frontend: import { api, qs } from "@/lib/api". api.getOrNull pulangkan null bila 404. Ralat dilempar sebagai ApiError
   { message, status, errors }.
 
@@ -262,9 +262,9 @@ FAIL YANG PERLU DIISI:
 3. app/Http/Controllers/Auth/NewPasswordController.php: store (create sudah siap)
 4. app/Http/Controllers/Api/Admin/UserController.php: index, stats, show, activity, updateStatus, updateRole,
    + const RECENT_SESSIONS = 8, + private guardSelf()
-5. resources/js/modules/user-management/services/profileService.ts: getProfile, ensureProfile, updateProfile
-6. resources/js/modules/user-management/services/authService.ts: HANYA sendPasswordReset, updatePassword, resetPassword
-7. resources/js/modules/admin/user-management/services/adminUserService.ts: escapeSearch, listUsers, getUserStats,
+5. resources/js/modules/m1-user-management/services/profileService.ts: getProfile, ensureProfile, updateProfile
+6. resources/js/modules/m1-user-management/services/authService.ts: HANYA sendPasswordReset, updatePassword, resetPassword
+7. resources/js/modules/admin/a1-user-management/services/adminUserService.ts: escapeSearch, listUsers, getUserStats,
    getUser, getUserActivity, setStatus, setRole
 8. Migrations baharu dalam database/migrations untuk jadual users dan password_reset_tokens.
 

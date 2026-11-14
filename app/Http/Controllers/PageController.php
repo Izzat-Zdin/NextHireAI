@@ -26,71 +26,71 @@ class PageController extends Controller
 
     public function profile(): Response
     {
-        return Inertia::render('user-management/pages/ProfilePage');
+        return Inertia::render('m1-user-management/pages/ProfilePage');
     }
 
     public function resume(): Response
     {
-        return Inertia::render('ai-resume-analyzer/pages/ResumeAnalyzerPage');
+        return Inertia::render('m2-ai-resume-analyzer/pages/ResumeAnalyzerPage');
     }
 
     public function resumeHistory(): Response
     {
-        return Inertia::render('ai-resume-analyzer/pages/ResumeHistoryPage');
+        return Inertia::render('m2-ai-resume-analyzer/pages/ResumeHistoryPage');
     }
 
     public function resumeResult(string $resumeId): Response
     {
-        return Inertia::render('ai-resume-analyzer/pages/ResumeResultPage');
+        return Inertia::render('m2-ai-resume-analyzer/pages/ResumeResultPage');
     }
 
     public function interview(): Response
     {
-        return Inertia::render('mock-interview/pages/MockInterviewPage');
+        return Inertia::render('m3-mock-interview/pages/MockInterviewPage');
     }
 
     public function interviewHistory(): Response
     {
-        return Inertia::render('mock-interview/pages/InterviewHistoryPage');
+        return Inertia::render('m3-mock-interview/pages/InterviewHistoryPage');
     }
 
     public function interviewSession(string $sessionId): Response
     {
-        return Inertia::render('mock-interview/pages/InterviewSessionPage');
+        return Inertia::render('m3-mock-interview/pages/InterviewSessionPage');
     }
 
     public function assessment(): Response
     {
-        return Inertia::render('interview-readiness/pages/ReadinessPage');
+        return Inertia::render('m4-interview-readiness/pages/ReadinessPage');
     }
 
     public function learning(): Response
     {
-        return Inertia::render('learning-recommendation/pages/LearningPage');
+        return Inertia::render('m5-learning-recommendation/pages/LearningPage');
     }
 
     public function learningResource(string $resourceId): Response
     {
-        return Inertia::render('learning-recommendation/pages/ResourceDetailPage');
+        return Inertia::render('m5-learning-recommendation/pages/ResourceDetailPage');
     }
 
     public function progress(): Response
     {
-        return Inertia::render('recommendation-tracking/pages/ProgressPage');
+        return Inertia::render('m6-recommendation-tracking/pages/ProgressPage');
     }
 
     public function adminUsers(): Response
     {
-        return Inertia::render('admin/user-management/pages/AdminUsersPage');
+        return Inertia::render('admin/a1-user-management/pages/AdminUsersPage');
     }
 
     public function adminUser(string $userId): Response
     {
-        return Inertia::render('admin/user-management/pages/AdminUserDetailPage');
+        return Inertia::render('admin/a1-user-management/pages/AdminUserDetailPage');
     }
 
     public function adminResources(): Response
     {
-        return Inertia::render('admin/learning-resources/pages/AdminResourcesPage');
+        return Inertia::render('admin/a2-learning-resources/pages/AdminResourcesPage');
     }
 }

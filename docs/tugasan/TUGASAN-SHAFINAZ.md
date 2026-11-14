@@ -14,9 +14,9 @@ Pengguna upload resume (PDF / DOCX / TXT) atau paste teks, pilih target role (bo
 
 | Jenis | Fail |
 |---|---|
-| Pages | `resources/js/modules/ai-resume-analyzer/pages/ResumeAnalyzerPage.tsx`, `ResumeHistoryPage.tsx`, `ResumeResultPage.tsx` |
-| Components | `resources/js/modules/ai-resume-analyzer/components/AnalysisProgress.tsx`, `DeleteResumeModal.tsx`, `ResumeUploadZone.tsx`, `ScoreSummaryCard.tsx` |
-| Types | `resources/js/modules/ai-resume-analyzer/types.ts`, `resources/js/lib/types.ts` (`ResumeRow`, `ResumeScores`, `ResumeSuggestion`) |
+| Pages | `resources/js/modules/m2-ai-resume-analyzer/pages/ResumeAnalyzerPage.tsx`, `ResumeHistoryPage.tsx`, `ResumeResultPage.tsx` |
+| Components | `resources/js/modules/m2-ai-resume-analyzer/components/AnalysisProgress.tsx`, `DeleteResumeModal.tsx`, `ResumeUploadZone.tsx`, `ScoreSummaryCard.tsx` |
+| Types | `resources/js/modules/m2-ai-resume-analyzer/types.ts`, `resources/js/lib/types.ts` (`ResumeRow`, `ResumeScores`, `ResumeSuggestion`) |
 | Routes | `routes/web.php` (bahagian "Module 2") |
 | Model | `app/Models/Resume.php` — **sudah siap**, kekal kerana Admin `UserController` dan `User::resumes()` bergantung padanya |
 | Cast | `app/Casts/PgTextArray.php` (tukar Postgres `text[]` ⇄ array PHP) |
@@ -40,7 +40,7 @@ Setiap fail ada komen `// TODO (Shafinaz): ...` yang terangkan langkah tepat kod
 - [ ] `view` — pemilik **atau** admin.
 - [ ] `delete` — pemilik sahaja.
 
-### `resources/js/modules/ai-resume-analyzer/services/resumeService.ts`
+### `resources/js/modules/m2-ai-resume-analyzer/services/resumeService.ts`
 - [ ] `buildFeedback` — summary + 3 suggestion pertama (`• title: detail`), dipisah `\n`.
 - [ ] `sanitizeFileName` — nama fail selamat (sama dengan versi PHP).
 - [ ] `uploadAndSave` — bina `FormData`, `api.postForm("/api/resumes")`.
@@ -49,7 +49,7 @@ Setiap fail ada komen `// TODO (Shafinaz): ...` yang terangkan langkah tepat kod
 - [ ] `deleteResume` — `DELETE /api/resumes/{id}`.
 - [ ] `getDownloadUrl` — `GET /api/resumes/download-url?path=` → `url`.
 
-### `resources/js/modules/ai-resume-analyzer/services/resumeParser.ts`
+### `resources/js/modules/m2-ai-resume-analyzer/services/resumeParser.ts`
 (Constants `MAX_FILE_SIZE`, `MIN_TEXT_LENGTH`, `ACCEPTED_EXTENSIONS`, `ACCEPT_ATTRIBUTE` sudah ada.)
 - [ ] `formatFileSize` — `—` / `B` / `KB` / `MB`.
 - [ ] `validateResumeFile` — mesej ralat untuk `.doc`, jenis lain, fail kosong, > 5 MB; selain itu `null`.
@@ -58,7 +58,7 @@ Setiap fail ada komen `// TODO (Shafinaz): ...` yang terangkan langkah tepat kod
 - [ ] `parseResumeFile` — validate → extract → normalise → semak ≥ 100 aksara.
 - [ ] `parsePastedText` — normalise → semak ≥ 100 aksara.
 
-### `resources/js/modules/ai-resume-analyzer/services/resumeAnalysis.ts` (enjin skor)
+### `resources/js/modules/m2-ai-resume-analyzer/services/resumeAnalysis.ts` (enjin skor)
 (Semua kamus/regex sudah disimpan sebagai data: `SCORE_WEIGHTS`, `STOPWORDS`, `ACTION_VERBS`, `WEAK_PHRASES`, `BUZZWORDS`, `SKILL_KEYWORD_SET`, `HEADING_PATTERNS`, `SKILL_EVIDENCE`, `BULLET_RE`, `EMAIL_RE`, `LINK_RE`, `MONTHS_RE`, `PRIORITY_ORDER`.)
 - [ ] helper private (`words`, `hasPhone`, `headingKey`, `isQuantified`, `termInResume`, ...).
 - [ ] `extractJobTerms` — term paling kerap dalam job description.
@@ -178,11 +178,11 @@ Modul lain membaca row `resume` melalui `GET /api/resumes` (fungsi `fetchResumes
 | Modul (owner) | Fail | Field yang dibaca |
 |---|---|---|
 | Dashboard (Izzat) | `modules/dashboard/DashboardPage.tsx` | `overall_score` (number), `target_role`, `analyzed_at`, `uploaded_at` (limit 10, ambil [0] dan [1]) |
-| Readiness (Izzat) | `modules/interview-readiness/services/assessmentEngine.ts`, `pages/ReadinessPage.tsx` | `target_role`, `detected_skills` (string[] tag), `overall_score` |
-| Mock Interview setup (Izzat) | `modules/mock-interview/MockInterviewModule.tsx` → `SetupPage.tsx`, `services/questions.ts` | `file_name`, `overall_score`, `target_role`, `detected_skills` (soalan berdasarkan skill resume) — `limit=1` |
-| Progress (Izzat) | `modules/recommendation-tracking/services/progressInsights.ts`, `pages/ProgressPage.tsx` | `analysis_id`, `file_name`, `overall_score`, `detected_skills`, `analyzed_at`, `uploaded_at` |
-| Learning (Shafinaz & Wani) | `modules/learning-recommendation/pages/LearningPage.tsx` + `lib/insights.ts` `deriveSkillGaps` | `target_role`, `detected_skills` (`limit=1`) |
-| Profile (Nada) | `modules/user-management/pages/ProfilePage.tsx` | bilangan row (`limit=500`) |
+| Readiness (Izzat) | `modules/m4-interview-readiness/services/assessmentEngine.ts`, `pages/ReadinessPage.tsx` | `target_role`, `detected_skills` (string[] tag), `overall_score` |
+| Mock Interview setup (Izzat) | `modules/m3-mock-interview/MockInterviewModule.tsx` → `SetupPage.tsx`, `services/questions.ts` | `file_name`, `overall_score`, `target_role`, `detected_skills` (soalan berdasarkan skill resume) — `limit=1` |
+| Progress (Izzat) | `modules/m6-recommendation-tracking/services/progressInsights.ts`, `pages/ProgressPage.tsx` | `analysis_id`, `file_name`, `overall_score`, `detected_skills`, `analyzed_at`, `uploaded_at` |
+| Learning (Shafinaz & Wani) | `modules/m5-learning-recommendation/pages/LearningPage.tsx` + `lib/insights.ts` `deriveSkillGaps` | `target_role`, `detected_skills` (`limit=1`) |
+| Profile (Nada) | `modules/m1-user-management/pages/ProfilePage.tsx` | bilangan row (`limit=500`) |
 | Admin activity (Nada) | `app/Http/Controllers/Api/Admin/UserController.php` `activity()` | Eloquent: `count()`, `overall_score` (cast float), `analyzed_at` (cast datetime) |
 
 Jadi: `detected_skills` mesti array **tag** (contoh `"sql"`, `"data-analysis"`) dari `detectSkillTags`, bukan label. `overall_score` mesti nombor 0–100.
@@ -193,8 +193,8 @@ Jadi: `detected_skills` mesti array **tag** (contoh `"sql"`, `"data-analysis"`) 
 |---|---|
 | `app/Http/Controllers/Api/InterviewSessionController.php` — `index` (where user_id + orderByDesc + limit), `store` (`$request->validate`, create, `json(..., 201)`), `show` (`$this->authorize('view', ...)`), `destroy` (`authorize('delete')`, `json(null, 204)`) | `ResumeController.php` |
 | `app/Policies/InterviewSessionPolicy.php` — `view` = pemilik atau `isAdmin()`, `delete` = pemilik | `ResumePolicy.php` |
-| `resources/js/modules/mock-interview/services/interviewService.ts` — `api.get`, `api.post`, `api.delete`, `api.getOrNull`, `qs()` | `resumeService.ts` |
-| `resources/js/modules/interview-readiness/services/assessmentEngine.ts` — fungsi tulen (pure) yang kira skor berwajaran dengan `clamp` | `resumeAnalysis.ts` |
+| `resources/js/modules/m3-mock-interview/services/interviewService.ts` — `api.get`, `api.post`, `api.delete`, `api.getOrNull`, `qs()` | `resumeService.ts` |
+| `resources/js/modules/m4-interview-readiness/services/assessmentEngine.ts` — fungsi tulen (pure) yang kira skor berwajaran dengan `clamp` | `resumeAnalysis.ts` |
 
 ## 8. Cara uji
 
@@ -230,7 +230,7 @@ PERATURAN:
 - JANGAN ubah UI (pages/components), routes, types (types.ts, lib/types.ts), nama fail, nama fungsi, parameter atau return type. Hanya isi badan fungsi yang ada komen "TODO (Shafinaz)".
 - Ikut corak fail rujukan yang saya tampal: InterviewSessionController.php, InterviewSessionPolicy.php, interviewService.ts.
 - Model app/Models/Resume.php sudah siap (table 'resume', PK 'analysis_id' uuid string, $timestamps=false, $guarded=[], casts: overall_score float, file_size integer, scores/sections/strengths/weaknesses/suggestions array (jsonb), detected_skills/matched_keywords/missing_keywords PgTextArray (Postgres text[]), uploaded_at/analyzed_at datetime). Relation user().
-- Fail yang perlu ditulis: app/Http/Controllers/Api/ResumeController.php, app/Policies/ResumePolicy.php, resources/js/modules/ai-resume-analyzer/services/resumeService.ts, resumeParser.ts, resumeAnalysis.ts, dan satu migration baharu.
+- Fail yang perlu ditulis: app/Http/Controllers/Api/ResumeController.php, app/Policies/ResumePolicy.php, resources/js/modules/m2-ai-resume-analyzer/services/resumeService.ts, resumeParser.ts, resumeAnalysis.ts, dan satu migration baharu.
 
 TABLE public.resume:
 analysis_id uuid PK default gen_random_uuid(); user_id uuid NOT NULL FK users(user_id) ON DELETE CASCADE;

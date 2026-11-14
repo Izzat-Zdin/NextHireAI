@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * The server scorer. Expected scores were produced by the browser scorer
- * (resources/js/modules/mock-interview/services/evaluation.ts) on the same input, so a failing
+ * (resources/js/modules/m3-mock-interview/services/evaluation.ts) on the same input, so a failing
  * case here means the two copies have drifted apart.
  */
 class AnswerEvaluatorTest extends TestCase

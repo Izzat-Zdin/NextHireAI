@@ -14,8 +14,8 @@ Baca [PANDUAN-TIM.md](PANDUAN-TIM.md) dahulu (setup, cara kerja, cara commit).
 
 ## 2. Fail yang sudah siap (jangan ubah)
 
-- Semua UI: `resources/js/modules/learning-recommendation/pages/*`, `components/*`, `resourceMeta.ts`
-- `resources/js/modules/learning-recommendation/hooks/useLearningProgress.ts` (UI state + optimistic update; ia hanya memanggil `learningService` dan `progressPatches`, jadi akan berfungsi sendiri bila service anda siap)
+- Semua UI: `resources/js/modules/m5-learning-recommendation/pages/*`, `components/*`, `resourceMeta.ts`
+- `resources/js/modules/m5-learning-recommendation/hooks/useLearningProgress.ts` (UI state + optimistic update; ia hanya memanggil `learningService` dan `progressPatches`, jadi akan berfungsi sendiri bila service anda siap)
 - `resources/js/lib/*` — terutamanya `lib/insights.ts` (`fetchResources`, `fetchLearningProgress`, `rankResources`) dan `lib/types.ts` (`LearningResource`, `LearningProgressRow`, `ResourceType`, `LearningStatus`)
 - `routes/web.php` (semua route sudah ada)
 - `app/Models/LearningResource.php` dan migration `learning_resources` — dibina oleh Wani (A2)
@@ -35,7 +35,7 @@ Cari `TODO (Shafinaz & Wani)` dalam setiap fail.
 **`app/Models/LearningProgress.php`**
 - [ ] `$guarded = []` (atau `$fillable`), cast `progress_percent` → integer, `completed_at` → datetime.
 
-**`resources/js/modules/learning-recommendation/services/learningService.ts`**
+**`resources/js/modules/m5-learning-recommendation/services/learningService.ts`**
 - [ ] helper `now()`, `clampPercent()`, dan fungsi dalaman `upsertProgress()` (PUT).
 - [ ] `progressPatches.save / start / complete / percent` — peraturan status/peratus (lihat bahagian 5).
 - [ ] `saveToPlan`, `startResource`, `completeResource`, `updateProgress` — panggil `upsertProgress` dengan patch yang betul.
@@ -137,7 +137,7 @@ Selagi endpoint itu belum siap, Dashboard, Readiness, Progress dan Profile akan 
 | `resource.skill_name` | string | `insights.ts` (ayat sebab), `DashboardPage.tsx` |
 | `resource.skill_tags` | **string[]** (mesti array, bukan string `{a,b}`) | `insights.ts` `rankResources` (`resource.skill_tags.filter/some`) — jika bukan array, Dashboard & Progress akan crash |
 | `progress.resource_id` | string | `insights.ts`, `DashboardPage.tsx`, `progressInsights.ts` |
-| `progress.status` | `"Not Started" \| "In Progress" \| "Completed"` (ejaan tepat) | `DashboardPage.tsx`, `interview-readiness/services/assessmentEngine.ts`, `ReadinessPage.tsx`, `recommendation-tracking/pages/ProgressPage.tsx`, `progressInsights.ts`, `user-management/pages/ProfilePage.tsx`, `insights.ts` |
+| `progress.status` | `"Not Started" \| "In Progress" \| "Completed"` (ejaan tepat) | `DashboardPage.tsx`, `m4-interview-readiness/services/assessmentEngine.ts`, `ReadinessPage.tsx`, `m6-recommendation-tracking/pages/ProgressPage.tsx`, `progressInsights.ts`, `m1-user-management/pages/ProfilePage.tsx`, `insights.ts` |
 | `progress.completed_at` | ISO string atau `null` | `DashboardPage.tsx` (aktiviti terkini), `progressInsights.ts` (penapis tempoh + aktiviti) |
 | `progress.progress_percent` | integer 0–100 | page M5 anda sendiri (`ProgressSlider`, `ResourceCard`) |
 
@@ -186,13 +186,13 @@ Saya sedang membina semula Module 5 Learning Recommendation dalam app Laravel 12
 PERATURAN WAJIB:
 - JANGAN ubah UI, page/component, routes/web.php, resources/js/lib/* (termasuk types.ts dan insights.ts), nama fail, nama fungsi/method, parameter, return type, atau jenis TypeScript.
 - Hanya isi bahagian bertanda "TODO (Shafinaz & Wani)" dalam fail yang saya beri.
-- Ikut corak fail contoh: app/Http/Controllers/Api/InterviewSessionController.php (validate, query where user_id, response()->json), app/Policies/InterviewSessionPolicy.php, resources/js/modules/mock-interview/services/interviewService.ts (api.get/post/put/delete/getOrNull dari "@/lib/api").
+- Ikut corak fail contoh: app/Http/Controllers/Api/InterviewSessionController.php (validate, query where user_id, response()->json), app/Policies/InterviewSessionPolicy.php, resources/js/modules/m3-mock-interview/services/interviewService.ts (api.get/post/put/delete/getOrNull dari "@/lib/api").
 - Model guna HasUuids, $timestamps = false, $keyType = 'string', $incrementing = false (sudah ada, kekalkan).
 
 FAIL UNTUK DIISI:
 1. app/Http/Controllers/Api/LearningController.php
 2. app/Models/LearningProgress.php
-3. resources/js/modules/learning-recommendation/services/learningService.ts
+3. resources/js/modules/m5-learning-recommendation/services/learningService.ts
 4. database/migrations/*_create_learning_progress_table.php (baru)
 (Model LearningResource dan jadual learning_resources dibina oleh rakan lain; anggap ia sudah wujud dengan kolum resource_id, title, resource_type, resource_url, skill_tags text[], skill_name.)
 

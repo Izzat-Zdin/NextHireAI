@@ -3,7 +3,7 @@
 namespace App\Services\Interview;
 
 /**
- * Server copy of resources/js/modules/mock-interview/services/evaluation.ts.
+ * Server copy of resources/js/modules/m3-mock-interview/services/evaluation.ts.
  *
  * The browser shows the score instantly; this class recomputes it from the stored answer text, so a
  * score posted from the browser (or forged with DevTools) is never saved. Keep both files in step:

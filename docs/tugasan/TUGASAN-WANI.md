@@ -14,7 +14,7 @@ Senarai resource dalam page admin datang dari `GET /api/learning/resources` (`Le
 
 ## 2. Fail yang sudah siap (jangan ubah)
 
-- `resources/js/modules/admin/learning-resources/pages/AdminResourcesPage.tsx`, `components/ResourceForm.tsx`
+- `resources/js/modules/admin/a2-learning-resources/pages/AdminResourcesPage.tsx`, `components/ResourceForm.tsx`
 - `resources/js/lib/*` — terutamanya `lib/types.ts` (`LearningResource`, `ResourceType`)
 - `routes/web.php` (semua route sudah ada)
 - `app/Http/Middleware/EnsureUserIsAdmin.php` (middleware `admin`), `app/Casts/PgTextArray.php`
@@ -32,7 +32,7 @@ Cari `TODO (Wani)` dalam setiap fail.
 **`app/Models/LearningResource.php`**
 - [ ] `$guarded = []` (atau `$fillable`), cast `skill_tags` → `PgTextArray`, relation `progress()` (HasMany).
 
-**`resources/js/modules/admin/learning-resources/services/adminResourceService.ts`**
+**`resources/js/modules/admin/a2-learning-resources/services/adminResourceService.ts`**
 - [ ] `listAllResources` — GET `/api/learning/resources`.
 - [ ] `createResource` — POST. `updateResource` — PUT. `deleteResource` — DELETE.
 
@@ -140,13 +140,13 @@ Saya sedang membina semula modul Admin Learning Resources dalam app Laravel 12 +
 PERATURAN WAJIB:
 - JANGAN ubah UI, page/component, routes/web.php, resources/js/lib/* (termasuk types.ts dan insights.ts), nama fail, nama fungsi/method, parameter, return type, atau jenis TypeScript.
 - Hanya isi bahagian bertanda "TODO (Wani)" dalam fail yang saya beri.
-- Ikut corak fail contoh: app/Http/Controllers/Api/InterviewSessionController.php (validate, query where user_id, response()->json), app/Policies/InterviewSessionPolicy.php, resources/js/modules/mock-interview/services/interviewService.ts (api.get/post/put/delete/getOrNull dari "@/lib/api").
+- Ikut corak fail contoh: app/Http/Controllers/Api/InterviewSessionController.php (validate, query where user_id, response()->json), app/Policies/InterviewSessionPolicy.php, resources/js/modules/m3-mock-interview/services/interviewService.ts (api.get/post/put/delete/getOrNull dari "@/lib/api").
 - Model guna HasUuids, $timestamps = false, $keyType = 'string', $incrementing = false (sudah ada, kekalkan).
 
 FAIL UNTUK DIISI:
 1. app/Http/Controllers/Api/Admin/ResourceController.php
 2. app/Models/LearningResource.php
-3. resources/js/modules/admin/learning-resources/services/adminResourceService.ts
+3. resources/js/modules/admin/a2-learning-resources/services/adminResourceService.ts
 4. database/migrations/*_create_learning_resources_table.php (baru)
 
 DATABASE (cipta semula TEPAT dalam migration; guna DB::statement untuk text[] dan CHECK):
