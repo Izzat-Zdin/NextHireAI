@@ -4,6 +4,137 @@
 >
 > Live reference (finished system): https://www.nexthire.web.id · This starter on Vercel: https://nexthirereact.vercel.app
 
+## Run the project (start here)
+
+Follow these steps in order on a fresh computer. They are written for **Windows**; use **PowerShell** or the **VS Code terminal** (menu **View → Terminal**).
+
+### Step 1. Download and install the tools (once)
+
+| Tool | Why | Download | Or install from a terminal |
+|---|---|---|---|
+| **Git** | Download the code, save your work | https://git-scm.com/downloads | `winget install Git.Git` |
+| **VS Code** | Code editor | https://code.visualstudio.com | `winget install Microsoft.VisualStudioCode` |
+| **PHP 8.3** | Runs Laravel (backend) | https://windows.php.net/download (VS16 x64 **Non Thread Safe** zip) | `winget install PHP.PHP.NTS.8.3` |
+| **Composer** | Installs PHP packages | https://getcomposer.org/download (Composer-Setup.exe) | `winget install Composer.Composer` |
+| **Node.js 20+ (LTS)** | Runs the React build tools | https://nodejs.org | `winget install OpenJS.NodeJS.LTS` |
+| **pnpm** | Installs JavaScript packages | — | `npm install -g pnpm` (after Node.js) |
+
+**Close and reopen the terminal** after installing, so the new commands are found. Then check every tool:
+
+```bash
+git --version
+php -v
+composer -V
+node -v
+pnpm -v
+```
+
+Each command should print a version number (PHP must start with **8.3**, Node with **20** or higher).
+
+**Turn on the PHP extensions Laravel needs** (once):
+
+1. Find the PHP config file:
+   ```bash
+   php --ini
+   ```
+   Look at the line **"Loaded Configuration File"**. If it says `(none)`, open the PHP folder shown above it, copy `php.ini-development` and rename the copy to `php.ini`.
+2. Open `php.ini` in VS Code and remove the `;` at the start of these lines (search for each one):
+   ```ini
+   extension_dir = "ext"
+   extension=curl
+   extension=fileinfo
+   extension=mbstring
+   extension=openssl
+   extension=pdo_pgsql
+   extension=pgsql
+   extension=zip
+   ```
+3. In the same file set these, so 5 MB resumes can be uploaded:
+   ```ini
+   upload_max_filesize = 8M
+   post_max_size = 10M
+   ```
+4. Save, reopen the terminal and check that the database driver is on (it must print `pdo_pgsql`):
+   ```bash
+   php -m
+   ```
+
+### Step 2. Download the project and open your branch
+
+```bash
+git clone https://github.com/Izzat-Zdin/NextHireAI.git
+cd NextHireAI
+git checkout <your-branch>
+```
+
+| Member | Branch |
+|---|---|
+| Nada | `nada/user-management` |
+| Shafinaz (Resume) | `shafinaz/resume-analyzer` |
+| Shafinaz & Wani (Learning) | `shafinaz-wani/learning` |
+| Wani (Admin Resources) | `wani/admin-resources` |
+
+Open the folder in VS Code:
+
+```bash
+code .
+```
+
+### Step 3. Add the `.env` file
+
+The `.env` file is **not** on GitHub because it holds the database password. **Izzat sends it to you privately.**
+
+1. Put it in the `NextHireAI` folder, next to `README.md`.
+2. Make sure the name is exactly `.env` (not `.env.txt` or `env-untuk-tim.env` — rename it if needed).
+
+It connects to the **shared Supabase database** (the same one the live site uses) and contains the **Test user** and **Test admin** accounts.
+
+### Step 4. Install the packages (first time, and whenever `composer.json` or `package.json` changes)
+
+```bash
+composer install
+```
+
+```bash
+pnpm install
+```
+
+```bash
+php artisan key:generate
+```
+
+### Step 5. Run the app
+
+Open **two terminals** in VS Code (the **+** button in the terminal panel) and keep both running.
+
+Terminal 1, the Laravel server:
+
+```bash
+php artisan serve
+```
+
+Terminal 2, the React dev server (live reload):
+
+```bash
+pnpm dev
+```
+
+Open **http://localhost:8000** in your browser and click **Test user**, or **Test admin** for the admin pages. Press `Ctrl + C` in each terminal to stop.
+
+Next time you only need Step 5 (and `git pull origin main` to get the latest changes).
+
+### If something goes wrong
+
+| Message | Fix |
+|---|---|
+| `'php' is not recognized` (or composer/node/pnpm) | Close and reopen the terminal. If it still fails, reinstall the tool and tick "Add to PATH". |
+| `could not find driver` | `pdo_pgsql` is off: redo the PHP extensions part of Step 1. |
+| `No application encryption key has been specified` | Run `php artisan key:generate`. |
+| `Vite manifest not found` / blank page | Terminal 2 (`pnpm dev`) is not running. Start it. |
+| `SQLSTATE[08006]` / connection refused or password failed | The `.env` file is missing, misnamed, or out of date. Ask Izzat for the current one. |
+| No **Test user** button on the login page | `TEST_ACCOUNT_EMAIL` / `TEST_ACCOUNT_PASSWORD` are empty in `.env`. Use the `.env` from Izzat. |
+| `Failed to listen on 127.0.0.1:8000` | Another app uses port 8000: `php artisan serve --port=8001`, then open http://localhost:8001. |
+
 ## Team quick start
 
 ### Who does what
@@ -91,59 +222,13 @@ app/
 
 Every module follows the same flow: `pages/` (UI) → `services/*.ts` (calls the API) → `routes/web.php` → `Controllers/Api/*Controller.php` → `Models/*.php` → database.
 
-### 1. Install (once)
-
-- PHP 8.3 with `pdo_pgsql`, `mbstring`, `openssl`, `fileinfo`, `curl`, `zip`
-- Composer 2
-- Node.js 20+ and pnpm (`npm install -g pnpm`)
-- Git and VS Code
-
-### 2. Get the code and switch to your branch
-
-```bash
-git clone https://github.com/Izzat-Zdin/NextHireAI.git
-cd NextHireAI
-git checkout <your-branch>        # e.g. git checkout shafinaz/resume-analyzer
-```
-
-Shafinaz and Wani each have two branches. Commit your work before switching (`git checkout <other-branch>`).
-
-### 3. Add the `.env` file
-
-The `.env` file is **not** in GitHub (it holds the database password). Izzat sends it to you privately. Put it in the root of the `NextHireAI` folder (next to `README.md`), make sure it is named exactly `.env`, then generate your own app key:
-
-```bash
-php artisan key:generate
-```
-
-It connects to the **shared Supabase database** — the same one the live site uses — and includes the **Test user** and **Test admin** accounts.
-
-### 4. Install packages and run
-
-```bash
-composer install
-pnpm install
-```
-
-Run these in **two terminals** and keep both open:
-
-```bash
-php artisan serve
-```
-
-```bash
-pnpm dev
-```
-
-Open **http://localhost:8000** and click **Test user** (or **Test admin** for the admin pages).
-
-### 5. Find your TODOs
+### 1. Find your TODOs
 
 In VS Code press **Ctrl + Shift + F** and search for `TODO (YourName)` — for example `TODO (Shafinaz)` or `TODO (Wani)`. Every TODO says exactly what the original code did: which validation rules, which query, what JSON to return and which status code. Replace the TODO and the placeholder `return` with real code.
 
 Each stub currently returns an empty result (`[]`, `null`, or `501 "Belum dibina (TODO)"`), so pages still open and simply show "nothing yet" until you finish.
 
-### 6. Follow the finished example
+### 2. Follow the finished example
 
 Izzat's Mock Interview module uses the same pattern you need:
 
@@ -155,7 +240,7 @@ Izzat's Mock Interview module uses the same pattern you need:
 | Model | `app/Models/InterviewSession.php` | table, UUID primary key, casts, relations |
 | React service | `resources/js/modules/m3-mock-interview/services/interviewService.ts` | `api.get/post/put/delete` from `@/lib/api` |
 
-### 7. Rules (important)
+### 3. Rules (important)
 
 - ✅ Only edit the files listed in **your** task file.
 - ❌ Don't rename files, functions, parameters, routes, or anything in `types.ts` / `resources/js/lib/*`. Izzat's Dashboard, Readiness and Mock Interview read your data using these exact names; renaming breaks them.
@@ -163,7 +248,7 @@ Izzat's Mock Interview module uses the same pattern you need:
 - ⚠️ **Never run `php artisan migrate`, `migrate:fresh` or `db:wipe` with the shared `.env`.** It is the live database — those commands can delete every table. Write your migration files in `database/migrations/` for review only.
 - ❌ Never commit `.env` or put passwords in code.
 
-### 8. Test your work
+### 4. Test your work
 
 ```bash
 pnpm typecheck
@@ -171,7 +256,7 @@ pnpm typecheck
 
 Then follow the **"Cara uji"** (how to test) steps in your task file in the browser. Your module is done when every item in its **"Siap bila"** (done when) checklist is ticked and no `TODO (YourName)` is left.
 
-### 9. Save to GitHub (often)
+### 5. Save to GitHub (often)
 
 ```bash
 git add .
@@ -189,7 +274,7 @@ git pull origin main
 `https://nexthirereact-git-<branch-name-with-dashes>-izzat-zdins-projects.vercel.app`
 (e.g. `nexthirereact-git-wani-admin-resources-izzat-zdins-projects.vercel.app`). Vercel does **not** run the frontend build, so if you changed React files, run `pnpm build` and commit the `public/build` folder before pushing, or the preview shows the old UI.
 
-### 10. Hand in: Pull Request
+### 6. Hand in: Pull Request
 
 1. On GitHub, open **Pull requests → New** (or **Compare & pull request**) from your branch into `main`.
 2. Describe what you built and paste your ticked checklist.
