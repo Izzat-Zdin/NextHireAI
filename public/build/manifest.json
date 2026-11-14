@@ -1,0 +1,1425 @@
+{
+  "_InterviewRoom-Bjg4ve-V.js": {
+    "file": "assets/InterviewRoom-Bjg4ve-V.js",
+    "name": "InterviewRoom",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_interviewStrings-fS6McZw_.js",
+      "_InterviewerAvatar-mLWBIjYs.js",
+      "_TranscriptText-BHMkk_DL.js",
+      "_ReviewStep-DY4qvEgK.js",
+      "_useInterviewerVoice-CUdZt46N.js",
+      "_answerStatus-aTjwPFW5.js",
+      "resources/js/modules/mock-interview/components/room/RoomParts.tsx",
+      "resources/js/modules/mock-interview/components/room/ListenStep.tsx",
+      "resources/js/modules/mock-interview/components/room/AnswerStep.tsx",
+      "resources/js/modules/mock-interview/components/room/FeedbackStep.tsx"
+    ]
+  },
+  "_InterviewerAvatar-mLWBIjYs.js": {
+    "file": "assets/InterviewerAvatar-mLWBIjYs.js",
+    "name": "InterviewerAvatar",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_ResumeUploadZone-Dh-u4Rjn.js": {
+    "file": "assets/ResumeUploadZone-Dh-u4Rjn.js",
+    "name": "ResumeUploadZone",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_ui-Cg5qv5Aq.js",
+      "_resumeParser-DuKdEvpE.js"
+    ]
+  },
+  "_ReviewStep-DY4qvEgK.js": {
+    "file": "assets/ReviewStep-DY4qvEgK.js",
+    "name": "ReviewStep",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_TranscriptText-BHMkk_DL.js",
+      "resources/js/modules/mock-interview/components/room/RoomParts.tsx",
+      "_circle-check-SygBOvQ1.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_rotate-ccw-Bo3_NB1E.js",
+      "_loader-circle-Cnz7hodK.js"
+    ]
+  },
+  "_TranscriptText-BHMkk_DL.js": {
+    "file": "assets/TranscriptText-BHMkk_DL.js",
+    "name": "TranscriptText",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_adminUserService-BMg2QO3l.js": {
+    "file": "assets/adminUserService-BMg2QO3l.js",
+    "name": "adminUserService",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_alert-q1PW1g9V.js": {
+    "file": "assets/alert-q1PW1g9V.js",
+    "name": "alert",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_answerStatus-aTjwPFW5.js": {
+    "file": "assets/answerStatus-aTjwPFW5.js",
+    "name": "answerStatus"
+  },
+  "_arrow-left-C8E9mvkz.js": {
+    "file": "assets/arrow-left-C8E9mvkz.js",
+    "name": "arrow-left",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_arrow-right-CJYF2div.js": {
+    "file": "assets/arrow-right-CJYF2div.js",
+    "name": "arrow-right",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_assessmentEngine-CXP-euhr.js": {
+    "file": "assets/assessmentEngine-CXP-euhr.js",
+    "name": "assessmentEngine",
+    "imports": [
+      "resources/js/app.tsx",
+      "_insights-Cc24wQPm.js",
+      "_skills-YIQ41UZi.js"
+    ]
+  },
+  "_at-sign-BBSWZ4CJ.js": {
+    "file": "assets/at-sign-BBSWZ4CJ.js",
+    "name": "at-sign",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_award-BfSTzenm.js": {
+    "file": "assets/award-BfSTzenm.js",
+    "name": "award",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_chart-column-DOiNJbrO.js": {
+    "file": "assets/chart-column-DOiNJbrO.js",
+    "name": "chart-column",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_chevron-down-CMJ7G8JF.js": {
+    "file": "assets/chevron-down-CMJ7G8JF.js",
+    "name": "chevron-down",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_chevron-right-CUjj9rTP.js": {
+    "file": "assets/chevron-right-CUjj9rTP.js",
+    "name": "chevron-right",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_circle-5JNUtsf_.js": {
+    "file": "assets/circle-5JNUtsf_.js",
+    "name": "circle",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_circle-check-SygBOvQ1.js": {
+    "file": "assets/circle-check-SygBOvQ1.js",
+    "name": "circle-check",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_circle-check-big-DJyMLROG.js": {
+    "file": "assets/circle-check-big-DJyMLROG.js",
+    "name": "circle-check-big",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_circle-exclamation-point-BHzQDeIH.js": {
+    "file": "assets/circle-exclamation-point-BHzQDeIH.js",
+    "name": "circle-exclamation-point",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_dialog-BrobvQrQ.js": {
+    "file": "assets/dialog-BrobvQrQ.js",
+    "name": "dialog",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_download-Kpsj_nRL.js": {
+    "file": "assets/download-Kpsj_nRL.js",
+    "name": "download",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_external-link-CklhRycL.js": {
+    "file": "assets/external-link-CklhRycL.js",
+    "name": "external-link",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_eye-4jUX3aZM.js": {
+    "file": "assets/eye-4jUX3aZM.js",
+    "name": "eye",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_file-question-mark-B5ZI5k5f.js": {
+    "file": "assets/file-question-mark-B5ZI5k5f.js",
+    "name": "file-question-mark",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_file-search-DSOY1kIn.js": {
+    "file": "assets/file-search-DSOY1kIn.js",
+    "name": "file-search",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_graduation-cap-B5bkrD7v.js": {
+    "file": "assets/graduation-cap-B5bkrD7v.js",
+    "name": "graduation-cap",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_info-C4vEHAjR.js": {
+    "file": "assets/info-C4vEHAjR.js",
+    "name": "info",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_input-Bwmx-9ea.js": {
+    "file": "assets/input-Bwmx-9ea.js",
+    "name": "input",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_input-group-y5P0W5B6.js": {
+    "file": "assets/input-group-y5P0W5B6.js",
+    "name": "input-group",
+    "imports": [
+      "resources/js/app.tsx",
+      "_input-Bwmx-9ea.js"
+    ]
+  },
+  "_insights-Cc24wQPm.js": {
+    "file": "assets/insights-Cc24wQPm.js",
+    "name": "insights",
+    "imports": [
+      "resources/js/app.tsx",
+      "_skills-YIQ41UZi.js"
+    ]
+  },
+  "_interviewService--AuLpnDd.js": {
+    "file": "assets/interviewService--AuLpnDd.js",
+    "name": "interviewService",
+    "imports": [
+      "resources/js/app.tsx",
+      "_answerStatus-aTjwPFW5.js"
+    ]
+  },
+  "_interviewStrings-fS6McZw_.js": {
+    "file": "assets/interviewStrings-fS6McZw_.js",
+    "name": "interviewStrings"
+  },
+  "_labels-CLEOVZjW.js": {
+    "file": "assets/labels-CLEOVZjW.js",
+    "name": "labels"
+  },
+  "_layers-trIj0q6g.js": {
+    "file": "assets/layers-trIj0q6g.js",
+    "name": "layers",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_lightbulb-BpDxT59Q.js": {
+    "file": "assets/lightbulb-BpDxT59Q.js",
+    "name": "lightbulb",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_loader-circle-Cnz7hodK.js": {
+    "file": "assets/loader-circle-Cnz7hodK.js",
+    "name": "loader-circle",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_mail-check-D4QacyjT.js": {
+    "file": "assets/mail-check-D4QacyjT.js",
+    "name": "mail-check",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_message-square-text-B2UFGBlQ.js": {
+    "file": "assets/message-square-text-B2UFGBlQ.js",
+    "name": "message-square-text",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_mic-DAQgYkhB.js": {
+    "file": "assets/mic-DAQgYkhB.js",
+    "name": "mic",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_pencil-BIi48G8g.js": {
+    "file": "assets/pencil-BIi48G8g.js",
+    "name": "pencil",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_play-DwiJtiyD.js": {
+    "file": "assets/play-DwiJtiyD.js",
+    "name": "play",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_plus-DO2CObOl.js": {
+    "file": "assets/plus-DO2CObOl.js",
+    "name": "plus",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_refresh-cw-Cen7CRFf.js": {
+    "file": "assets/refresh-cw-Cen7CRFf.js",
+    "name": "refresh-cw",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_resourceMeta-ew_Xmkcm.js": {
+    "file": "assets/resourceMeta-ew_Xmkcm.js",
+    "name": "resourceMeta",
+    "imports": [
+      "resources/js/app.tsx",
+      "_award-BfSTzenm.js",
+      "_graduation-cap-B5bkrD7v.js"
+    ]
+  },
+  "_resumeParser-DuKdEvpE.js": {
+    "file": "assets/resumeParser-DuKdEvpE.js",
+    "name": "resumeParser"
+  },
+  "_resumeService-BocF4cWa.js": {
+    "file": "assets/resumeService-BocF4cWa.js",
+    "name": "resumeService"
+  },
+  "_rotate-ccw-Bo3_NB1E.js": {
+    "file": "assets/rotate-ccw-Bo3_NB1E.js",
+    "name": "rotate-ccw",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_rotate-ccw-clock-4_hANYSy.js": {
+    "file": "assets/rotate-ccw-clock-4_hANYSy.js",
+    "name": "rotate-ccw-clock",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_search-CBeAJKqR.js": {
+    "file": "assets/search-CBeAJKqR.js",
+    "name": "search",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_separator-B4m43ICD.js": {
+    "file": "assets/separator-B4m43ICD.js",
+    "name": "separator",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_shield-check-BgbJYByj.js": {
+    "file": "assets/shield-check-BgbJYByj.js",
+    "name": "shield-check",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_skills-YIQ41UZi.js": {
+    "file": "assets/skills-YIQ41UZi.js",
+    "name": "skills"
+  },
+  "_sparkles-BZQYL_OX.js": {
+    "file": "assets/sparkles-BZQYL_OX.js",
+    "name": "sparkles",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_table-5WJ7CdFD.js": {
+    "file": "assets/table-5WJ7CdFD.js",
+    "name": "table",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_tabs-DH-eEczs.js": {
+    "file": "assets/tabs-DH-eEczs.js",
+    "name": "tabs",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_target-axAmdHdo.js": {
+    "file": "assets/target-axAmdHdo.js",
+    "name": "target",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_textarea-CpalboiU.js": {
+    "file": "assets/textarea-CpalboiU.js",
+    "name": "textarea",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_trash-Bmwk6kHb.js": {
+    "file": "assets/trash-Bmwk6kHb.js",
+    "name": "trash",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_types-CKJ39DvB.js": {
+    "file": "assets/types-CKJ39DvB.js",
+    "name": "types",
+    "imports": [
+      "_skills-YIQ41UZi.js"
+    ]
+  },
+  "_ui-Cg5qv5Aq.js": {
+    "file": "assets/ui-Cg5qv5Aq.js",
+    "name": "ui",
+    "imports": [
+      "resources/js/app.tsx",
+      "_dialog-BrobvQrQ.js",
+      "_input-Bwmx-9ea.js",
+      "_textarea-CpalboiU.js",
+      "_circle-check-SygBOvQ1.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_loader-circle-Cnz7hodK.js"
+    ]
+  },
+  "_useInterviewerVoice-CUdZt46N.js": {
+    "file": "assets/useInterviewerVoice-CUdZt46N.js",
+    "name": "useInterviewerVoice",
+    "imports": [
+      "resources/js/app.tsx",
+      "_InterviewerAvatar-mLWBIjYs.js",
+      "_interviewStrings-fS6McZw_.js"
+    ]
+  },
+  "_useLearningProgress-DrR2npUG.js": {
+    "file": "assets/useLearningProgress-DrR2npUG.js",
+    "name": "useLearningProgress",
+    "imports": [
+      "resources/js/app.tsx",
+      "_ui-Cg5qv5Aq.js"
+    ]
+  },
+  "_video-B-bqpf-S.js": {
+    "file": "assets/video-B-bqpf-S.js",
+    "name": "video",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "_zap-Dz9GptOk.js": {
+    "file": "assets/zap-Dz9GptOk.js",
+    "name": "zap",
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "resources/js/app.tsx": {
+    "file": "assets/app-Kp3s4t-q.js",
+    "name": "app",
+    "src": "resources/js/app.tsx",
+    "isEntry": true,
+    "dynamicImports": [
+      "resources/js/modules/admin/learning-resources/components/ResourceForm.tsx",
+      "resources/js/modules/admin/learning-resources/pages/AdminResourcesPage.tsx",
+      "resources/js/modules/admin/user-management/components/UserStatusBadge.tsx",
+      "resources/js/modules/admin/user-management/pages/AdminUserDetailPage.tsx",
+      "resources/js/modules/admin/user-management/pages/AdminUsersPage.tsx",
+      "resources/js/modules/ai-resume-analyzer/components/AnalysisProgress.tsx",
+      "resources/js/modules/ai-resume-analyzer/components/DeleteResumeModal.tsx",
+      "_ResumeUploadZone-Dh-u4Rjn.js",
+      "resources/js/modules/ai-resume-analyzer/components/ScoreSummaryCard.tsx",
+      "resources/js/modules/ai-resume-analyzer/pages/ResumeAnalyzerPage.tsx",
+      "resources/js/modules/ai-resume-analyzer/pages/ResumeHistoryPage.tsx",
+      "resources/js/modules/ai-resume-analyzer/pages/ResumeResultPage.tsx",
+      "resources/js/modules/dashboard/DashboardPage.tsx",
+      "resources/js/modules/interview-readiness/components/AssessmentResultView.tsx",
+      "resources/js/modules/interview-readiness/components/AssessmentWizard.tsx",
+      "resources/js/modules/interview-readiness/pages/ReadinessPage.tsx",
+      "resources/js/modules/learning-recommendation/components/ProgressSlider.tsx",
+      "resources/js/modules/learning-recommendation/components/ResourceCard.tsx",
+      "resources/js/modules/learning-recommendation/pages/LearningPage.tsx",
+      "resources/js/modules/learning-recommendation/pages/ResourceDetailPage.tsx",
+      "resources/js/modules/mock-interview/MockInterviewModule.tsx",
+      "resources/js/modules/mock-interview/components/ReportView.tsx",
+      "_InterviewerAvatar-mLWBIjYs.js",
+      "resources/js/modules/mock-interview/components/room/AnswerStep.tsx",
+      "resources/js/modules/mock-interview/components/room/FeedbackStep.tsx",
+      "_InterviewRoom-Bjg4ve-V.js",
+      "resources/js/modules/mock-interview/components/room/ListenStep.tsx",
+      "_ReviewStep-DY4qvEgK.js",
+      "resources/js/modules/mock-interview/components/room/RoomParts.tsx",
+      "resources/js/modules/mock-interview/components/room/SuggestedAnswer.tsx",
+      "_TranscriptText-BHMkk_DL.js",
+      "resources/js/modules/mock-interview/components/setup/SetupPage.tsx",
+      "resources/js/modules/mock-interview/components/shared/Choice.tsx",
+      "resources/js/modules/mock-interview/pages/InterviewHistoryPage.tsx",
+      "resources/js/modules/mock-interview/pages/InterviewSessionPage.tsx",
+      "resources/js/modules/mock-interview/pages/MockInterviewPage.tsx",
+      "resources/js/modules/recommendation-tracking/pages/ProgressPage.tsx",
+      "resources/js/modules/user-management/components/AuthLayout.tsx",
+      "resources/js/modules/user-management/components/RouteGuards.tsx",
+      "resources/js/modules/user-management/pages/ForgotPasswordPage.tsx",
+      "resources/js/modules/user-management/pages/LoginPage.tsx",
+      "resources/js/modules/user-management/pages/ProfilePage.tsx",
+      "resources/js/modules/user-management/pages/RegisterPage.tsx",
+      "resources/js/modules/user-management/pages/ResetPasswordPage.tsx",
+      "resources/js/modules/user-management/pages/VerifyEmailPage.tsx"
+    ],
+    "css": [
+      "assets/app-CyVzDhdn.css"
+    ]
+  },
+  "resources/js/modules/admin/learning-resources/components/ResourceForm.tsx": {
+    "file": "assets/ResourceForm-Cw-pTV1u.js",
+    "name": "ResourceForm",
+    "src": "resources/js/modules/admin/learning-resources/components/ResourceForm.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_ui-Cg5qv5Aq.js",
+      "_input-Bwmx-9ea.js",
+      "_skills-YIQ41UZi.js",
+      "_resourceMeta-ew_Xmkcm.js",
+      "_dialog-BrobvQrQ.js",
+      "_textarea-CpalboiU.js",
+      "_circle-check-SygBOvQ1.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_loader-circle-Cnz7hodK.js",
+      "_award-BfSTzenm.js",
+      "_graduation-cap-B5bkrD7v.js"
+    ]
+  },
+  "resources/js/modules/admin/learning-resources/pages/AdminResourcesPage.tsx": {
+    "file": "assets/AdminResourcesPage-Tf-aWkXU.js",
+    "name": "AdminResourcesPage",
+    "src": "resources/js/modules/admin/learning-resources/pages/AdminResourcesPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_ui-Cg5qv5Aq.js",
+      "_input-group-y5P0W5B6.js",
+      "_table-5WJ7CdFD.js",
+      "_skills-YIQ41UZi.js",
+      "_resourceMeta-ew_Xmkcm.js",
+      "resources/js/modules/admin/learning-resources/components/ResourceForm.tsx",
+      "_target-axAmdHdo.js",
+      "_layers-trIj0q6g.js",
+      "_search-CBeAJKqR.js",
+      "_plus-DO2CObOl.js",
+      "_rotate-ccw-Bo3_NB1E.js",
+      "_trash-Bmwk6kHb.js",
+      "_external-link-CklhRycL.js",
+      "_pencil-BIi48G8g.js",
+      "_dialog-BrobvQrQ.js",
+      "_input-Bwmx-9ea.js",
+      "_textarea-CpalboiU.js",
+      "_circle-check-SygBOvQ1.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_loader-circle-Cnz7hodK.js",
+      "_award-BfSTzenm.js",
+      "_graduation-cap-B5bkrD7v.js"
+    ]
+  },
+  "resources/js/modules/admin/user-management/components/UserStatusBadge.tsx": {
+    "file": "assets/UserStatusBadge-36rxzXpm.js",
+    "name": "UserStatusBadge",
+    "src": "resources/js/modules/admin/user-management/components/UserStatusBadge.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_ui-Cg5qv5Aq.js",
+      "_dialog-BrobvQrQ.js",
+      "_input-Bwmx-9ea.js",
+      "_textarea-CpalboiU.js",
+      "_circle-check-SygBOvQ1.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_loader-circle-Cnz7hodK.js"
+    ]
+  },
+  "resources/js/modules/admin/user-management/pages/AdminUserDetailPage.tsx": {
+    "file": "assets/AdminUserDetailPage-DHz3CCDq.js",
+    "name": "AdminUserDetailPage",
+    "src": "resources/js/modules/admin/user-management/pages/AdminUserDetailPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_ui-Cg5qv5Aq.js",
+      "_separator-B4m43ICD.js",
+      "_table-5WJ7CdFD.js",
+      "resources/js/modules/admin/user-management/components/UserStatusBadge.tsx",
+      "_adminUserService-BMg2QO3l.js",
+      "_labels-CLEOVZjW.js",
+      "_refresh-cw-Cen7CRFf.js",
+      "_shield-check-BgbJYByj.js",
+      "_info-C4vEHAjR.js",
+      "_message-square-text-B2UFGBlQ.js",
+      "_arrow-left-C8E9mvkz.js",
+      "_dialog-BrobvQrQ.js",
+      "_input-Bwmx-9ea.js",
+      "_textarea-CpalboiU.js",
+      "_circle-check-SygBOvQ1.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_loader-circle-Cnz7hodK.js"
+    ]
+  },
+  "resources/js/modules/admin/user-management/pages/AdminUsersPage.tsx": {
+    "file": "assets/AdminUsersPage-DRHuENcw.js",
+    "name": "AdminUsersPage",
+    "src": "resources/js/modules/admin/user-management/pages/AdminUsersPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_ui-Cg5qv5Aq.js",
+      "_table-5WJ7CdFD.js",
+      "resources/js/modules/admin/user-management/components/UserStatusBadge.tsx",
+      "_adminUserService-BMg2QO3l.js",
+      "_shield-check-BgbJYByj.js",
+      "_refresh-cw-Cen7CRFf.js",
+      "_search-CBeAJKqR.js",
+      "_chevron-right-CUjj9rTP.js",
+      "_dialog-BrobvQrQ.js",
+      "_input-Bwmx-9ea.js",
+      "_textarea-CpalboiU.js",
+      "_circle-check-SygBOvQ1.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_loader-circle-Cnz7hodK.js"
+    ]
+  },
+  "resources/js/modules/ai-resume-analyzer/components/AnalysisProgress.tsx": {
+    "file": "assets/AnalysisProgress-DEe8kRrC.js",
+    "name": "AnalysisProgress",
+    "src": "resources/js/modules/ai-resume-analyzer/components/AnalysisProgress.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_circle-check-SygBOvQ1.js",
+      "_loader-circle-Cnz7hodK.js",
+      "_circle-5JNUtsf_.js"
+    ]
+  },
+  "resources/js/modules/ai-resume-analyzer/components/DeleteResumeModal.tsx": {
+    "file": "assets/DeleteResumeModal-y9lWocr_.js",
+    "name": "DeleteResumeModal",
+    "src": "resources/js/modules/ai-resume-analyzer/components/DeleteResumeModal.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_ui-Cg5qv5Aq.js",
+      "_resumeService-BocF4cWa.js",
+      "_trash-Bmwk6kHb.js",
+      "_dialog-BrobvQrQ.js",
+      "_input-Bwmx-9ea.js",
+      "_textarea-CpalboiU.js",
+      "_circle-check-SygBOvQ1.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_loader-circle-Cnz7hodK.js"
+    ]
+  },
+  "resources/js/modules/ai-resume-analyzer/components/ScoreSummaryCard.tsx": {
+    "file": "assets/ScoreSummaryCard-B-COzQJ7.js",
+    "name": "ScoreSummaryCard",
+    "src": "resources/js/modules/ai-resume-analyzer/components/ScoreSummaryCard.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_ui-Cg5qv5Aq.js",
+      "_types-CKJ39DvB.js",
+      "_dialog-BrobvQrQ.js",
+      "_input-Bwmx-9ea.js",
+      "_textarea-CpalboiU.js",
+      "_circle-check-SygBOvQ1.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_loader-circle-Cnz7hodK.js",
+      "_skills-YIQ41UZi.js"
+    ]
+  },
+  "resources/js/modules/ai-resume-analyzer/pages/ResumeAnalyzerPage.tsx": {
+    "file": "assets/ResumeAnalyzerPage-CJiqkAKd.js",
+    "name": "ResumeAnalyzerPage",
+    "src": "resources/js/modules/ai-resume-analyzer/pages/ResumeAnalyzerPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_ui-Cg5qv5Aq.js",
+      "_tabs-DH-eEczs.js",
+      "_skills-YIQ41UZi.js",
+      "resources/js/modules/ai-resume-analyzer/components/AnalysisProgress.tsx",
+      "_ResumeUploadZone-Dh-u4Rjn.js",
+      "_types-CKJ39DvB.js",
+      "_resumeParser-DuKdEvpE.js",
+      "_resumeService-BocF4cWa.js",
+      "_rotate-ccw-clock-4_hANYSy.js",
+      "_shield-check-BgbJYByj.js",
+      "_sparkles-BZQYL_OX.js",
+      "_file-search-DSOY1kIn.js",
+      "_lightbulb-BpDxT59Q.js",
+      "_dialog-BrobvQrQ.js",
+      "_input-Bwmx-9ea.js",
+      "_textarea-CpalboiU.js",
+      "_circle-check-SygBOvQ1.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_loader-circle-Cnz7hodK.js",
+      "_circle-5JNUtsf_.js"
+    ]
+  },
+  "resources/js/modules/ai-resume-analyzer/pages/ResumeHistoryPage.tsx": {
+    "file": "assets/ResumeHistoryPage-BqS982Lu.js",
+    "name": "ResumeHistoryPage",
+    "src": "resources/js/modules/ai-resume-analyzer/pages/ResumeHistoryPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_ui-Cg5qv5Aq.js",
+      "_table-5WJ7CdFD.js",
+      "resources/js/modules/ai-resume-analyzer/components/DeleteResumeModal.tsx",
+      "_resumeService-BocF4cWa.js",
+      "_plus-DO2CObOl.js",
+      "_chevron-right-CUjj9rTP.js",
+      "_trash-Bmwk6kHb.js",
+      "_eye-4jUX3aZM.js",
+      "_dialog-BrobvQrQ.js",
+      "_input-Bwmx-9ea.js",
+      "_textarea-CpalboiU.js",
+      "_circle-check-SygBOvQ1.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_loader-circle-Cnz7hodK.js"
+    ]
+  },
+  "resources/js/modules/ai-resume-analyzer/pages/ResumeResultPage.tsx": {
+    "file": "assets/ResumeResultPage-uVUhvf-o.js",
+    "name": "ResumeResultPage",
+    "src": "resources/js/modules/ai-resume-analyzer/pages/ResumeResultPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_ui-Cg5qv5Aq.js",
+      "_separator-B4m43ICD.js",
+      "_skills-YIQ41UZi.js",
+      "resources/js/modules/ai-resume-analyzer/components/DeleteResumeModal.tsx",
+      "resources/js/modules/ai-resume-analyzer/components/ScoreSummaryCard.tsx",
+      "_types-CKJ39DvB.js",
+      "_resumeParser-DuKdEvpE.js",
+      "_resumeService-BocF4cWa.js",
+      "_file-question-mark-B5ZI5k5f.js",
+      "_download-Kpsj_nRL.js",
+      "_rotate-ccw-Bo3_NB1E.js",
+      "_trash-Bmwk6kHb.js",
+      "_arrow-right-CJYF2div.js",
+      "_circle-check-SygBOvQ1.js",
+      "_dialog-BrobvQrQ.js",
+      "_input-Bwmx-9ea.js",
+      "_textarea-CpalboiU.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_loader-circle-Cnz7hodK.js"
+    ]
+  },
+  "resources/js/modules/dashboard/DashboardPage.tsx": {
+    "file": "assets/DashboardPage-DhpEeSHk.js",
+    "name": "DashboardPage",
+    "src": "resources/js/modules/dashboard/DashboardPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_ui-Cg5qv5Aq.js",
+      "_insights-Cc24wQPm.js",
+      "_resourceMeta-ew_Xmkcm.js",
+      "_mic-DAQgYkhB.js",
+      "_award-BfSTzenm.js",
+      "_sparkles-BZQYL_OX.js",
+      "_play-DwiJtiyD.js",
+      "_target-axAmdHdo.js",
+      "_arrow-right-CJYF2div.js",
+      "_chart-column-DOiNJbrO.js",
+      "_layers-trIj0q6g.js",
+      "_dialog-BrobvQrQ.js",
+      "_input-Bwmx-9ea.js",
+      "_textarea-CpalboiU.js",
+      "_circle-check-SygBOvQ1.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_loader-circle-Cnz7hodK.js",
+      "_skills-YIQ41UZi.js",
+      "_graduation-cap-B5bkrD7v.js"
+    ]
+  },
+  "resources/js/modules/interview-readiness/components/AssessmentResultView.tsx": {
+    "file": "assets/AssessmentResultView-C2Wn4Dg_.js",
+    "name": "AssessmentResultView",
+    "src": "resources/js/modules/interview-readiness/components/AssessmentResultView.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_ui-Cg5qv5Aq.js",
+      "_alert-q1PW1g9V.js",
+      "_separator-B4m43ICD.js",
+      "_tabs-DH-eEczs.js",
+      "_assessmentEngine-CXP-euhr.js",
+      "_lightbulb-BpDxT59Q.js",
+      "_arrow-right-CJYF2div.js",
+      "_circle-check-SygBOvQ1.js",
+      "_zap-Dz9GptOk.js",
+      "_target-axAmdHdo.js",
+      "_rotate-ccw-Bo3_NB1E.js",
+      "_info-C4vEHAjR.js",
+      "_dialog-BrobvQrQ.js",
+      "_input-Bwmx-9ea.js",
+      "_textarea-CpalboiU.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_loader-circle-Cnz7hodK.js",
+      "_insights-Cc24wQPm.js",
+      "_skills-YIQ41UZi.js"
+    ]
+  },
+  "resources/js/modules/interview-readiness/components/AssessmentWizard.tsx": {
+    "file": "assets/AssessmentWizard-BNslKLdU.js",
+    "name": "AssessmentWizard",
+    "src": "resources/js/modules/interview-readiness/components/AssessmentWizard.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_ui-Cg5qv5Aq.js",
+      "_separator-B4m43ICD.js",
+      "_skills-YIQ41UZi.js",
+      "_assessmentEngine-CXP-euhr.js",
+      "_arrow-left-C8E9mvkz.js",
+      "_arrow-right-CJYF2div.js",
+      "_sparkles-BZQYL_OX.js",
+      "_circle-check-SygBOvQ1.js",
+      "_circle-5JNUtsf_.js",
+      "_dialog-BrobvQrQ.js",
+      "_input-Bwmx-9ea.js",
+      "_textarea-CpalboiU.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_loader-circle-Cnz7hodK.js",
+      "_insights-Cc24wQPm.js"
+    ]
+  },
+  "resources/js/modules/interview-readiness/pages/ReadinessPage.tsx": {
+    "file": "assets/ReadinessPage-DbnsnuCb.js",
+    "name": "ReadinessPage",
+    "src": "resources/js/modules/interview-readiness/pages/ReadinessPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_ui-Cg5qv5Aq.js",
+      "_insights-Cc24wQPm.js",
+      "_skills-YIQ41UZi.js",
+      "resources/js/modules/interview-readiness/components/AssessmentResultView.tsx",
+      "resources/js/modules/interview-readiness/components/AssessmentWizard.tsx",
+      "_assessmentEngine-CXP-euhr.js",
+      "_dialog-BrobvQrQ.js",
+      "_input-Bwmx-9ea.js",
+      "_textarea-CpalboiU.js",
+      "_circle-check-SygBOvQ1.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_loader-circle-Cnz7hodK.js",
+      "_alert-q1PW1g9V.js",
+      "_separator-B4m43ICD.js",
+      "_tabs-DH-eEczs.js",
+      "_lightbulb-BpDxT59Q.js",
+      "_arrow-right-CJYF2div.js",
+      "_zap-Dz9GptOk.js",
+      "_target-axAmdHdo.js",
+      "_rotate-ccw-Bo3_NB1E.js",
+      "_info-C4vEHAjR.js",
+      "_arrow-left-C8E9mvkz.js",
+      "_sparkles-BZQYL_OX.js",
+      "_circle-5JNUtsf_.js"
+    ]
+  },
+  "resources/js/modules/learning-recommendation/components/ProgressSlider.tsx": {
+    "file": "assets/ProgressSlider-C-4_82Q9.js",
+    "name": "ProgressSlider",
+    "src": "resources/js/modules/learning-recommendation/components/ProgressSlider.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "resources/js/modules/learning-recommendation/components/ResourceCard.tsx": {
+    "file": "assets/ResourceCard-DG8BIEbE.js",
+    "name": "ResourceCard",
+    "src": "resources/js/modules/learning-recommendation/components/ResourceCard.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_ui-Cg5qv5Aq.js",
+      "_skills-YIQ41UZi.js",
+      "_resourceMeta-ew_Xmkcm.js",
+      "resources/js/modules/learning-recommendation/components/ProgressSlider.tsx",
+      "_sparkles-BZQYL_OX.js",
+      "_circle-check-big-DJyMLROG.js",
+      "_play-DwiJtiyD.js",
+      "_circle-check-SygBOvQ1.js",
+      "_external-link-CklhRycL.js",
+      "_dialog-BrobvQrQ.js",
+      "_input-Bwmx-9ea.js",
+      "_textarea-CpalboiU.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_loader-circle-Cnz7hodK.js",
+      "_award-BfSTzenm.js",
+      "_graduation-cap-B5bkrD7v.js"
+    ]
+  },
+  "resources/js/modules/learning-recommendation/pages/LearningPage.tsx": {
+    "file": "assets/LearningPage-CmdKyn1i.js",
+    "name": "LearningPage",
+    "src": "resources/js/modules/learning-recommendation/pages/LearningPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_ui-Cg5qv5Aq.js",
+      "_alert-q1PW1g9V.js",
+      "_input-group-y5P0W5B6.js",
+      "_tabs-DH-eEczs.js",
+      "_insights-Cc24wQPm.js",
+      "_skills-YIQ41UZi.js",
+      "resources/js/modules/learning-recommendation/components/ResourceCard.tsx",
+      "_useLearningProgress-DrR2npUG.js",
+      "_resourceMeta-ew_Xmkcm.js",
+      "_target-axAmdHdo.js",
+      "_circle-check-big-DJyMLROG.js",
+      "_info-C4vEHAjR.js",
+      "_search-CBeAJKqR.js",
+      "_rotate-ccw-Bo3_NB1E.js",
+      "_dialog-BrobvQrQ.js",
+      "_input-Bwmx-9ea.js",
+      "_textarea-CpalboiU.js",
+      "_circle-check-SygBOvQ1.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_loader-circle-Cnz7hodK.js",
+      "resources/js/modules/learning-recommendation/components/ProgressSlider.tsx",
+      "_sparkles-BZQYL_OX.js",
+      "_play-DwiJtiyD.js",
+      "_external-link-CklhRycL.js",
+      "_award-BfSTzenm.js",
+      "_graduation-cap-B5bkrD7v.js"
+    ]
+  },
+  "resources/js/modules/learning-recommendation/pages/ResourceDetailPage.tsx": {
+    "file": "assets/ResourceDetailPage-XxZPyi9s.js",
+    "name": "ResourceDetailPage",
+    "src": "resources/js/modules/learning-recommendation/pages/ResourceDetailPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_ui-Cg5qv5Aq.js",
+      "_separator-B4m43ICD.js",
+      "_insights-Cc24wQPm.js",
+      "_skills-YIQ41UZi.js",
+      "resources/js/modules/learning-recommendation/components/ProgressSlider.tsx",
+      "_useLearningProgress-DrR2npUG.js",
+      "_resourceMeta-ew_Xmkcm.js",
+      "_file-question-mark-B5ZI5k5f.js",
+      "_rotate-ccw-Bo3_NB1E.js",
+      "_arrow-left-C8E9mvkz.js",
+      "_external-link-CklhRycL.js",
+      "_circle-check-big-DJyMLROG.js",
+      "_play-DwiJtiyD.js",
+      "_circle-check-SygBOvQ1.js",
+      "_trash-Bmwk6kHb.js",
+      "_dialog-BrobvQrQ.js",
+      "_input-Bwmx-9ea.js",
+      "_textarea-CpalboiU.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_loader-circle-Cnz7hodK.js",
+      "_award-BfSTzenm.js",
+      "_graduation-cap-B5bkrD7v.js"
+    ]
+  },
+  "resources/js/modules/mock-interview/MockInterviewModule.tsx": {
+    "file": "assets/MockInterviewModule-pBpuqndK.js",
+    "name": "MockInterviewModule",
+    "src": "resources/js/modules/mock-interview/MockInterviewModule.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_ui-Cg5qv5Aq.js",
+      "_insights-Cc24wQPm.js",
+      "resources/js/modules/mock-interview/components/setup/SetupPage.tsx",
+      "_InterviewRoom-Bjg4ve-V.js",
+      "resources/js/modules/mock-interview/components/ReportView.tsx",
+      "_useInterviewerVoice-CUdZt46N.js",
+      "_interviewService--AuLpnDd.js",
+      "_TranscriptText-BHMkk_DL.js",
+      "_answerStatus-aTjwPFW5.js",
+      "_dialog-BrobvQrQ.js",
+      "_input-Bwmx-9ea.js",
+      "_textarea-CpalboiU.js",
+      "_circle-check-SygBOvQ1.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_loader-circle-Cnz7hodK.js",
+      "_skills-YIQ41UZi.js",
+      "_InterviewerAvatar-mLWBIjYs.js",
+      "resources/js/modules/mock-interview/components/shared/Choice.tsx",
+      "_rotate-ccw-Bo3_NB1E.js",
+      "_rotate-ccw-clock-4_hANYSy.js",
+      "_mic-DAQgYkhB.js",
+      "_video-B-bqpf-S.js",
+      "_interviewStrings-fS6McZw_.js",
+      "_ReviewStep-DY4qvEgK.js",
+      "resources/js/modules/mock-interview/components/room/RoomParts.tsx",
+      "resources/js/modules/mock-interview/components/room/ListenStep.tsx",
+      "resources/js/modules/mock-interview/components/room/SuggestedAnswer.tsx",
+      "_lightbulb-BpDxT59Q.js",
+      "resources/js/modules/mock-interview/components/room/AnswerStep.tsx",
+      "resources/js/modules/mock-interview/components/room/FeedbackStep.tsx",
+      "_arrow-right-CJYF2div.js",
+      "_download-Kpsj_nRL.js",
+      "_chart-column-DOiNJbrO.js",
+      "_target-axAmdHdo.js",
+      "_chevron-down-CMJ7G8JF.js"
+    ]
+  },
+  "resources/js/modules/mock-interview/components/ReportView.tsx": {
+    "file": "assets/ReportView-DIijpHF8.js",
+    "name": "ReportView",
+    "src": "resources/js/modules/mock-interview/components/ReportView.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_interviewStrings-fS6McZw_.js",
+      "_answerStatus-aTjwPFW5.js",
+      "_TranscriptText-BHMkk_DL.js",
+      "resources/js/modules/mock-interview/components/room/FeedbackStep.tsx",
+      "_ui-Cg5qv5Aq.js",
+      "_download-Kpsj_nRL.js",
+      "_rotate-ccw-Bo3_NB1E.js",
+      "_chart-column-DOiNJbrO.js",
+      "_target-axAmdHdo.js",
+      "_lightbulb-BpDxT59Q.js",
+      "_chevron-down-CMJ7G8JF.js",
+      "_arrow-right-CJYF2div.js",
+      "resources/js/modules/mock-interview/components/room/RoomParts.tsx",
+      "_InterviewerAvatar-mLWBIjYs.js",
+      "_dialog-BrobvQrQ.js",
+      "_loader-circle-Cnz7hodK.js",
+      "_input-Bwmx-9ea.js",
+      "_textarea-CpalboiU.js",
+      "_circle-check-SygBOvQ1.js",
+      "_circle-exclamation-point-BHzQDeIH.js"
+    ]
+  },
+  "resources/js/modules/mock-interview/components/room/AnswerStep.tsx": {
+    "file": "assets/AnswerStep-C0If2aCC.js",
+    "name": "AnswerStep",
+    "src": "resources/js/modules/mock-interview/components/room/AnswerStep.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_TranscriptText-BHMkk_DL.js",
+      "resources/js/modules/mock-interview/components/room/ListenStep.tsx",
+      "resources/js/modules/mock-interview/components/room/RoomParts.tsx",
+      "resources/js/modules/mock-interview/components/room/SuggestedAnswer.tsx",
+      "_textarea-CpalboiU.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_video-B-bqpf-S.js",
+      "resources/js/modules/mock-interview/components/shared/Choice.tsx",
+      "_rotate-ccw-Bo3_NB1E.js",
+      "_InterviewerAvatar-mLWBIjYs.js",
+      "_dialog-BrobvQrQ.js",
+      "_lightbulb-BpDxT59Q.js"
+    ]
+  },
+  "resources/js/modules/mock-interview/components/room/FeedbackStep.tsx": {
+    "file": "assets/FeedbackStep-BdUm1rFA.js",
+    "name": "FeedbackStep",
+    "src": "resources/js/modules/mock-interview/components/room/FeedbackStep.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "resources/js/modules/mock-interview/components/room/RoomParts.tsx",
+      "_loader-circle-Cnz7hodK.js",
+      "_arrow-right-CJYF2div.js",
+      "_InterviewerAvatar-mLWBIjYs.js",
+      "_dialog-BrobvQrQ.js"
+    ]
+  },
+  "resources/js/modules/mock-interview/components/room/ListenStep.tsx": {
+    "file": "assets/ListenStep-DBYQSLLQ.js",
+    "name": "ListenStep",
+    "src": "resources/js/modules/mock-interview/components/room/ListenStep.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "resources/js/modules/mock-interview/components/shared/Choice.tsx",
+      "resources/js/modules/mock-interview/components/room/RoomParts.tsx",
+      "resources/js/modules/mock-interview/components/room/SuggestedAnswer.tsx",
+      "_rotate-ccw-Bo3_NB1E.js",
+      "_InterviewerAvatar-mLWBIjYs.js",
+      "_dialog-BrobvQrQ.js",
+      "_lightbulb-BpDxT59Q.js"
+    ]
+  },
+  "resources/js/modules/mock-interview/components/room/RoomParts.tsx": {
+    "file": "assets/RoomParts-DCaS0-ZZ.js",
+    "name": "RoomParts",
+    "src": "resources/js/modules/mock-interview/components/room/RoomParts.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_InterviewerAvatar-mLWBIjYs.js",
+      "_dialog-BrobvQrQ.js"
+    ]
+  },
+  "resources/js/modules/mock-interview/components/room/SuggestedAnswer.tsx": {
+    "file": "assets/SuggestedAnswer-CLw3Y2fa.js",
+    "name": "SuggestedAnswer",
+    "src": "resources/js/modules/mock-interview/components/room/SuggestedAnswer.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_lightbulb-BpDxT59Q.js"
+    ]
+  },
+  "resources/js/modules/mock-interview/components/setup/SetupPage.tsx": {
+    "file": "assets/SetupPage-CjepJu63.js",
+    "name": "SetupPage",
+    "src": "resources/js/modules/mock-interview/components/setup/SetupPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_useInterviewerVoice-CUdZt46N.js",
+      "_InterviewerAvatar-mLWBIjYs.js",
+      "resources/js/modules/mock-interview/components/shared/Choice.tsx",
+      "_rotate-ccw-Bo3_NB1E.js",
+      "_rotate-ccw-clock-4_hANYSy.js",
+      "_mic-DAQgYkhB.js",
+      "_video-B-bqpf-S.js",
+      "_interviewStrings-fS6McZw_.js"
+    ]
+  },
+  "resources/js/modules/mock-interview/components/shared/Choice.tsx": {
+    "file": "assets/Choice-CVi-0L--.js",
+    "name": "Choice",
+    "src": "resources/js/modules/mock-interview/components/shared/Choice.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx"
+    ]
+  },
+  "resources/js/modules/mock-interview/pages/InterviewHistoryPage.tsx": {
+    "file": "assets/InterviewHistoryPage-iX_4sGDd.js",
+    "name": "InterviewHistoryPage",
+    "src": "resources/js/modules/mock-interview/pages/InterviewHistoryPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_ui-Cg5qv5Aq.js",
+      "_insights-Cc24wQPm.js",
+      "_interviewService--AuLpnDd.js",
+      "_labels-CLEOVZjW.js",
+      "_table-5WJ7CdFD.js",
+      "_play-DwiJtiyD.js",
+      "_mic-DAQgYkhB.js",
+      "_award-BfSTzenm.js",
+      "_message-square-text-B2UFGBlQ.js",
+      "_trash-Bmwk6kHb.js",
+      "_dialog-BrobvQrQ.js",
+      "_input-Bwmx-9ea.js",
+      "_textarea-CpalboiU.js",
+      "_circle-check-SygBOvQ1.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_loader-circle-Cnz7hodK.js",
+      "_skills-YIQ41UZi.js",
+      "_answerStatus-aTjwPFW5.js"
+    ]
+  },
+  "resources/js/modules/mock-interview/pages/InterviewSessionPage.tsx": {
+    "file": "assets/InterviewSessionPage-ZP61CILp.js",
+    "name": "InterviewSessionPage",
+    "src": "resources/js/modules/mock-interview/pages/InterviewSessionPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_ui-Cg5qv5Aq.js",
+      "_interviewService--AuLpnDd.js",
+      "_message-square-text-B2UFGBlQ.js",
+      "_arrow-left-C8E9mvkz.js",
+      "_zap-Dz9GptOk.js",
+      "_circle-check-SygBOvQ1.js",
+      "_chevron-down-CMJ7G8JF.js",
+      "_dialog-BrobvQrQ.js",
+      "_input-Bwmx-9ea.js",
+      "_textarea-CpalboiU.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_loader-circle-Cnz7hodK.js",
+      "_answerStatus-aTjwPFW5.js"
+    ]
+  },
+  "resources/js/modules/mock-interview/pages/MockInterviewPage.tsx": {
+    "file": "assets/MockInterviewPage-CZ4okl_w.js",
+    "name": "MockInterviewPage",
+    "src": "resources/js/modules/mock-interview/pages/MockInterviewPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "resources/js/modules/mock-interview/MockInterviewModule.tsx",
+      "_ui-Cg5qv5Aq.js",
+      "_dialog-BrobvQrQ.js",
+      "_input-Bwmx-9ea.js",
+      "_textarea-CpalboiU.js",
+      "_circle-check-SygBOvQ1.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_loader-circle-Cnz7hodK.js",
+      "_insights-Cc24wQPm.js",
+      "_skills-YIQ41UZi.js",
+      "resources/js/modules/mock-interview/components/setup/SetupPage.tsx",
+      "_useInterviewerVoice-CUdZt46N.js",
+      "_InterviewerAvatar-mLWBIjYs.js",
+      "_interviewStrings-fS6McZw_.js",
+      "resources/js/modules/mock-interview/components/shared/Choice.tsx",
+      "_rotate-ccw-Bo3_NB1E.js",
+      "_rotate-ccw-clock-4_hANYSy.js",
+      "_mic-DAQgYkhB.js",
+      "_video-B-bqpf-S.js",
+      "_InterviewRoom-Bjg4ve-V.js",
+      "_TranscriptText-BHMkk_DL.js",
+      "_ReviewStep-DY4qvEgK.js",
+      "resources/js/modules/mock-interview/components/room/RoomParts.tsx",
+      "_answerStatus-aTjwPFW5.js",
+      "resources/js/modules/mock-interview/components/room/ListenStep.tsx",
+      "resources/js/modules/mock-interview/components/room/SuggestedAnswer.tsx",
+      "_lightbulb-BpDxT59Q.js",
+      "resources/js/modules/mock-interview/components/room/AnswerStep.tsx",
+      "resources/js/modules/mock-interview/components/room/FeedbackStep.tsx",
+      "_arrow-right-CJYF2div.js",
+      "resources/js/modules/mock-interview/components/ReportView.tsx",
+      "_download-Kpsj_nRL.js",
+      "_chart-column-DOiNJbrO.js",
+      "_target-axAmdHdo.js",
+      "_chevron-down-CMJ7G8JF.js",
+      "_interviewService--AuLpnDd.js"
+    ]
+  },
+  "resources/js/modules/recommendation-tracking/pages/ProgressPage.tsx": {
+    "file": "assets/ProgressPage-BHWYdj99.js",
+    "name": "ProgressPage",
+    "src": "resources/js/modules/recommendation-tracking/pages/ProgressPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_ui-Cg5qv5Aq.js",
+      "_insights-Cc24wQPm.js",
+      "_skills-YIQ41UZi.js",
+      "_refresh-cw-Cen7CRFf.js",
+      "_mic-DAQgYkhB.js",
+      "_message-square-text-B2UFGBlQ.js",
+      "_target-axAmdHdo.js",
+      "_file-search-DSOY1kIn.js",
+      "_chevron-right-CUjj9rTP.js",
+      "_award-BfSTzenm.js",
+      "_sparkles-BZQYL_OX.js",
+      "_graduation-cap-B5bkrD7v.js",
+      "_dialog-BrobvQrQ.js",
+      "_input-Bwmx-9ea.js",
+      "_textarea-CpalboiU.js",
+      "_circle-check-SygBOvQ1.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_loader-circle-Cnz7hodK.js"
+    ]
+  },
+  "resources/js/modules/user-management/components/AuthLayout.tsx": {
+    "file": "assets/AuthLayout-DXY41KwU.js",
+    "name": "AuthLayout",
+    "src": "resources/js/modules/user-management/components/AuthLayout.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_input-group-y5P0W5B6.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_circle-check-SygBOvQ1.js",
+      "_eye-4jUX3aZM.js",
+      "_input-Bwmx-9ea.js"
+    ]
+  },
+  "resources/js/modules/user-management/components/RouteGuards.tsx": {
+    "file": "assets/RouteGuards-D_VTAZb8.js",
+    "name": "RouteGuards",
+    "src": "resources/js/modules/user-management/components/RouteGuards.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_ui-Cg5qv5Aq.js",
+      "_dialog-BrobvQrQ.js",
+      "_input-Bwmx-9ea.js",
+      "_textarea-CpalboiU.js",
+      "_circle-check-SygBOvQ1.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_loader-circle-Cnz7hodK.js"
+    ]
+  },
+  "resources/js/modules/user-management/pages/ForgotPasswordPage.tsx": {
+    "file": "assets/ForgotPasswordPage-BlfaopII.js",
+    "name": "ForgotPasswordPage",
+    "src": "resources/js/modules/user-management/pages/ForgotPasswordPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "resources/js/modules/user-management/components/AuthLayout.tsx",
+      "_at-sign-BBSWZ4CJ.js",
+      "_loader-circle-Cnz7hodK.js",
+      "_arrow-left-C8E9mvkz.js",
+      "_input-group-y5P0W5B6.js",
+      "_input-Bwmx-9ea.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_circle-check-SygBOvQ1.js",
+      "_eye-4jUX3aZM.js"
+    ]
+  },
+  "resources/js/modules/user-management/pages/LoginPage.tsx": {
+    "file": "assets/LoginPage-BPkG04SK.js",
+    "name": "LoginPage",
+    "src": "resources/js/modules/user-management/pages/LoginPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "resources/js/modules/user-management/components/AuthLayout.tsx",
+      "_loader-circle-Cnz7hodK.js",
+      "_shield-check-BgbJYByj.js",
+      "_at-sign-BBSWZ4CJ.js",
+      "_input-group-y5P0W5B6.js",
+      "_input-Bwmx-9ea.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_circle-check-SygBOvQ1.js",
+      "_eye-4jUX3aZM.js"
+    ]
+  },
+  "resources/js/modules/user-management/pages/ProfilePage.tsx": {
+    "file": "assets/ProfilePage-S3xlysYR.js",
+    "name": "ProfilePage",
+    "src": "resources/js/modules/user-management/pages/ProfilePage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "_separator-B4m43ICD.js",
+      "_ui-Cg5qv5Aq.js",
+      "_insights-Cc24wQPm.js",
+      "resources/js/modules/user-management/components/AuthLayout.tsx",
+      "_pencil-BIi48G8g.js",
+      "_message-square-text-B2UFGBlQ.js",
+      "_chevron-right-CUjj9rTP.js",
+      "_dialog-BrobvQrQ.js",
+      "_input-Bwmx-9ea.js",
+      "_textarea-CpalboiU.js",
+      "_circle-check-SygBOvQ1.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_loader-circle-Cnz7hodK.js",
+      "_skills-YIQ41UZi.js",
+      "_input-group-y5P0W5B6.js",
+      "_eye-4jUX3aZM.js"
+    ]
+  },
+  "resources/js/modules/user-management/pages/RegisterPage.tsx": {
+    "file": "assets/RegisterPage-CJvt9Q4x.js",
+    "name": "RegisterPage",
+    "src": "resources/js/modules/user-management/pages/RegisterPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "resources/js/modules/user-management/components/AuthLayout.tsx",
+      "_mail-check-D4QacyjT.js",
+      "_loader-circle-Cnz7hodK.js",
+      "_at-sign-BBSWZ4CJ.js",
+      "_input-group-y5P0W5B6.js",
+      "_input-Bwmx-9ea.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_circle-check-SygBOvQ1.js",
+      "_eye-4jUX3aZM.js"
+    ]
+  },
+  "resources/js/modules/user-management/pages/ResetPasswordPage.tsx": {
+    "file": "assets/ResetPasswordPage-gsk8-pe_.js",
+    "name": "ResetPasswordPage",
+    "src": "resources/js/modules/user-management/pages/ResetPasswordPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "resources/js/modules/user-management/components/AuthLayout.tsx",
+      "_loader-circle-Cnz7hodK.js",
+      "_input-group-y5P0W5B6.js",
+      "_input-Bwmx-9ea.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_circle-check-SygBOvQ1.js",
+      "_eye-4jUX3aZM.js"
+    ]
+  },
+  "resources/js/modules/user-management/pages/VerifyEmailPage.tsx": {
+    "file": "assets/VerifyEmailPage-fK7jy7xN.js",
+    "name": "VerifyEmailPage",
+    "src": "resources/js/modules/user-management/pages/VerifyEmailPage.tsx",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.tsx",
+      "resources/js/modules/user-management/components/AuthLayout.tsx",
+      "_mail-check-D4QacyjT.js",
+      "_loader-circle-Cnz7hodK.js",
+      "_input-group-y5P0W5B6.js",
+      "_input-Bwmx-9ea.js",
+      "_circle-exclamation-point-BHzQDeIH.js",
+      "_circle-check-SygBOvQ1.js",
+      "_eye-4jUX3aZM.js"
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+# Siapa yang mesti meluluskan Pull Request yang mengubah fail ini.
+# Aktifkan di GitHub: Settings → Branches → rule untuk "main" → "Require a pull request before merging"
+# + "Require review from Code Owners".
+
+# Lalai: semua fail lain perlu kelulusan Izzat (ketua projek)
+*                                                         @Izzat-Zdin
+
+# --- Modul Izzat (siap; jangan ubah tanpa kelulusan Izzat) ---
+/resources/js/modules/dashboard/                          @Izzat-Zdin
+/resources/js/modules/mock-interview/                     @Izzat-Zdin
+/resources/js/modules/interview-readiness/                @Izzat-Zdin
+/resources/js/modules/recommendation-tracking/            @Izzat-Zdin
+/app/Http/Controllers/Api/InterviewSessionController.php  @Izzat-Zdin
+/app/Http/Controllers/Api/InterviewTranscriptionController.php @Izzat-Zdin
+/app/Services/Interview/                                  @Izzat-Zdin
+/app/Policies/InterviewSessionPolicy.php                  @Izzat-Zdin
+
+# --- Fail kongsi (semua modul bergantung padanya) ---
+/routes/                                                  @Izzat-Zdin
+/resources/js/lib/                                        @Izzat-Zdin
+/resources/js/components/                                 @Izzat-Zdin
+/vercel.json                                              @Izzat-Zdin
+/api/                                                     @Izzat-Zdin
+
+# --- Modul ahli kumpulan ---
+# Gantikan @USERNAME-... dengan username GitHub sebenar, kemudian buang tanda # di depan baris.
+# /resources/js/modules/user-management/                  @USERNAME-NADA
+# /resources/js/modules/admin/user-management/            @USERNAME-NADA
+# /app/Http/Controllers/Api/ProfileController.php         @USERNAME-NADA
+# /app/Http/Controllers/Api/Admin/UserController.php      @USERNAME-NADA
+# /resources/js/modules/ai-resume-analyzer/               @USERNAME-SHAFINAZ
+# /app/Http/Controllers/Api/ResumeController.php          @USERNAME-SHAFINAZ
+# /resources/js/modules/learning-recommendation/          @USERNAME-SHAFINAZ @USERNAME-WANI
+# /resources/js/modules/admin/learning-resources/         @USERNAME-WANI
+# /app/Http/Controllers/Api/LearningController.php        @USERNAME-SHAFINAZ @USERNAME-WANI
+# /app/Http/Controllers/Api/Admin/ResourceController.php  @USERNAME-WANI
+# /app/Models/LearningResource.php                        @USERNAME-WANI

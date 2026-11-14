@@ -1,0 +1,1 @@
+async function i({file:e,text:n,targetRole:r,jobDescription:t,analysis:a,analyzedAt:o}){throw new Error("Belum dibina (TODO)")}async function s(e){return null}function l(e,n=50){return Promise.resolve([])}async function u(e){throw new Error("Belum dibina (TODO)")}async function d(e){throw new Error("Belum dibina (TODO)")}export{d as a,u as d,s as g,l,i as u};

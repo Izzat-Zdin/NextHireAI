@@ -1,0 +1,1 @@
+const e={HR:"HR",Tech:"Technical",Behaviour:"Behavioural"},a={Finish:{label:"Finished",tone:"green"},Active:{label:"In progress",tone:"blue"},Pause:{label:"Paused",tone:"amber"},Cancel:{label:"Cancelled",tone:"slate"}};export{e as I,a as S};

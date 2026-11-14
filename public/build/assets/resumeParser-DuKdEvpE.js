@@ -1,0 +1,1 @@
+const n=100,t=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain";function o(e){return"—"}async function a(e){throw new Error("Belum dibina (TODO)")}function i(e){throw new Error("Belum dibina (TODO)")}export{t as A,n as M,i as a,o as f,a as p};
