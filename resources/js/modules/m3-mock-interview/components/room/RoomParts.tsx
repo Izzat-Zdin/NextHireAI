@@ -1,21 +1,31 @@
 import type { ReactNode } from "react"
 import { Check } from "lucide-react"
-import type { Persona } from "../../types"
+import type { EvaluationResult } from "../../types"
 import type { InterviewStrings } from "../../i18n/interviewStrings"
-import { personaInfo } from "../../services/personas"
-import { AvatarStatusIndicator, InterviewerAvatar, type AvatarState } from "../avatar/InterviewerAvatar"
 import { Button } from "@/components/shadcn/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/shadcn/dialog"
 import { cn } from "@/lib/utils"
 
-export type RoomStep = "listen" | "answer" | "review" | "feedback"
-export const ROOM_STEPS: RoomStep[] = ["listen", "answer", "review", "feedback"]
+/** The four pages of one mock interview, shown as a bar on every page of the flow. */
+export type FlowStep = "setup" | "interview" | "feedback" | "report"
+export const FLOW_STEPS: FlowStep[] = ["setup", "interview", "feedback", "report"]
 
-export function StepBar({ step, s }: { step: RoomStep; s: InterviewStrings }) {
-  const current = ROOM_STEPS.indexOf(step)
+export const formatClock = (secs: number) => `${String(Math.floor(secs / 60)).padStart(2, "0")}:${String(secs % 60).padStart(2, "0")}`
+
+/** "Improve next time": weaknesses first, then the improvement tips, without repeats. */
+export function improvementPoints(evaluation: EvaluationResult) {
+  return [...new Set([...evaluation.weaknesses, ...evaluation.improvements])].slice(0, 3)
+}
+
+/** Teal for good scores (80+), amber for scores to work on. */
+export const scoreTextClass = (score: number) => (score >= 80 ? "text-primary" : "text-[var(--iv-warn-fg)]")
+export const scoreBarClass = (score: number) => (score >= 80 ? "bg-primary" : "bg-amber-500")
+
+export function FlowBar({ step, s }: { step: FlowStep; s: InterviewStrings }) {
+  const current = FLOW_STEPS.indexOf(step)
   return (
-    <ol aria-label={s.stepsLabel} className="grid grid-cols-4 gap-1.5 sm:gap-2">
-      {ROOM_STEPS.map((id, index) => {
+    <ol aria-label={s.flowLabel} className="no-print grid grid-cols-4 gap-1.5 sm:gap-2.5">
+      {FLOW_STEPS.map((id, index) => {
         const done = index < current
         const active = index === current
         return (
@@ -23,25 +33,16 @@ export function StepBar({ step, s }: { step: RoomStep; s: InterviewStrings }) {
             key={id}
             aria-current={active ? "step" : undefined}
             className={cn(
-              "flex min-h-11 min-w-0 flex-col items-center justify-center gap-1 rounded-lg px-1.5 py-2 text-center text-xs sm:flex-row sm:justify-start sm:gap-2 sm:px-3 sm:text-left sm:text-sm",
-              active && "bg-primary font-semibold text-primary-foreground",
-              done && "bg-[var(--iv-step-done)] font-medium text-[var(--iv-step-done-fg)]",
+              "flex min-h-9 min-w-0 items-center justify-center gap-1.5 rounded-full px-2 py-1.5 text-center text-xs font-semibold",
+              active && "bg-primary text-primary-foreground",
+              done && "bg-[var(--iv-step-done)] text-[var(--iv-step-done-fg)]",
               !active && !done && "bg-muted text-muted-foreground",
             )}
           >
-            <span
-              aria-hidden="true"
-              className={cn(
-                "grid size-5.5 shrink-0 place-items-center rounded-full text-xs sm:size-6",
-                active && "bg-primary-foreground text-primary",
-                done && "text-[var(--iv-step-done-fg)]",
-                !active && !done && "bg-card",
-              )}
-            >
-              {done ? <Check className="size-4" strokeWidth={2.6} /> : index + 1}
-            </span>
+            {done && <Check className="size-3.5 shrink-0" strokeWidth={2.6} aria-hidden="true" />}
             <span className="min-w-0 truncate">
-              {s.steps[id]}
+              {!done && <span className="max-sm:hidden">{index + 1} </span>}
+              {s.flow[id]}
               {done && <span className="sr-only"> ({s.stepDone})</span>}
             </span>
           </li>
@@ -51,63 +52,19 @@ export function StepBar({ step, s }: { step: RoomStep; s: InterviewStrings }) {
   )
 }
 
-/** The dark interviewer panel at the top of every step. */
-export function InterviewerPanel({
-  persona,
-  state,
-  mouthOpen,
-  s,
-  large,
-  bubble,
-  children,
-}: {
-  persona: Persona
-  state: AvatarState
-  mouthOpen?: number | null
-  s: InterviewStrings
-  large?: boolean
-  /** Show the content in a light speech bubble (when the interviewer is talking). */
-  bubble?: boolean
-  children: ReactNode
-}) {
-  const info = personaInfo(persona)
+/** Page title block used by the room, feedback and report pages. */
+export function PageHeading({ eyebrow, title, subtitle, children }: { eyebrow: string; title: string; subtitle?: string; children?: ReactNode }) {
   return (
-    <section
-      aria-label={s.interviewerRegion}
-      className={cn(
-        "flex flex-col gap-4 rounded-2xl bg-[var(--iv-panel)] text-[var(--iv-panel-fg)] sm:flex-row sm:items-center sm:gap-6",
-        large ? "p-5 sm:p-6" : "p-4 sm:px-6 sm:py-5",
-      )}
-    >
-      <div className={cn("flex shrink-0 items-center gap-3", large && "sm:w-36 sm:flex-col sm:gap-2")}>
-        <InterviewerAvatar persona={persona} state={state} mouthOpen={mouthOpen} size={large ? 120 : 80} className={cn(!large && "max-sm:size-16")} />
-        <div className={cn("min-w-0", large && "sm:text-center")}>
-          <p className="text-[15px] font-semibold">{info.name}</p>
-          <p className="mt-0.5 flex items-center gap-1.5 text-xs text-[var(--iv-panel-muted)] sm:justify-[inherit]">
-            <AvatarStatusIndicator state={state} />
-            {s.status[state]}
-          </p>
-        </div>
+    <header className="flex flex-wrap items-center justify-between gap-3">
+      <div className="min-w-0 flex-1 basis-64">
+        <p className="mb-1 text-xs font-medium text-muted-foreground">{eyebrow}</p>
+        <h1 className="font-heading text-xl font-bold tracking-tight [overflow-wrap:anywhere] sm:text-2xl">{title}</h1>
+        {subtitle && <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>}
       </div>
-      <div
-        className={cn(
-          "min-w-0 flex-1",
-          bubble ? "rounded-[4px_16px_16px_16px] bg-[var(--iv-bubble)] px-5 py-4 text-[var(--iv-bubble-fg)]" : "text-[15px] leading-relaxed text-[var(--iv-panel-muted)]",
-        )}
-      >
-        {children}
-      </div>
-    </section>
+      {children && <div className="no-print flex flex-wrap items-center gap-2 max-sm:w-full [&>*]:max-sm:flex-1">{children}</div>}
+    </header>
   )
 }
-
-/** One row of step buttons: optional secondary on the left, the single primary on the right. */
-export function StepActions({ children }: { children: ReactNode }) {
-  return <div className="flex flex-col-reverse gap-2.5 border-t pt-5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">{children}</div>
-}
-
-export const primaryButton = "min-h-12 px-6 text-[15px] font-semibold"
-export const secondaryButton = "min-h-12 px-5 text-[15px]"
 
 export function ExitDialog({
   open,

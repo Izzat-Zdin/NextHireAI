@@ -11,6 +11,7 @@ import type { AnswerRecord, Difficulty, InterviewType, Language, Persona, Questi
 import { SetupPage } from "./components/setup/SetupPage"
 import { InterviewRoom } from "./components/room/InterviewRoom"
 import { ReportView } from "./components/ReportView"
+import { FeedbackView } from "./components/FeedbackView"
 import { getQuestionsForSession } from "./services/questions"
 import {
   cancelSession,
@@ -128,11 +129,13 @@ function writeLocalSetup(config: SetupConfig) {
 export function MockInterviewModule() {
   const { profile } = useAuth()
   const navigate = useNavigate()
-  const [phase, setPhase] = useState<"setup" | "room" | "report">("setup")
+  const [phase, setPhase] = useState<"setup" | "room" | "feedback" | "report">("setup")
   const [config, setConfig] = useState<SetupConfig>(DEFAULT_CONFIG)
   const [questions, setQuestions] = useState<QuestionItem[]>([])
   const [answers, setAnswers] = useState<Record<string, AnswerRecord>>({})
   const [overallScore, setOverallScore] = useState(0)
+  const [sessionSeconds, setSessionSeconds] = useState(0)
+  const [feedbackIndex, setFeedbackIndex] = useState(0)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [saveWarning, setSaveWarning] = useState<string | null>(null)
@@ -248,17 +251,20 @@ export function MockInterviewModule() {
     }
   }
 
-  const handleFinish = async (completed: Record<string, AnswerRecord>, finalScore: number) => {
+  const handleFinish = async (completed: Record<string, AnswerRecord>, finalScore: number, seconds: number) => {
     setAnswers(completed)
     setOverallScore(finalScore)
+    setSessionSeconds(seconds)
+    setFeedbackIndex(0)
     if (profile && sessionRef.current) {
       try {
         await completeSession({ created: sessionRef.current, answers: completed, savedIds: savedIds.current })
       } catch (err) {
-        setSaveWarning(`Your report is shown below, but saving to your history failed: ${errorMessage(err)}`)
+        setSaveWarning(`Your feedback is shown below, but saving to your history failed: ${errorMessage(err)}`)
       }
     }
-    setPhase("report")
+    setPhase("feedback")
+    window.scrollTo({ top: 0 })
   }
 
   const handleExit = () => {
@@ -308,6 +314,20 @@ export function MockInterviewModule() {
     )
   }
 
+  const goTo = (next: "feedback" | "report") => {
+    setPhase(next)
+    window.scrollTo({ top: 0 })
+  }
+
+  if (phase === "feedback") {
+    return (
+      <>
+        {saveWarning && <Alert tone="error">{saveWarning}</Alert>}
+        <FeedbackView key={feedbackIndex} config={config} answers={answers} initialIndex={feedbackIndex} onContinue={() => goTo("report")} />
+      </>
+    )
+  }
+
   if (phase === "report") {
     return (
       <>
@@ -316,12 +336,18 @@ export function MockInterviewModule() {
           config={config}
           answers={answers}
           overallScore={overallScore}
+          sessionSeconds={sessionSeconds}
           onPracticeAgain={() => {
             sessionRef.current = null
             setAnswers({})
             setPhase("setup")
+            window.scrollTo({ top: 0 })
           }}
-          onNavigateTab={(tab) => navigate(`/${tab}`)}
+          onBackToFeedback={() => goTo("feedback")}
+          onOpenQuestion={(index) => {
+            setFeedbackIndex(index)
+            goTo("feedback")
+          }}
         />
       </>
     )
