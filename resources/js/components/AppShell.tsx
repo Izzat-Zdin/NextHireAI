@@ -241,7 +241,7 @@ function Shell({ open, onOpenChange, children }: { open: boolean; onOpenChange: 
         </header>
         <div
           className={cn(
-            "mx-auto w-full max-w-[1400px] min-w-0 px-4 py-6 sm:px-6 lg:px-8",
+            "mx-auto w-full max-w-[1400px] 2xl:max-w-[1680px] min-w-0 px-4 py-6 sm:px-6 lg:px-8",
             // room for the fixed bottom bar on phones
             !immersive && "max-md:pb-[calc(4.5rem+env(safe-area-inset-bottom))]",
           )}
