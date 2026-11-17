@@ -12,6 +12,8 @@ export interface PersonaInfo {
   voice: { pitch: number; rate: number; prefer: "female" | "male" }
   /** Short line for the setup page voice check. */
   greeting: { en: string; ms: string }
+  /** Folder under public/interviewers/ with this interviewer's video clips (see docs/INTERVIEWER-VIDEOS.md). */
+  videoDir: string
 }
 
 /** Display order on the setup page. Values match interview_sessions.persona. */
@@ -22,6 +24,7 @@ export const PERSONAS: PersonaInfo[] = [
     blurb: { en: "Friendly HR lead. Good for a first try.", ms: "Ketua HR yang mesra. Sesuai untuk cubaan pertama." },
     voice: { pitch: 1.1, rate: 0.98, prefer: "female" },
     greeting: { en: "Hi, I'm Aisyah. I'll be your interviewer today.", ms: "Hai, saya Aisyah. Saya akan menemu duga anda hari ini." },
+    videoDir: "aisyah",
   },
   {
     id: "strict",
@@ -29,6 +32,7 @@ export const PERSONAS: PersonaInfo[] = [
     blurb: { en: "Strict tech lead. Asks hard follow-ups.", ms: "Ketua teknikal yang tegas. Soalan susulan yang sukar." },
     voice: { pitch: 0.85, rate: 1.0, prefer: "male" },
     greeting: { en: "Good day, I'm Faiz. Let's get started.", ms: "Selamat sejahtera, saya Faiz. Mari kita mulakan." },
+    videoDir: "faiz",
   },
   {
     id: "neutral",
@@ -36,6 +40,7 @@ export const PERSONAS: PersonaInfo[] = [
     blurb: { en: "Calm senior manager. Probes on impact.", ms: "Pengurus kanan yang tenang. Bertanya tentang impak." },
     voice: { pitch: 1.0, rate: 0.95, prefer: "female" },
     greeting: { en: "Hello, I'm Mei Ling. Take your time with each answer.", ms: "Helo, saya Mei Ling. Ambil masa anda untuk setiap jawapan." },
+    videoDir: "meiling",
   },
 ]
 

@@ -4,6 +4,7 @@ import type { Persona } from "../../types"
 import type { InterviewStrings } from "../../i18n/interviewStrings"
 import { personaInfo } from "../../services/personas"
 import { AvatarStatusIndicator, InterviewerAvatar, type AvatarState } from "../avatar/InterviewerAvatar"
+import { InterviewerVideo, useInterviewerClips } from "../avatar/InterviewerVideo"
 import { cn } from "@/lib/utils"
 
 const control =
@@ -20,6 +21,31 @@ const LAYOUTS: { id: StageLayout; icon: typeof Mic }[] = [
 /** The interviewer's tile: large in the middle of the stage, or small in the corner. */
 function InterviewerTile({ persona, state, mouthOpen, s, size }: { persona: Persona; state: AvatarState; mouthOpen?: number | null; s: InterviewStrings; size: "large" | "medium" | "small" }) {
   const info = personaInfo(persona)
+  const clips = useInterviewerClips(persona)
+
+  // Real-looking video clips, when they have been added (see docs/INTERVIEWER-VIDEOS.md).
+  if (clips)
+    return (
+      <div className="relative size-full">
+        <InterviewerVideo persona={persona} state={state} avatarSize={96} className="absolute inset-0" />
+        {size === "small" ? (
+          <span className="absolute bottom-1.5 left-1.5 max-w-[calc(100%-0.75rem)] truncate rounded-full bg-black/65 px-2 py-0.5 text-[10px] text-white sm:text-xs">
+            {info.name}
+          </span>
+        ) : (
+          <>
+            <p className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full bg-black/60 px-2.5 py-1 text-xs font-medium text-white" aria-live="polite">
+              <AvatarStatusIndicator state={state} />
+              {info.name} · {s.status[state].toLowerCase()}
+            </p>
+            <span className="absolute top-3 left-3 rounded-full bg-black/60 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-white uppercase">
+              {s.aiInterviewer}
+            </span>
+          </>
+        )}
+      </div>
+    )
+
   return (
     <div className="flex size-full flex-col items-center justify-center gap-2 text-center">
       <InterviewerAvatar
