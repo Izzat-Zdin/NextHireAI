@@ -1,4 +1,5 @@
-import { Mic, MicOff, PhoneOff, RotateCcw, UserRound, Video, VideoOff, Volume2 } from "lucide-react"
+import { useState } from "react"
+import { Columns2, Mic, MicOff, PhoneOff, RotateCcw, UserRound, Video, VideoOff, Volume2 } from "lucide-react"
 import type { Persona } from "../../types"
 import type { InterviewStrings } from "../../i18n/interviewStrings"
 import { personaInfo } from "../../services/personas"
@@ -8,7 +9,77 @@ import { cn } from "@/lib/utils"
 const control =
   "grid size-11 place-items-center rounded-full text-white outline-none transition-colors focus-visible:ring-[3px] focus-visible:ring-white/60 disabled:opacity-40"
 
-/** Speak mode: the video-call stage. Interviewer in the middle, your camera as a small self-view, call controls below. */
+/** Like Google Meet / Zoom: who fills the stage. */
+export type StageLayout = "speaker" | "self" | "grid"
+const LAYOUTS: { id: StageLayout; icon: typeof Mic }[] = [
+  { id: "speaker", icon: UserRound },
+  { id: "self", icon: Video },
+  { id: "grid", icon: Columns2 },
+]
+
+/** The interviewer's tile: large in the middle of the stage, or small in the corner. */
+function InterviewerTile({ persona, state, mouthOpen, s, size }: { persona: Persona; state: AvatarState; mouthOpen?: number | null; s: InterviewStrings; size: "large" | "medium" | "small" }) {
+  const info = personaInfo(persona)
+  return (
+    <div className="flex size-full flex-col items-center justify-center gap-2 text-center">
+      <InterviewerAvatar
+        persona={persona}
+        state={state}
+        mouthOpen={mouthOpen}
+        size={size === "large" ? 112 : size === "medium" ? 96 : 48}
+        className={cn(size === "large" && "max-sm:size-20", size === "medium" && "max-sm:size-16", size === "small" && "max-sm:size-10")}
+      />
+      {size === "small" ? (
+        <span className="max-w-full truncate rounded-full bg-black/55 px-2 py-0.5 text-[10px] text-white sm:text-xs">{info.name}</span>
+      ) : (
+        <p className="flex items-center gap-1.5 text-sm font-medium" aria-live="polite">
+          <AvatarStatusIndicator state={state} />
+          {info.name} · {s.status[state].toLowerCase()}
+        </p>
+      )}
+    </div>
+  )
+}
+
+/** Your camera tile. The <video> element is the only one on the page, so it moves between tiles when the layout changes. */
+function SelfTile({
+  s,
+  setVideoElement,
+  cameraOn,
+  recording,
+  paused,
+  size,
+}: {
+  s: InterviewStrings
+  setVideoElement: (el: HTMLVideoElement | null) => void
+  cameraOn: boolean
+  recording: boolean
+  paused: boolean
+  size: "large" | "small"
+}) {
+  return (
+    <div className="relative flex size-full items-center justify-center bg-[#2a2d33]">
+      <video ref={setVideoElement} autoPlay playsInline muted className={cn("absolute inset-0 size-full -scale-x-100 object-cover", !cameraOn && "hidden")} />
+      {!cameraOn && <UserRound className={cn("text-[#8a9099]", size === "large" ? "size-16" : "size-8")} aria-hidden="true" />}
+      <span
+        className={cn(
+          "absolute bottom-1.5 left-1.5 max-w-[calc(100%-0.75rem)] truncate rounded-full bg-black/65 px-2 py-0.5 text-white",
+          size === "large" ? "bottom-3 left-3 text-xs" : "text-[10px] sm:text-xs",
+        )}
+      >
+        {s.selfView}
+      </span>
+      {recording &&
+        (paused ? (
+          <MicOff className="absolute top-2 right-2 size-4 text-white/70" aria-hidden="true" />
+        ) : (
+          <Mic className="absolute top-2 right-2 size-4 text-[var(--iv-meter)]" aria-hidden="true" />
+        ))}
+    </div>
+  )
+}
+
+/** Speak mode: the video-call stage. Choose who fills the stage (interviewer, you, or side by side), call controls below. */
 export function VideoStage({
   s,
   persona,
@@ -48,12 +119,17 @@ export function VideoStage({
   onEnd: () => void
 }) {
   const info = personaInfo(persona)
+  const [layout, setLayout] = useState<StageLayout>("speaker")
+  const interviewer = (size: "large" | "medium" | "small") => <InterviewerTile persona={persona} state={state} mouthOpen={mouthOpen} s={s} size={size} />
+  const self = (size: "large" | "small") => (
+    <SelfTile s={s} setVideoElement={setVideoElement} cameraOn={cameraOn} recording={recording} paused={paused} size={size} />
+  )
+  const pip = "absolute top-3 right-3 z-10 aspect-[4/3] w-24 overflow-hidden rounded-xl border border-white/30 shadow-lg outline-none transition-transform hover:scale-[1.03] focus-visible:ring-[3px] focus-visible:ring-white/60 sm:w-44"
+
   return (
-    <section
-      aria-label={s.interviewerRegion}
-      className="relative flex min-h-[420px] flex-col justify-between gap-4 overflow-hidden rounded-2xl bg-[var(--iv-panel)] p-3 text-[var(--iv-panel-fg)] sm:min-h-[460px] sm:p-4"
-    >
-      <div className="flex items-start justify-between gap-3">
+    <section aria-label={s.interviewerRegion} className="flex flex-col gap-3 overflow-hidden rounded-2xl bg-[var(--iv-panel)] p-3 text-[var(--iv-panel-fg)] sm:gap-4 sm:p-4">
+      {/* Top bar: who and which question, plus the layout switch */}
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex flex-wrap items-center gap-2">
           <span className="flex items-center gap-2 rounded-full bg-white/10 py-1 pr-3 pl-1.5 text-xs font-medium">
             <InterviewerAvatar persona={persona} state="idle" size={22} decorative />
@@ -62,30 +138,53 @@ export function VideoStage({
           </span>
           <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold">{questionLabel}</span>
         </div>
-
-        {/* Self-view */}
-        <div className="relative flex aspect-[4/3] w-24 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/30 bg-[#2a2d33] sm:w-44">
-          <video ref={setVideoElement} autoPlay playsInline muted className={cn("size-full -scale-x-100 object-cover", cameraOn ? "block" : "hidden")} />
-          {!cameraOn && <UserRound className="size-8 text-[#8a9099]" aria-hidden="true" />}
-          <span className="absolute bottom-1.5 left-1.5 max-w-[calc(100%-0.75rem)] truncate rounded-full bg-black/65 px-2 py-0.5 text-[10px] text-white sm:text-xs">
-            {s.selfView}
-          </span>
-          {recording && !paused && <Mic className="absolute top-1.5 right-1.5 size-3.5 text-[var(--iv-meter)]" aria-hidden="true" />}
+        <div role="radiogroup" aria-label={s.layoutLabel} className="flex gap-0.5 rounded-full bg-white/10 p-0.5">
+          {LAYOUTS.map(({ id, icon: Icon }) => {
+            const selected = layout === id
+            return (
+              <button
+                key={id}
+                type="button"
+                role="radio"
+                aria-checked={selected}
+                aria-label={s.layouts[id]}
+                title={s.layouts[id]}
+                onClick={() => setLayout(id)}
+                className={cn(
+                  "flex min-h-8 items-center gap-1.5 rounded-full px-2.5 text-xs font-medium outline-none focus-visible:ring-2 focus-visible:ring-white/60",
+                  selected ? "bg-white text-[#16181d]" : "text-white/75 hover:text-white",
+                )}
+              >
+                <Icon className="size-3.5" aria-hidden="true" />
+                <span className="max-sm:hidden">{s.layouts[id]}</span>
+              </button>
+            )
+          })}
         </div>
       </div>
 
-      <div className="flex flex-col items-center gap-2 text-center">
-        <InterviewerAvatar persona={persona} state={state} mouthOpen={mouthOpen} size={112} className="max-sm:size-20" />
-        <p className="flex items-center gap-1.5 text-sm font-medium" aria-live="polite">
-          <AvatarStatusIndicator state={state} />
-          {info.name} · {s.status[state].toLowerCase()}
-        </p>
-        <div className="mt-1 w-full max-w-2xl rounded-xl bg-white/10 px-4 py-3 text-left">
-          <h2 className="font-heading text-base leading-snug font-semibold [overflow-wrap:anywhere] sm:text-lg">{questionText}</h2>
-          {tip && <p className="mt-1 text-xs text-[var(--iv-panel-muted)] sm:text-sm">{tip}</p>}
+      {/* Stage */}
+      {layout === "grid" ? (
+        <div className="grid grid-cols-2 gap-2 sm:gap-3">
+          <div className="aspect-[4/3] overflow-hidden rounded-xl bg-white/5">{interviewer("medium")}</div>
+          <div className="aspect-[4/3] overflow-hidden rounded-xl">{self("large")}</div>
         </div>
+      ) : (
+        <div className="relative h-60 overflow-hidden rounded-xl sm:h-72">
+          {layout === "speaker" ? interviewer("large") : self("large")}
+          <button type="button" onClick={() => setLayout(layout === "speaker" ? "self" : "speaker")} aria-label={s.swapView} title={s.swapView} className={pip}>
+            {layout === "speaker" ? self("small") : <span className="block size-full bg-[#22302f]">{interviewer("small")}</span>}
+          </button>
+        </div>
+      )}
+
+      {/* Question */}
+      <div className="rounded-xl bg-white/10 px-4 py-3">
+        <h2 className="font-heading text-base leading-snug font-semibold [overflow-wrap:anywhere] sm:text-lg">{questionText}</h2>
+        {tip && <p className="mt-1 text-xs text-[var(--iv-panel-muted)] sm:text-sm">{tip}</p>}
       </div>
 
+      {/* Call controls */}
       <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3">
         {asking ? (
           <button
@@ -101,6 +200,7 @@ export function VideoStage({
             onClick={onMicToggle}
             aria-pressed={paused}
             aria-label={paused ? s.resume : s.pause}
+            title={paused ? s.resume : s.pause}
             className={cn(control, paused ? "bg-white/90 text-[#16181d]" : "bg-white/15 hover:bg-white/25")}
           >
             {paused ? <MicOff className="size-5" /> : <Mic className="size-5" />}
@@ -111,6 +211,7 @@ export function VideoStage({
           onClick={onCameraToggle}
           aria-pressed={cameraOn}
           aria-label={cameraOn ? s.cameraOff : s.cameraOn}
+          title={cameraOn ? s.cameraOff : s.cameraOn}
           className={cn(control, "bg-white/15 hover:bg-white/25")}
         >
           {cameraOn ? <Video className="size-5" /> : <VideoOff className="size-5" />}
