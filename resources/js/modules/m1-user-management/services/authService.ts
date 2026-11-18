@@ -106,33 +106,22 @@ export const authService = {
   },
 
   async sendPasswordReset(email: string) {
-    // TODO (Nada): Hantar permintaan pautan reset (Inertia form post, bukan fetch JSON):
-    //   await post("/forgot-password", { email })
-    //   `post` (fungsi di atas) resolve bila berjaya; reject dengan mesej validation pertama
-    //   (melalui friendlyAuthError) bila gagal. Backend redirect back dengan flash `status`.
-    void email
-    throw new Error("Belum dibina (TODO)")
+   await post("/forgot-password",{email})
   },
 
   /** Signed-in user changing their password (profile page). */
   async updatePassword(password: string) {
-    // TODO (Nada): PUT /api/profile/password (JSON, guna `api`) dengan body
-    //   { password, password_confirmation: password }  (page sudah semak kedua-dua input sama).
-    //   Bila gagal: ambil mesej validation pertama → error.errors ? Object.values(error.errors)[0]?.[0] : undefined,
-    //   kemudian throw new Error(friendlyAuthError(first ?? error.message)).
-    void password
-    throw new Error("Belum dibina (TODO)")
+    await api
+    .put("/api/profile/password",{password,password_confirmation: password})
+    .catch((error:Error&{errors?:Record<string,string[]>})=>{
+      const first=error.errors ? Object.values(error.errors)[0]?.[0] : undefined
+        throw new Error(friendlyAuthError(first ?? error.message))
+    })
   },
 
   /** Reset from the emailed link (token + email come from the URL). */
   async resetPassword(token: string, email: string, password: string) {
-    // TODO (Nada): Inertia form post ke /reset-password:
-    //   await post("/reset-password", { token, email, password, password_confirmation: password })
-    //   Bila berjaya backend redirect ke /login dengan flash status "Your password has been reset.".
-    void token
-    void email
-    void password
-    throw new Error("Belum dibina (TODO)")
+    await post("/reset-password", { token, email, password, password_confirmation: password })
   },
 
   async signOut() {
