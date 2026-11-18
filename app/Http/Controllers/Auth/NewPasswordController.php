@@ -3,8 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rules;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -28,28 +34,30 @@ class NewPasswordController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        // TODO (Nada): Tetapkan kata laluan baharu menggunakan token dari emel.
-        //   1. Validate:
-        //        'token'    => 'required',
-        //        'email'    => 'required|email',
-        //        'password' => ['required', 'confirmed', Rules\Password::min(8)]   (use Illuminate\Validation\Rules;)
-        //   2. $status = Password::reset(
-        //          $request->only('email', 'password', 'password_confirmation', 'token'),
-        //          function ($user) use ($request) {
-        //              $user->forceFill([
-        //                  'password' => Hash::make($request->password),
-        //                  'remember_token' => Str::random(60),
-        //              ])->save();
-        //              event(new PasswordReset($user));
-        //          }
-        //      );
-        //      (imports: Illuminate\Support\Facades\Password, Illuminate\Support\Facades\Hash, Illuminate\Support\Str,
-        //       Illuminate\Auth\Events\PasswordReset)
-        //   3. Jika $status == Password::PasswordReset → return to_route('login')->with('status', __($status));
-        //      (mesej: "Your password has been reset.")
-        //   4. Jika gagal (token salah / tamat tempoh / emel tiada) →
-        //      throw ValidationException::withMessages(['email' => [__($status)]]);   (use Illuminate\Validation\ValidationException;)
-        //      cth mesej: "This password reset token is invalid."
-        return back()->withErrors(['email' => 'Belum dibina (TODO): fungsi reset kata laluan belum siap.']);
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => ['required', 'confirmed', Rules\Password::min(8)],
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user) use ($request) {
+                $user->forceFill([
+                    'password' => Hash::make($request->password),
+                    'remember_token' => Str::random(60),
+                ])->save();
+
+                event(new PasswordReset($user));
+            }
+        );
+
+        if ($status == Password::PasswordReset) {
+            return to_route('login')->with('status', __($status));
+        }
+
+        throw ValidationException::withMessages([
+            'email' => [__($status)],
+        ]);
     }
 }
