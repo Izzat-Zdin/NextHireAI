@@ -1,5 +1,6 @@
 // Admin · User Management via the Laravel API (admin middleware).
 // The backend refuses an admin changing their OWN role/status, like the original DB trigger did.
+import { api, qs } from "@/lib/api"
 import type { InterviewSessionSummary, UserProfile, UserRole, UserStatus } from "@/lib/types"
 
 export interface ListUsersParams {
@@ -19,21 +20,13 @@ export interface ListUsersResult {
 
 /** Collapses whitespace; the backend escapes LIKE wildcards itself. */
 export function escapeSearch(raw: string) {
-  // TODO (Nada): Tukar semua whitespace berturut-turut kepada satu ruang dan trim:
-  //   return raw.replace(/\s+/g, " ").trim()
-  return raw
+  return raw.replace(/\s+/g, " ").trim()
 }
 
 export async function listUsers({ search = "", role = "all", status = "all", page = 1, pageSize = 20 }: ListUsersParams = {}): Promise<ListUsersResult> {
-  // TODO (Nada): GET /api/admin/users dengan query string (import { api, qs } from "@/lib/api"):
-  //   return api.get<ListUsersResult>(
-  //     `/api/admin/users${qs({ search: escapeSearch(search), role: role === "all" ? "" : role, status: status === "all" ? "" : status, page, pageSize })}`,
-  //   )
-  //   ("all" dihantar sebagai "" supaya qs() buang parameter itu → backend tidak menapis.)
-  void search
-  void role
-  void status
-  return Promise.resolve({ rows: [], total: 0, page, pageSize })
+  return api.get<ListUsersResult>(
+    `/api/admin/users${qs({ search: escapeSearch(search), role: role === "all" ? "" : role, status: status === "all" ? "" : status, page, pageSize })}`,
+  )
 }
 
 export interface UserStats {
@@ -45,15 +38,11 @@ export interface UserStats {
 }
 
 export async function getUserStats(): Promise<UserStats> {
-  // TODO (Nada): return api.get<UserStats>("/api/admin/users/stats")
-  return Promise.resolve({ total: 0, active: 0, inactive: 0, admins: 0, newThisWeek: 0 })
+  return api.get<UserStats>("/api/admin/users/stats")
 }
 
 export async function getUser(userId: string): Promise<UserProfile | null> {
-  // TODO (Nada): return api.getOrNull<UserProfile>(`/api/admin/users/${userId}`)
-  //   (getOrNull: 404 → null, supaya page tunjuk keadaan "user not found".)
-  void userId
-  return Promise.resolve(null)
+  return api.getOrNull<UserProfile>(`/api/admin/users/${userId}`)
 }
 
 export interface UserActivity {
@@ -64,29 +53,13 @@ export interface UserActivity {
 }
 
 export async function getUserActivity(userId: string): Promise<UserActivity> {
-  // TODO (Nada): return api.get<UserActivity>(`/api/admin/users/${userId}/activity`)
-  void userId
-  return Promise.resolve({
-    resumes: { count: 0, latestScore: null, latestAt: null },
-    interviews: { total: 0, finished: 0, averageScore: null, latestAt: null },
-    learning: { completed: 0, inProgress: 0, notStarted: 0 },
-    recentSessions: [],
-  })
+  return api.get<UserActivity>(`/api/admin/users/${userId}/activity`)
 }
 
 export function setStatus(userId: string, status: UserStatus): Promise<UserProfile> {
-  // TODO (Nada): PATCH /api/admin/users/{userId}/status dengan body { status } → UserProfile terkini:
-  //   return api.patch<UserProfile>(`/api/admin/users/${userId}/status`, { status })
-  //   (422 bila admin cuba tukar status sendiri — ApiError.message dipaparkan oleh page.)
-  void userId
-  void status
-  return Promise.reject(new Error("Belum dibina (TODO)"))
+  return api.patch<UserProfile>(`/api/admin/users/${userId}/status`, { status })
 }
 
 export function setRole(userId: string, role: UserRole): Promise<UserProfile> {
-  // TODO (Nada): PATCH /api/admin/users/{userId}/role dengan body { role } → UserProfile terkini:
-  //   return api.patch<UserProfile>(`/api/admin/users/${userId}/role`, { role })
-  void userId
-  void role
-  return Promise.reject(new Error("Belum dibina (TODO)"))
+  return api.patch<UserProfile>(`/api/admin/users/${userId}/role`, { role })
 }
