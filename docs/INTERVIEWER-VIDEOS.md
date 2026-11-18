@@ -9,7 +9,7 @@ Dalam video call Mock Interview, interviewer boleh dipaparkan sebagai **video or
 | Mendengar | Semasa anda menjawab | `listening.mp4` |
 | Berfikir (pilihan) | Semasa skor dikira | `thinking.mp4` |
 
-Selagi `idle`, `speaking` dan `listening` belum ada, avatar kartun dipaparkan. Tiada apa-apa rosak.
+Cukup dengan `idle.mp4` untuk video mula dipaparkan. Keadaan yang belum ada klipnya akan memainkan `idle.mp4`. Selagi `idle.mp4` belum ada, avatar kartun dipaparkan. Tiada apa-apa rosak.
 
 ## Di mana letak fail
 

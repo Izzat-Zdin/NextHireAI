@@ -9,13 +9,14 @@ import { cn } from "@/lib/utils"
  * (waiting, speaking, listening, thinking). The voice still comes from the browser's speech synthesis.
  *
  * Clips live in public/interviewers/<videoDir>/ as idle.mp4, speaking.mp4, listening.mp4 and, optionally,
- * thinking.mp4 (see docs/INTERVIEWER-VIDEOS.md). Until the three required clips exist, the drawn avatar
- * is shown instead, so nothing breaks while the videos are being made.
+ * thinking.mp4 (see docs/INTERVIEWER-VIDEOS.md). idle.mp4 is enough to switch to video (missing states play
+ * it); without it the drawn avatar is shown, so nothing breaks while the videos are being made.
  */
 
 type ClipState = "idle" | "speaking" | "listening" | "thinking"
 type Clips = Partial<Record<ClipState, string>>
-const REQUIRED: ClipState[] = ["idle", "speaking", "listening"]
+/** Only the waiting clip is required; a state without its own clip plays the waiting clip. */
+const REQUIRED: ClipState[] = ["idle"]
 const ALL: ClipState[] = ["idle", "speaking", "listening", "thinking"]
 
 /** One check per interviewer per page load. */
@@ -85,7 +86,7 @@ export function InterviewerVideo({
 }) {
   const clips = useInterviewerClips(persona)
   const refs = useRef<Partial<Record<ClipState, HTMLVideoElement | null>>>({})
-  const current: ClipState = state === "thinking" && !clips?.thinking ? "idle" : state
+  const current: ClipState = clips?.[state] ? state : "idle"
 
   // Start the clip that becomes visible from the beginning, so each sentence starts with fresh movement.
   useEffect(() => {
