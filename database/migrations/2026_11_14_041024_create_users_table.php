@@ -9,8 +9,15 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->uuid('user_id')->primary()->default(DB::raw('gen_random_uuid()'));
+        // Supabase is PostgreSQL. The tests use SQLite, which has no gen_random_uuid() and no
+        // ALTER TABLE ... ADD CONSTRAINT, so those parts only run on PostgreSQL.
+        $pgsql = DB::getDriverName() === 'pgsql';
+
+        Schema::create('users', function (Blueprint $table) use ($pgsql) {
+            $userId = $table->uuid('user_id')->primary();
+            if ($pgsql) {
+                $userId->default(DB::raw('gen_random_uuid()'));
+            }
             $table->text('full_name')->default('');
             $table->text('email')->unique('users_email_key');
             $table->text('role')->default('user');
@@ -24,8 +31,10 @@ return new class extends Migration
             $table->text('avatar_url')->nullable();
         });
 
-        DB::statement("ALTER TABLE users ADD CONSTRAINT users_role_check CHECK (role IN ('user','admin'))");
-        DB::statement("ALTER TABLE users ADD CONSTRAINT users_status_check CHECK (status IN ('active','inactive'))");
+        if ($pgsql) {
+            DB::statement("ALTER TABLE users ADD CONSTRAINT users_role_check CHECK (role IN ('user','admin'))");
+            DB::statement("ALTER TABLE users ADD CONSTRAINT users_status_check CHECK (status IN ('active','inactive'))");
+        }
         DB::statement('CREATE UNIQUE INDEX users_google_id_key ON users (google_id) WHERE google_id IS NOT NULL');
     }
 
