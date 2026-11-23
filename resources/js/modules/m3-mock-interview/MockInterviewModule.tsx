@@ -370,4 +370,3 @@ export function MockInterviewModule() {
 }
 
 export default MockInterviewModule
-//test ijat zdin
