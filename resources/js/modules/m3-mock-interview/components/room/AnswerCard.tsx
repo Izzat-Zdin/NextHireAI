@@ -241,7 +241,7 @@ export function AnswerCard(props: {
             id={`${ids}-upload-text`}
             value={transcript}
             onChange={(e) => props.onTextChange(e.target.value)}
-            placeholder={props.suggestion ?? s.typePlaceholder}
+            placeholder={s.typePlaceholder}
             maxLength={6000}
             className="min-h-28 bg-background text-[15px] leading-relaxed"
           />
