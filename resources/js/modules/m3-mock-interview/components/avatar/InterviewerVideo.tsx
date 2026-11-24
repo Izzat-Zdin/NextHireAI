@@ -87,6 +87,9 @@ export function InterviewerVideo({
   const clips = useInterviewerClips(persona)
   const refs = useRef<Partial<Record<ClipState, HTMLVideoElement | null>>>({})
   const current: ClipState = clips?.[state] ? state : "idle"
+  // A clip that will not load (removed, or an old cached check said it exists) falls back to the drawn avatar.
+  const [broken, setBroken] = useState(false)
+  useEffect(() => setBroken(false), [persona])
 
   // Start the clip that becomes visible from the beginning, so each sentence starts with fresh movement.
   useEffect(() => {
@@ -96,7 +99,7 @@ export function InterviewerVideo({
     void video.play().catch(() => {})
   }, [current, clips])
 
-  if (!clips) {
+  if (!clips || broken) {
     return (
       <div className={cn("flex items-center justify-center", className)}>
         <InterviewerAvatar persona={persona} state={state} mouthOpen={mouthOpen} size={avatarSize} className={avatarClassName} />
@@ -114,6 +117,7 @@ export function InterviewerVideo({
             refs.current[key] = el
           }}
           src={clips[key]}
+          onError={key === "idle" ? () => setBroken(true) : undefined}
           autoPlay
           loop
           muted
