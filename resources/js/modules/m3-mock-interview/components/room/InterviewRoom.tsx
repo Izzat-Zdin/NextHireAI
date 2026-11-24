@@ -3,7 +3,7 @@ import { Pause, Play } from "lucide-react"
 import type { AnswerRecord, QuestionItem, SetupConfig } from "../../types"
 import { getInterviewStrings } from "../../i18n/interviewStrings"
 import { personaInfo } from "../../services/personas"
-import { analyzeTranscript, mergeVocalFillers } from "../../services/speechAnalysis"
+import { addHeardFillers, analyzeTranscript, mergeVocalFillers } from "../../services/speechAnalysis"
 import { evaluateAnswerLocally } from "../../services/evaluation"
 import { SKIPPED_ANSWER_TEXT } from "../../services/answerStatus"
 import { useInterviewerVoice } from "../../hooks/useInterviewerVoice"
@@ -254,16 +254,19 @@ export function InterviewRoom({
     busyRef.current = true
     voice.cancel()
     let audio: Blob | null = null
+    // Read before abort(): "um" / "uh" the browser showed while listening but left out of the final words.
+    const heard = spoken ? speech.heardFillersNow(speech.interim) : {}
     if (spoken) {
       speech.abort()
       audio = await recorder.stop().catch(() => null)
     }
     let metrics = analyzeTranscript(text, spoken ? Math.max(seconds, 1) : null, spoken ? speech.longPauses : null)
+    if (spoken) metrics = addHeardFillers(metrics, heard, text)
     // Optional: count "um"/"uh" sounds the browser transcript left out. Any failure keeps the browser count.
     if (audio && transcribeFillers) {
       setScoring(true)
       try {
-        metrics = mergeVocalFillers(metrics, text, await transcribeFillers(audio))
+        metrics = mergeVocalFillers(metrics, text, await transcribeFillers(audio), heard)
       } catch {
         /* service unavailable: score with the browser transcript only */
       } finally {

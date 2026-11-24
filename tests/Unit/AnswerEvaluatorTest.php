@@ -70,6 +70,28 @@ class AnswerEvaluatorTest extends TestCase
         $this->assertContains('Anda bercakap terlalu laju (190 patah perkataan seminit).', $result['weaknesses']);
     }
 
+    public static function fillerTexts(): array
+    {
+        return [
+            'long hesitation sounds' => ['Ummm I think uhh the hmmm answer is errr yes', ['um' => 1, 'uh' => 1, 'hmm' => 1, 'er' => 1]],
+            'uhm and erm' => ['Uhm, so erm I led the team', ['um' => 1, 'erm' => 1]],
+            'malay hesitations' => ['Saya rasa eh, aaa, sebenarnya saya suka kerja ni, emm', ['eh' => 1, 'aa' => 1, 'sebenarnya' => 1, 'em' => 1]],
+            'new phrases' => ['You see, it was hard, how to say, but we finished or something', ['you see' => 1, 'how to say' => 1, 'or something' => 1]],
+            'normal words are not fillers' => ['The umbrella summer team handled the erratic server', []],
+        ];
+    }
+
+    #[DataProvider('fillerTexts')]
+    public function test_filler_detection(string $text, array $expected): void
+    {
+        $result = FillerDetector::detect($text);
+        ksort($expected);
+        $perWord = $result['perWord'];
+        ksort($perWord);
+        $this->assertSame($expected, $perWord);
+        $this->assertSame(array_sum($expected), $result['total']);
+    }
+
     public function test_client_filler_count_can_only_raise_the_count(): void
     {
         $answer = 'In my last role I organised the weekly report for the team and it went well every week without problems.';
