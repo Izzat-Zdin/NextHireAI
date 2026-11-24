@@ -196,7 +196,7 @@ export function VideoStage({
           <div className="aspect-[4/3] overflow-hidden rounded-xl">{self("large")}</div>
         </div>
       ) : (
-        <div className="relative h-60 overflow-hidden rounded-xl sm:h-72">
+        <div className="relative aspect-[4/3] overflow-hidden rounded-xl sm:aspect-video">
           {layout === "speaker" ? interviewer("large") : self("large")}
           <button type="button" onClick={() => setLayout(layout === "speaker" ? "self" : "speaker")} aria-label={s.swapView} title={s.swapView} className={pip}>
             {layout === "speaker" ? self("small") : <span className="block size-full bg-[#22302f]">{interviewer("small")}</span>}
