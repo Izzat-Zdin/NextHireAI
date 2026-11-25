@@ -8,17 +8,22 @@ namespace App\Services\Interview;
  */
 class FillerDetector
 {
+    /** Hesitation sounds (um, uh, er ...) are matched by VOCAL_PATTERN in any length, so they are not listed here. */
     public const FILLER_WORDS = [
-        'um', 'umm', 'ummm', 'uh', 'uhh', 'uhhh', 'ah', 'ahh', 'ahhh', 'aah', 'er', 'err', 'errr', 'erm', 'ermm',
-        'hmm', 'hmmm', 'aaa', 'eee', 'like', 'you know', 'i mean', 'sort of', 'kind of', 'basically', 'actually',
-        'ha', 'haa', 'haah', 'mmm', 'kot', 'tahu tak', 'macam', 'apa tu', 'apa ni', 'apa benda', 'apa nama', 'tu lah',
+        'like', 'you know', 'i mean', 'sort of', 'kind of', 'basically', 'actually', 'you see', 'how to say', 'what to say',
+        'so yeah', 'or something',
+        'ha', 'haa', 'haah', 'kot', 'tahu tak', 'macam', 'apa tu', 'apa ni', 'apa benda', 'apa nama', 'tu lah',
+        'maksud saya', 'apa orang kata', 'sebenarnya',
     ];
+
+    /** um, umm, uhm, uh, er, erm, eh, em, ah, aa, eee, hmm, mm (same as VOCAL_FILLER_PATTERN in the browser). */
+    private const VOCAL_PATTERN = 'u+h*m+|u+h+|e+r+m*|e+h+|e+m+|a+h+|a{2,}|e{3,}|h+m+|m{2,}';
 
     private const LIKE_NOT_FILLER = '/^\s+(a|an|the|this|that|these|those|my|your|his|her|our|their|its|to|of|in|on|at|for|with)\b/i';
 
     private const MACAM_NOT_FILLER = '/^(\s+(mana|ini|itu|tu|biasa|biasanya|sekarang|dulu|kita|saya)\b|-)/i';
 
-    private const CLAUSE_START_FILLERS = ['actually', 'basically'];
+    private const CLAUSE_START_FILLERS = ['actually', 'basically', 'sebenarnya'];
 
     /** @return array{total:int, perWord:array<string,int>, ratePer100Words:float} */
     public static function detect(string $text): array
@@ -69,6 +74,28 @@ class FillerDetector
             }
         }
 
+        if (preg_match_all('/(?<![\p{L}\p{N}\'])(?:'.self::VOCAL_PATTERN.')(?![\p{L}\p{N}\'])/iu', $text, $vocal, PREG_OFFSET_CAPTURE)) {
+            foreach ($vocal[0] as [$match, $start]) {
+                $end = $start + strlen($match);
+                $overlaps = false;
+                for ($i = $start; $i < $end; $i++) {
+                    if (isset($taken[$i])) {
+                        $overlaps = true;
+                        break;
+                    }
+                }
+                if ($overlaps) {
+                    continue;
+                }
+                for ($i = $start; $i < $end; $i++) {
+                    $taken[$i] = true;
+                }
+                $name = self::vocalName($match);
+                $counts[$name] = ($counts[$name] ?? 0) + 1;
+                $total++;
+            }
+        }
+
         $wordCount = self::countWords($text);
 
         return [
@@ -76,6 +103,26 @@ class FillerDetector
             'perWord' => $counts,
             'ratePer100Words' => $wordCount > 0 ? round($total / $wordCount * 100, 1) : 0.0,
         ];
+    }
+
+    /** One name per hesitation sound, so "ummm" and "umm" both count as "um". */
+    public static function vocalName(string $word): string
+    {
+        $w = mb_strtolower($word);
+
+        return match (true) {
+            (bool) preg_match('/^u+h*m+$/', $w) => 'um',
+            (bool) preg_match('/^u+h+$/', $w) => 'uh',
+            (bool) preg_match('/^e+r+m+$/', $w) => 'erm',
+            (bool) preg_match('/^e+r+$/', $w) => 'er',
+            (bool) preg_match('/^e+h+$/', $w) => 'eh',
+            (bool) preg_match('/^e+m+$/', $w) => 'em',
+            (bool) preg_match('/^a+h+$/', $w) => 'ah',
+            (bool) preg_match('/^a+$/', $w) => 'aa',
+            (bool) preg_match('/^e+$/', $w) => 'ee',
+            (bool) preg_match('/^h+m+$/', $w) => 'hmm',
+            default => 'mm',
+        };
     }
 
     public static function countWords(string $text): int

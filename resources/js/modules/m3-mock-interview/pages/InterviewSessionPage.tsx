@@ -107,7 +107,7 @@ export default function InterviewSessionPage() {
   }
 
   return (
-    <div className="interview-theme mx-auto flex w-full max-w-5xl min-w-0 flex-col gap-4 sm:gap-5">
+    <div className="interview-theme flex w-full min-w-0 flex-col gap-4 sm:gap-5">
       {error && <Alert tone="error">{error}</Alert>}
 
       <header className="flex flex-wrap items-start gap-3">

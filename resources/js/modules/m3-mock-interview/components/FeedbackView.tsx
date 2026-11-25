@@ -88,7 +88,7 @@ export function FeedbackView({ config, answers, initialIndex = 0, onContinue }: 
   const summary = ev ? ev.summary || ev.strengths[0] || "" : ""
 
   return (
-    <div className="interview-theme mx-auto flex w-full max-w-6xl min-w-0 flex-col gap-4 sm:gap-5" lang={config.language === "ms-MY" ? "ms" : "en"}>
+    <div className="interview-theme flex w-full min-w-0 flex-col gap-4 sm:gap-5" lang={config.language === "ms-MY" ? "ms" : "en"}>
       <PageHeading eyebrow={moduleLabel(3)} title={s.feedbackTitle} subtitle={s.feedbackSub(answered, total)}>
         <Button type="button" className="min-h-10 font-semibold" onClick={onContinue}>
           {s.continueReport} <ArrowRight aria-hidden="true" />

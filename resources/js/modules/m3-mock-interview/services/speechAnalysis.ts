@@ -1,26 +1,12 @@
 import type { SpeechMetrics } from "../types"
 
+/**
+ * Filler words and phrases. Hesitation sounds (um, uh, er, erm, ah, eh, em, hmm, mm, aa ...) are matched by
+ * VOCAL_FILLER_PATTERN below in any length ("ummmm", "uhm", "hmmmm"), so they are not listed here.
+ * Keep this list identical to app/Services/Interview/FillerDetector.php.
+ */
 export const FILLER_WORDS = [
-  // English fillers, vocal hesitations & pauses
-  "um",
-  "umm",
-  "ummm",
-  "uh",
-  "uhh",
-  "uhhh",
-  "ah",
-  "ahh",
-  "ahhh",
-  "aah",
-  "er",
-  "err",
-  "errr",
-  "erm",
-  "ermm",
-  "hmm",
-  "hmmm",
-  "aaa",
-  "eee",
+  // English
   "like",
   "you know",
   "i mean",
@@ -28,11 +14,15 @@ export const FILLER_WORDS = [
   "kind of",
   "basically",
   "actually",
-  // Malay vocal hesitations & colloquial fillers
+  "you see",
+  "how to say",
+  "what to say",
+  "so yeah",
+  "or something",
+  // Malay
   "ha",
   "haa",
   "haah",
-  "mmm",
   "kot",
   "tahu tak",
   "macam",
@@ -41,7 +31,29 @@ export const FILLER_WORDS = [
   "apa benda",
   "apa nama",
   "tu lah",
+  "maksud saya",
+  "apa orang kata",
+  "sebenarnya",
 ]
+
+/** Hesitation sounds in any length: um, umm, uhm, uh, er, erm, eh, em, ah, aa, eee, hmm, mm. */
+export const VOCAL_FILLER_PATTERN = "u+h*m+|u+h+|e+r+m*|e+h+|e+m+|a+h+|a{2,}|e{3,}|h+m+|m{2,}"
+
+/** One name per hesitation sound, so "ummm" and "umm" both count as "um". */
+export function vocalFillerName(word: string): string {
+  const w = word.toLowerCase()
+  if (/^u+h*m+$/.test(w)) return "um"
+  if (/^u+h+$/.test(w)) return "uh"
+  if (/^e+r+m+$/.test(w)) return "erm"
+  if (/^e+r+$/.test(w)) return "er"
+  if (/^e+h+$/.test(w)) return "eh"
+  if (/^e+m+$/.test(w)) return "em"
+  if (/^a+h+$/.test(w)) return "ah"
+  if (/^a+$/.test(w)) return "aa"
+  if (/^e+$/.test(w)) return "ee"
+  if (/^h+m+$/.test(w)) return "hmm"
+  return "mm"
+}
 
 /** A gap between recognised phrases this long (or longer) counts as a long pause. */
 export const LONG_PAUSE_MS = 3000
@@ -59,7 +71,8 @@ const LIKE_NOT_FILLER = /^\s+(a|an|the|this|that|these|those|my|your|his|her|our
 /** "macam mana", "macam ini", "macam biasa" and "macam-macam" are normal Malay, not fillers. */
 const MACAM_NOT_FILLER = /^(\s+(mana|ini|itu|tu|biasa|biasanya|sekarang|dulu|kita|saya)\b|-)/i
 /** Words that are only fillers when they open a sentence or clause, or are used more than once. */
-const CLAUSE_START_FILLERS = new Set(["actually", "basically"])
+const CLAUSE_START_FILLERS = new Set(["actually", "basically", "sebenarnya"])
+const VOCAL_REGEX = new RegExp(`(?<![\\p{L}\\p{N}'])(?:${VOCAL_FILLER_PATTERN})(?![\\p{L}\\p{N}'])`, "giu")
 const isClauseStart = (text: string, start: number) => {
   const before = text.slice(0, start).trimEnd()
   return before === "" || /[.!?,;:]$/.test(before)
@@ -91,6 +104,16 @@ export function findFillerSpans(text: string): FillerSpan[] {
     }
   }
 
+  for (const match of text.matchAll(VOCAL_REGEX)) {
+    const start = match.index ?? 0
+    const end = start + match[0].length
+    let overlaps = false
+    for (let i = start; i < end; i++) if (taken[i]) overlaps = true
+    if (overlaps) continue
+    for (let i = start; i < end; i++) taken[i] = true
+    spans.push({ start, end, word: vocalFillerName(match[0]) })
+  }
+
   return spans.sort((a, b) => a.start - b.start)
 }
 
@@ -118,20 +141,36 @@ export function detectFillers(transcript: string): {
 export const countWords = (text: string) => text.trim().split(/\s+/).filter(Boolean).length
 
 /** Hesitation sounds that browser speech recognition usually drops but a filler-aware transcriber keeps. */
-const VOCAL_FILLERS = new Set(["um", "umm", "ummm", "uh", "uhh", "uhhh", "ah", "ahh", "ahhh", "aah", "er", "err", "errr", "erm", "ermm", "hmm", "hmmm", "mmm", "aaa", "eee"])
+const VOCAL_FILLERS = new Set(["um", "uh", "er", "erm", "eh", "em", "ah", "aa", "ee", "hmm", "mm"])
 
-const vocalCounts = (text: string) => {
+/** Hesitation sounds (um, uh, erm ...) in a piece of text, by name. */
+export const vocalCounts = (text: string) => {
   const counts: Record<string, number> = {}
   for (const span of findFillerSpans(text)) if (VOCAL_FILLERS.has(span.word)) counts[span.word] = (counts[span.word] ?? 0) + 1
   return counts
 }
 
 /**
+ * Adds hesitation sounds that were heard but are not in the final text: Chrome often shows "um" or "uh"
+ * while the candidate is speaking, then drops it from the final transcript. Never lowers the count.
+ */
+export function addHeardFillers(metrics: SpeechMetrics, heard: Record<string, number>, text: string): SpeechMetrics {
+  const extra = Object.values(heard).reduce((sum, n) => sum + n, 0)
+  if (!extra) return metrics
+  const perWord = { ...metrics.fillerAnalysis.perWord }
+  for (const [word, n] of Object.entries(heard)) if (n > 0) perWord[word] = (perWord[word] ?? 0) + n
+  const total = metrics.fillerAnalysis.total + extra
+  const words = countWords(text)
+  return { ...metrics, fillerAnalysis: { total, perWord, ratePer100Words: words > 0 ? Number(((total / words) * 100).toFixed(1)) : 0 } }
+}
+
+/**
  * Adds the hesitation sounds found in a filler-aware transcript of the same answer (for example
  * Deepgram with filler_words) that the browser transcript missed. Never lowers the count.
  */
-export function mergeVocalFillers(metrics: SpeechMetrics, browserText: string, fillerAwareText: string): SpeechMetrics {
+export function mergeVocalFillers(metrics: SpeechMetrics, browserText: string, fillerAwareText: string, alreadyAdded: Record<string, number> = {}): SpeechMetrics {
   const fromBrowser = vocalCounts(browserText)
+  for (const [word, n] of Object.entries(alreadyAdded)) fromBrowser[word] = (fromBrowser[word] ?? 0) + n
   const fromAudio = vocalCounts(fillerAwareText)
   const perWord = { ...metrics.fillerAnalysis.perWord }
   let extra = 0

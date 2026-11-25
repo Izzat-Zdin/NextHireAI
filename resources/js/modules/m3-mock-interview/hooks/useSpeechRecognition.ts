@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import type { Language } from "../types"
-import { LONG_PAUSE_MS } from "../services/speechAnalysis"
+import { LONG_PAUSE_MS, vocalCounts } from "../services/speechAnalysis"
 
 type RecognitionError = "not-allowed" | "network" | "other" | null
 
@@ -40,6 +40,11 @@ export function useSpeechRecognition(language: Language) {
   const lastSpeechAt = useRef<number | null>(null)
   const localeRef = useRef(language === "ms-MY" ? "ms-MY" : "en-MY")
   const startToken = useRef(0)
+  /** Most hesitation sounds (um, uh ...) seen in any draft of each result, by result index. */
+  const draftFillers = useRef(new Map<number, Record<string, number>>())
+  /** Hesitation sounds that were in a draft but left out of the final text. */
+  const heardFillersRef = useRef<Record<string, number>>({})
+  const [heardFillers, setHeardFillers] = useState<Record<string, number>>({})
 
   const setTranscript = useCallback((text: string) => {
     transcriptRef.current = text
@@ -57,11 +62,29 @@ export function useSpeechRecognition(language: Language) {
     recognition.onresult = (event: any) => {
       let interimText = ""
       let finalText = ""
+      let dropped = false
       for (let i = event.resultIndex; i < event.results.length; i++) {
         const piece = event.results[i][0].transcript
-        if (event.results[i].isFinal) finalText += piece + " "
-        else interimText += piece
+        const counts = vocalCounts(piece)
+        const seen = draftFillers.current.get(i) ?? {}
+        if (event.results[i].isFinal) {
+          finalText += piece + " "
+          // Chrome often shows "um" / "uh" while you speak, then drops it from the final words: keep it.
+          for (const [word, n] of Object.entries(seen)) {
+            const missing = n - (counts[word] ?? 0)
+            if (missing > 0) {
+              heardFillersRef.current = { ...heardFillersRef.current, [word]: (heardFillersRef.current[word] ?? 0) + missing }
+              dropped = true
+            }
+          }
+          draftFillers.current.delete(i)
+        } else {
+          interimText += piece
+          for (const [word, n] of Object.entries(counts)) seen[word] = Math.max(seen[word] ?? 0, n)
+          draftFillers.current.set(i, seen)
+        }
       }
+      if (dropped) setHeardFillers(heardFillersRef.current)
       const now = Date.now()
       if (lastSpeechAt.current !== null && now - lastSpeechAt.current >= LONG_PAUSE_MS) setLongPauses((n) => n + 1)
       lastSpeechAt.current = now
@@ -91,6 +114,8 @@ export function useSpeechRecognition(language: Language) {
 
     recognition.onend = () => {
       // Chrome stops after a stretch of silence; keep going while the candidate is still answering.
+      // A new recognition run numbers its results from 0 again.
+      draftFillers.current.clear()
       if (wantListening.current) {
         try {
           recognition.lang = localeRef.current
@@ -163,6 +188,9 @@ export function useSpeechRecognition(language: Language) {
       setInterim("")
       setLongPauses(0)
       setError(null)
+      draftFillers.current.clear()
+      heardFillersRef.current = {}
+      setHeardFillers({})
     },
     [setTranscript],
   )
@@ -175,5 +203,21 @@ export function useSpeechRecognition(language: Language) {
 
   useEffect(() => () => abort(), [abort])
 
-  return { supported, listening, transcript, interim, longPauses, error, start, stop, abort, reset, setTranscript }
+  /**
+   * Hesitation sounds heard so far but missing from the words: the dropped ones, plus any the browser
+   * showed in a draft of the phrase still being spoken (`interimText`) and then left out again.
+   */
+  const heardFillersNow = useCallback((interimText: string) => {
+    const total: Record<string, number> = { ...heardFillersRef.current }
+    const pending: Record<string, number> = {}
+    for (const seen of draftFillers.current.values()) for (const [word, n] of Object.entries(seen)) pending[word] = (pending[word] ?? 0) + n
+    const inInterim = vocalCounts(interimText)
+    for (const [word, n] of Object.entries(pending)) {
+      const missing = n - (inInterim[word] ?? 0)
+      if (missing > 0) total[word] = (total[word] ?? 0) + missing
+    }
+    return total
+  }, [])
+
+  return { supported, listening, transcript, interim, longPauses, heardFillers, heardFillersNow, error, start, stop, abort, reset, setTranscript }
 }
