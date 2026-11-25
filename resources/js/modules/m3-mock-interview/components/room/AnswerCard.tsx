@@ -125,7 +125,15 @@ export function AnswerCard(props: {
         <ModeSwitch mode={mode} onChange={props.onModeChange} s={s} />
       </div>
 
-      {props.suggestion && mode === "speak" && <SuggestedAnswer s={s} text={props.suggestion} />}
+      {/* key: a new question starts with the card hidden again */}
+      {props.suggestion && (mode === "speak" || mode === "type") && (
+        <SuggestedAnswer
+          key={props.suggestion}
+          s={s}
+          text={props.suggestion}
+          onUse={mode === "type" ? () => props.onTextChange(props.suggestion ?? "") : undefined}
+        />
+      )}
 
       {mode === "speak" &&
         (speakBlocked ? (
@@ -174,15 +182,10 @@ export function AnswerCard(props: {
             id={`${ids}-type`}
             value={transcript}
             onChange={(e) => props.onTextChange(e.target.value)}
-            placeholder={props.suggestion ?? s.typePlaceholder}
+            placeholder={s.typePlaceholder}
             maxLength={6000}
             className="min-h-44 bg-background text-[15px] leading-relaxed focus-visible:border-primary"
           />
-          {props.suggestion && !transcript.trim() && (
-            <Button type="button" variant="outline" className="min-h-10 w-fit" onClick={() => props.onTextChange(props.suggestion ?? "")}>
-              {s.useSuggestion}
-            </Button>
-          )}
         </div>
       )}
 
