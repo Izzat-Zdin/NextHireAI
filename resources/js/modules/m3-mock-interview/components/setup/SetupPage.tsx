@@ -65,17 +65,8 @@ export function SetupPage({ config, onChange, onStart, loading, resume, canRepea
   const persona = personaInfo(config.persona)
   const voiceInfo = useVoiceInfo(config.language, persona.voice.prefer)
   const isMalay = config.language === "ms-MY"
-  const typeLabel = TYPES.find((t) => t.id === config.type)?.label ?? ""
   const role = config.role.trim()
   const roleIsChip = (ROLE_CHIPS as readonly string[]).includes(role)
-  const minutes = config.questionCount * 3
-
-  const sourceText =
-    config.source === "resume" && resume
-      ? "based on your resume"
-      : config.source === "jobAd" && config.jobAdText.trim()
-        ? "based on the job ad"
-        : null
 
   const toggleSource = (source: "resume" | "jobAd") => set({ source: config.source === source ? "none" : source })
 
@@ -398,26 +389,7 @@ export function SetupPage({ config, onChange, onStart, loading, resume, canRepea
             </p>
           </section>
 
-          <section aria-labelledby={`${ids}-ready`} className="flex flex-col gap-3 rounded-2xl border bg-card p-5 text-card-foreground">
-            <h2 id={`${ids}-ready`} className="text-base font-semibold">
-              Session summary
-            </h2>
-            <dl className="flex flex-col gap-2 text-sm" aria-live="polite">
-              {[
-                ["Job", role || "General questions"],
-                ["Interviewer", persona.name],
-                ["Type", `${typeLabel} · ${config.difficulty}`],
-                ["Questions", `${config.questionCount} · about ${minutes} min`],
-                ["Language", isMalay ? "Bahasa Melayu" : "English"],
-              ].map(([term, value]) => (
-                <div key={term} className="flex items-baseline justify-between gap-3">
-                  <dt className="text-muted-foreground">{term}</dt>
-                  <dd className="min-w-0 text-right font-medium [overflow-wrap:anywhere]">{value}</dd>
-                </div>
-              ))}
-            </dl>
-            {sourceText && <p className="text-xs text-muted-foreground">Questions {sourceText}.</p>}
-            <div className="border-t" />
+          <div className="flex flex-col gap-2">
             <Button
               type="button"
               size="lg"
@@ -435,10 +407,7 @@ export function SetupPage({ config, onChange, onStart, loading, resume, canRepea
             {config.source === "jobAd" && !config.jobAdText.trim() && (
               <p className="text-sm text-[var(--iv-warn-fg)]">Paste the job ad, or turn off "Paste a job ad", to start.</p>
             )}
-            <p className="text-center text-xs text-muted-foreground">
-              You answer every question first. Scores and feedback for all answers come after the last one.
-            </p>
-          </section>
+          </div>
         </aside>
       </div>
     </div>
