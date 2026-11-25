@@ -1,16 +1,16 @@
 /* Mock interview pages: teal accent from the design reference, on top of the app's neutral theme.
    Only the accent tokens change, so cards, text and dark mode keep working as everywhere else.
-   Contrast: #0E5E5A on white is about 7.6:1; the dark-mode teal on its dark text about 9:1. */
+   Contrast: #217C6A on white is about 5:1; the dark-mode #9BD4C9 on #0E1615 about 11:1. */
 .interview-theme {
-  --primary: #0e5e5a;
+  --primary: #217c6a;
   --primary-foreground: #ffffff;
-  --ring: #0e5e5a;
-  --accent: #f1f7f6;
-  --accent-foreground: #0e5e5a;
+  --ring: #217c6a;
+  --accent: #e8f4f1;
+  --accent-foreground: #14574a;
   /* Selected cards / chips and the interviewer panel */
-  --iv-selected: #f1f7f6;
+  --iv-selected: #e8f4f1;
   --iv-step-done: #dceae8;
-  --iv-step-done-fg: #0e5e5a;
+  --iv-step-done-fg: #14574a;
   --iv-panel: #1c2b2a;
   --iv-panel-fg: #f2f5f4;
   --iv-panel-muted: #cde6e3;
@@ -25,20 +25,20 @@
 
 .dark .interview-theme,
 .interview-theme.dark {
-  --primary: #7fc4bc;
-  --primary-foreground: #0b1f1e;
-  --ring: #7fc4bc;
-  --accent: #173533;
+  --primary: #9bd4c9;
+  --primary-foreground: #0e1615;
+  --ring: #22e0bb;
+  --accent: #173a34;
   --accent-foreground: #cde6e3;
-  --iv-selected: #173533;
-  --iv-step-done: #173533;
+  --iv-selected: #173a34;
+  --iv-step-done: #173a34;
   --iv-step-done-fg: #a9dcd5;
-  --iv-panel: #13201f;
+  --iv-panel: #0a1110;
   --iv-panel-fg: #f2f5f4;
   --iv-panel-muted: #cde6e3;
   --iv-bubble: #e8efee;
   --iv-bubble-fg: #16181d;
-  --iv-meter: #7fb7b1;
+  --iv-meter: #22e0bb;
   --iv-filler: #6b4a12;
   --iv-filler-fg: #fff6e5;
   --iv-warn-bg: #3a2a10;
