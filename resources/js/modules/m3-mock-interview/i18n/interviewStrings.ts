@@ -60,6 +60,8 @@ const en = {
   suggestionTitle: "Suggested answer (test account only)",
   suggestionHint: "Read it aloud to try the mic, or change it to test fillers and the STAR check. It is a sample, not your own experience.",
   useSuggestion: "Use this answer",
+  showSuggestion: "Show",
+  hideSuggestion: "Hide",
 
   // Review
   yourAnswer: "Your answer",
@@ -268,6 +270,8 @@ const ms: InterviewStrings = {
   suggestionTitle: "Cadangan jawapan (akaun ujian sahaja)",
   suggestionHint: "Baca dengan kuat untuk mencuba mikrofon, atau ubah untuk menguji perkataan pengisi dan semakan STAR. Ini contoh, bukan pengalaman anda sendiri.",
   useSuggestion: "Guna jawapan ini",
+  showSuggestion: "Tunjuk",
+  hideSuggestion: "Sembunyi",
 
   yourAnswer: "Jawapan anda",
   fixWords: "Betulkan perkataan yang salah ditangkap oleh mikrofon",
