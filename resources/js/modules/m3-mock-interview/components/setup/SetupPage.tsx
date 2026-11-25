@@ -352,12 +352,12 @@ export function SetupPage({ config, onChange, onStart, loading, resume, canRepea
               <p className="text-sm text-[var(--iv-warn-fg)]">The browser blocked the microphone. Allow it from the lock icon in the address bar, or type your answers.</p>
             )}
 
-            <div className="flex flex-wrap gap-2 [&>*]:flex-1">
+            <div className="grid grid-cols-2 gap-2 [&>*:only-child]:col-span-2">
               {!media.micOn && (
                 <Button
                   type="button"
                   variant="outline"
-                  className="min-h-11"
+                  className="h-auto min-h-11 min-w-0 whitespace-normal px-2 leading-tight"
                   onClick={() => {
                     void media.startMic()
                     void media.setCameraOn(true)
@@ -369,7 +369,7 @@ export function SetupPage({ config, onChange, onStart, loading, resume, canRepea
               <Button
                 type="button"
                 variant="outline"
-                className="min-h-11"
+                className="h-auto min-h-11 min-w-0 whitespace-normal px-2 leading-tight"
                 onClick={() => (voice.speaking ? voice.cancel() : void voice.speak(isMalay ? persona.greeting.ms : persona.greeting.en))}
                 disabled={!voiceInfo.supported}
               >
@@ -387,27 +387,27 @@ export function SetupPage({ config, onChange, onStart, loading, resume, canRepea
                     ? `This browser has no Malay voice, so questions are read with ${voiceInfo.name}. Open NextHire in Microsoft Edge for a natural Malay voice.`
                     : `Questions are read aloud with ${voiceInfo.name}. Headphones help so ${persona.name}'s voice isn't picked up by your mic.`}
             </p>
-          </section>
 
-          <div className="flex flex-col gap-2">
-            <Button
-              type="button"
-              size="lg"
-              className="min-h-12 text-[15px] font-semibold"
-              onClick={() => {
-                const cameraOn = media.cameraOn
-                media.stopMic()
-                voice.cancel()
-                onStart({ cameraOn })
-              }}
-              disabled={loading || (config.source === "jobAd" && !config.jobAdText.trim())}
-            >
-              <Video aria-hidden="true" /> {loading ? "Preparing…" : "Start interview"}
-            </Button>
-            {config.source === "jobAd" && !config.jobAdText.trim() && (
-              <p className="text-sm text-[var(--iv-warn-fg)]">Paste the job ad, or turn off "Paste a job ad", to start.</p>
-            )}
-          </div>
+            <div className="flex flex-col gap-2">
+              <Button
+                type="button"
+                size="lg"
+                className="min-h-12 text-[15px] font-semibold"
+                onClick={() => {
+                  const cameraOn = media.cameraOn
+                  media.stopMic()
+                  voice.cancel()
+                  onStart({ cameraOn })
+                }}
+                disabled={loading || (config.source === "jobAd" && !config.jobAdText.trim())}
+              >
+                <Video aria-hidden="true" /> {loading ? "Preparing…" : "Start interview"}
+              </Button>
+              {config.source === "jobAd" && !config.jobAdText.trim() && (
+                <p className="text-sm text-[var(--iv-warn-fg)]">Paste the job ad, or turn off "Paste a job ad", to start.</p>
+              )}
+            </div>
+          </section>
         </aside>
       </div>
     </div>
