@@ -13,6 +13,7 @@ import { Button } from "@/components/shadcn/button"
 import { Textarea } from "@/components/shadcn/textarea"
 import { cn } from "@/lib/utils"
 import { moduleLabel } from "@/components/navigation"
+import { PageIntro } from "@/components/ui"
 import { getInterviewStrings } from "../../i18n/interviewStrings"
 import { FlowBar } from "../room/RoomParts"
 
@@ -82,28 +83,29 @@ export function SetupPage({ config, onChange, onStart, loading, resume, canRepea
   const micReady = media.micOn && !media.micProblem
 
   return (
-    <div className="interview-theme mx-auto flex w-full max-w-6xl min-w-0 flex-col gap-6">
-      <header className="flex flex-wrap items-end justify-between gap-4">
-        <div className="min-w-0">
-          <p className="mb-1.5 text-sm font-medium text-muted-foreground">{moduleLabel(3)}</p>
-          <h1 className="font-heading text-2xl font-bold tracking-tight sm:text-3xl">New mock interview</h1>
-        </div>
-        <div className="flex flex-wrap gap-2.5">
-          <Button type="button" variant="outline" className="min-h-11" onClick={onRepeat} disabled={!canRepeat}>
-            <RotateCcw aria-hidden="true" /> Repeat last setup
-          </Button>
-          <Button asChild variant="ghost" className="min-h-11 text-primary hover:text-primary">
-            <Link to="/interview/history">
-              <History aria-hidden="true" /> Past sessions
-            </Link>
-          </Button>
-        </div>
-      </header>
+    <div className="interview-theme flex w-full min-w-0 flex-col">
+      <PageIntro
+        eyebrow={moduleLabel(3)}
+        title="New mock interview"
+        description="Pick the interview type and interviewer, check your camera and mic, then answer every question before you see your feedback."
+        action={
+          <>
+            <Button type="button" variant="outline" className="pointer-coarse:min-h-11" onClick={onRepeat} disabled={!canRepeat}>
+              <RotateCcw aria-hidden="true" /> Repeat last setup
+            </Button>
+            <Button asChild variant="outline" className="pointer-coarse:min-h-11">
+              <Link to="/interview/history">
+                <History aria-hidden="true" /> Past sessions
+              </Link>
+            </Button>
+          </>
+        }
+      />
 
       <FlowBar step="setup" s={getInterviewStrings("en-MY")} />
 
-      <div className="grid min-w-0 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
-        <div className="flex min-w-0 flex-col gap-5">
+      <div className="mt-4 grid min-w-0 items-start gap-4 sm:mt-6 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,340px)]">
+        <div className="flex min-w-0 flex-col gap-4 sm:gap-6">
           {/* 1. Job */}
           <SectionCard step={1} title="Which job are you practising for?" optional>
             <div role="group" aria-label="Common roles" className="flex flex-wrap gap-2">
@@ -294,7 +296,7 @@ export function SetupPage({ config, onChange, onStart, loading, resume, canRepea
         </div>
 
         {/* Camera check and session summary */}
-        <aside className="flex min-w-0 flex-col gap-5 lg:sticky lg:top-6">
+        <aside className="flex min-w-0 flex-col gap-4 sm:gap-6 lg:sticky lg:top-20">
           <section aria-labelledby={`${ids}-check`} className="flex flex-col gap-4 rounded-2xl border bg-card p-5 text-card-foreground">
             <div className="flex items-center justify-between gap-3">
               <h2 id={`${ids}-check`} className="text-base font-semibold">

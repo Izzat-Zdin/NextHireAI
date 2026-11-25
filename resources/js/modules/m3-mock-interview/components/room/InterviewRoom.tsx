@@ -352,7 +352,7 @@ export function InterviewRoom({
   const panelProps = { s, questions, answers, index, seconds, recording }
 
   return (
-    <div className="interview-theme mx-auto flex w-full max-w-6xl min-w-0 flex-col gap-4 sm:gap-5" lang={isMalay ? "ms" : "en"}>
+    <div className="interview-theme flex w-full min-w-0 flex-col gap-4 sm:gap-5" lang={isMalay ? "ms" : "en"}>
       <PageHeading
         eyebrow={moduleLabel(3)}
         title={roleTitle}

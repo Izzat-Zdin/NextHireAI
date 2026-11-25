@@ -85,7 +85,7 @@ export const ReportView: React.FC<ReportViewProps> = ({ config, answers, overall
   const date = new Date().toLocaleDateString(config.language === "ms-MY" ? "ms-MY" : "en-GB", { day: "numeric", month: "short", year: "numeric" })
 
   return (
-    <div className="interview-theme mx-auto flex w-full max-w-6xl min-w-0 flex-col gap-4 sm:gap-5" lang={config.language === "ms-MY" ? "ms" : "en"}>
+    <div className="interview-theme flex w-full min-w-0 flex-col gap-4 sm:gap-5" lang={config.language === "ms-MY" ? "ms" : "en"}>
       <PageHeading eyebrow={moduleLabel(3)} title={r.title} subtitle={`${role} · ${s.typeName[config.type]} · ${personaInfo(config.persona).name} · ${date}`}>
         <Button type="button" className="min-h-10 font-semibold" onClick={() => window.print()}>
           <Download aria-hidden="true" /> {r.downloadPdf}
