@@ -145,7 +145,7 @@ export function VideoStage({
   onEnd: () => void
 }) {
   const info = personaInfo(persona)
-  const [layout, setLayout] = useState<StageLayout>("speaker")
+  const [layout, setLayout] = useState<StageLayout>("grid")
   const interviewer = (size: "large" | "medium" | "small") => <InterviewerTile persona={persona} state={state} mouthOpen={mouthOpen} s={s} size={size} />
   const self = (size: "large" | "small") => (
     <SelfTile s={s} setVideoElement={setVideoElement} cameraOn={cameraOn} recording={recording} paused={paused} size={size} />
