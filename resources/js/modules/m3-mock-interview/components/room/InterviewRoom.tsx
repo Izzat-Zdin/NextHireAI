@@ -20,6 +20,9 @@ import { moduleLabel } from "@/components/navigation"
 import { useImmersiveNav } from "@/components/nav-chrome"
 import { cn } from "@/lib/utils"
 
+/** Hosting body limit for the transcription request (the server checks the same 4 MB). */
+const UPLOAD_LIMIT_BYTES = 4 * 1024 * 1024
+
 interface InterviewRoomProps {
   config: SetupConfig
   questions: QuestionItem[]
@@ -246,7 +249,29 @@ export function InterviewRoom({
     if (busyRef.current || scoring) return
     const spoken = mode === "speak"
     // Include the phrase still being heard, so the last words are never lost.
-    const text = (spoken ? `${speech.transcript} ${speech.interim}` : speech.transcript).replace(/\s+/g, " ").trim()
+    let text = (spoken ? `${speech.transcript} ${speech.interim}` : speech.transcript).replace(/\s+/g, " ").trim()
+    if (mode === "upload") {
+      // Uploaded files are transcribed on the server (same service as the filler count), then scored like typed text.
+      if (!upload) return setError(s.uploadFirst)
+      if (upload.size > UPLOAD_LIMIT_BYTES) return setError(s.uploadTooLarge)
+      if (!transcribeFillers) return setError(s.uploadUnavailable)
+      busyRef.current = true
+      setError(null)
+      setScoring(true)
+      try {
+        text = (await transcribeFillers(upload.file)).replace(/\s+/g, " ").trim()
+      } catch {
+        text = ""
+        setError(s.uploadFailed)
+      } finally {
+        setScoring(false)
+      }
+      if (!text) {
+        setError((e) => e ?? s.uploadNoSpeech)
+        busyRef.current = false
+        return
+      }
+    }
     if (!text) {
       setError(s.emptyNext)
       return
@@ -434,7 +459,7 @@ export function InterviewRoom({
               if (error) setError(null)
             }}
             upload={upload}
-            onUpload={(file) => setUpload({ name: file.name, url: URL.createObjectURL(file), isVideo: file.type.startsWith("video/"), size: file.size })}
+            onUpload={(file) => setUpload({ name: file.name, url: URL.createObjectURL(file), isVideo: file.type.startsWith("video/"), size: file.size, file })}
             onRemoveUpload={() => setUpload(null)}
             error={error}
             busy={scoring || saving}

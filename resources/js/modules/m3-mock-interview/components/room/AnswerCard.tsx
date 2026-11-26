@@ -25,6 +25,7 @@ export interface UploadedFile {
   url: string
   isVideo: boolean
   size: number
+  file: File
 }
 
 /** Speak / Type / Upload switch: one row, the selected mode raised like a tab. */
@@ -236,18 +237,10 @@ export function AnswerCard(props: {
               )}
             </div>
           )}
-          <label htmlFor={`${ids}-upload-text`} className="text-sm font-semibold">
-            {s.typeLabel}
-          </label>
-          <p className="-mt-2 text-xs text-muted-foreground">{s.uploadNote}</p>
-          <Textarea
-            id={`${ids}-upload-text`}
-            value={transcript}
-            onChange={(e) => props.onTextChange(e.target.value)}
-            placeholder={s.typePlaceholder}
-            maxLength={6000}
-            className="min-h-28 bg-background text-[15px] leading-relaxed"
-          />
+          <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <Info className="size-3.5 shrink-0" aria-hidden="true" />
+            {s.uploadNote}
+          </p>
         </div>
       )}
 

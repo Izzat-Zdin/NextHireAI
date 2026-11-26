@@ -9,9 +9,10 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 /**
- * POST /api/interview/transcribe : sends one spoken answer's audio to Deepgram with filler words kept,
- * and returns that transcript. The interview room uses it only to count "um", "uh", "hmm" and similar
- * sounds that the browser's own speech recognition leaves out. The audio is not stored.
+ * POST /api/interview/transcribe : sends one answer's audio to Deepgram with filler words kept, and returns
+ * that transcript. The interview room uses it to count "um", "uh", "hmm" and similar sounds that the
+ * browser's own speech recognition leaves out, and to turn an uploaded audio/video answer into text.
+ * The audio is not stored.
  *
  * Off unless DEEPGRAM_API_KEY is set (the room then never calls it).
  */
@@ -24,7 +25,7 @@ class InterviewTranscriptionController extends Controller
 
         $data = $request->validate([
             // 4 MB keeps the request under the hosting body limit; that is several minutes of Opus audio.
-            'audio' => ['required', 'file', 'max:4096', 'mimetypes:audio/webm,video/webm,audio/ogg,audio/mp4,audio/mpeg,audio/wav,audio/x-wav,application/octet-stream'],
+            'audio' => ['required', 'file', 'max:4096', 'mimetypes:audio/webm,video/webm,audio/ogg,audio/mp4,audio/mpeg,audio/wav,audio/x-wav,audio/x-m4a,audio/aac,audio/flac,video/mp4,video/quicktime,application/octet-stream'],
             'language' => ['required', 'in:en,ms'],
         ]);
 
