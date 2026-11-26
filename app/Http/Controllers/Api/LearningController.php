@@ -19,23 +19,17 @@ class LearningController extends Controller
     /** GET /api/learning/resources : the whole catalogue, A–Z. */
     public function resources(): JsonResponse
     {
-        // TODO (Shafinaz & Wani):
-        // 1. Ambil SEMUA baris learning_resources (tiada filter, tiada "active" flag dalam ERD).
-        // 2. Susun ikut title menaik (A–Z): LearningResource::orderBy('title')->get().
-        // 3. Pulangkan array JSON terus (status 200), setiap item:
-        //    { resource_id, title, resource_type, skill_name, resource_url, skill_tags: string[] }
-        //    skill_tags mesti keluar sebagai array JSON (guna cast App\Casts\PgTextArray dalam model).
-        return response()->json([]);
+        // Done by Izzat (read only): all rows, A–Z, skill_tags as a JSON array via the model cast.
+        return response()->json(
+            LearningResource::orderBy('title')->get()->map(fn (LearningResource $r) => $this->present($r))->values()
+        );
     }
 
     /** GET /api/learning/resources/{resource} */
     public function resource(LearningResource $resource): JsonResponse
     {
-        // TODO (Shafinaz & Wani):
-        // 1. $resource sudah dicari oleh route model binding (primary key resource_id, uuid).
-        //    Jika tiada, Laravel sendiri pulangkan 404.
-        // 2. Pulangkan objek resource itu sebagai JSON (status 200), bentuk sama seperti satu item dalam resources().
-        return response()->json(null, 404);
+        // Done by Izzat (read only): route model binding already returns 404 for an unknown id.
+        return response()->json($this->present($resource));
     }
 
     /** GET /api/learning/progress : the signed-in user's rows. */
@@ -76,5 +70,18 @@ class LearningController extends Controller
         //    (Hanya baris milik sendiri. Jika tiada baris, tetap OK.)
         // 2. Pulangkan response()->json(null, 204).
         return response()->json(['message' => 'Belum dibina (TODO)'], 501);
+    }
+
+    /** One resource in the shape the Learning page expects. */
+    private function present(LearningResource $r): array
+    {
+        return [
+            'resource_id' => $r->resource_id,
+            'title' => $r->title,
+            'resource_type' => $r->resource_type,
+            'skill_name' => $r->skill_name,
+            'resource_url' => $r->resource_url,
+            'skill_tags' => $r->skill_tags,
+        ];
     }
 }

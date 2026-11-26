@@ -23,8 +23,11 @@ class LearningResource extends Model
     // TODO (Wani): benarkan mass assignment (asal: protected $guarded = [];
     //   atau senaraikan $fillable = ['title', 'resource_type', 'skill_name', 'resource_url', 'skill_tags']).
 
-    // TODO (Wani): casts — skill_tags ialah text[] Postgres, mesti jadi array PHP/JSON:
-    //   protected function casts(): array { return ['skill_tags' => \App\Casts\PgTextArray::class]; }
+    /** skill_tags is a Postgres text[]; it reaches PHP/JSON as a plain array. (Done by Izzat for the read API.) */
+    protected function casts(): array
+    {
+        return ['skill_tags' => \App\Casts\PgTextArray::class];
+    }
 
     // TODO (Wani): relation progress(): HasMany ke LearningProgress
     //   (foreign key 'resource_id', local key 'resource_id').
